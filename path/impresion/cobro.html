@@ -1,0 +1,130 @@
+ <html
+ xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            font-size: 12px;
+        }
+        .mas-grande{
+            font-size: 18px;
+        }
+       @page {
+            margin: 0; /* Elimina márgenes de la página impresa */
+        }
+        .cabecera{
+            display: block;
+            width: 100%;
+            padding-bottom: 1px;
+        }
+        .rayas{
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed black;
+            padding-top: 2px;
+        }
+        .de-lado{
+            display: inline-block;
+            width: 1.4cm;
+            max-width: 1.6cm;
+            white-space: nowrap;
+        }
+         .de-lado-condicion{
+            display: inline-block;
+            min-width: 2cm;
+            max-width: 2cm;
+            white-space: pre;
+            overflow: hidden;
+        }
+        .de-lado-condicion-titulo{
+            display: inline-block;
+            min-width: 2cm;
+            max-width: 2cm;
+            white-space: nowrap
+            
+        }
+        .de-lado-moneda{
+            display: inline-block;
+            width: 0.6cm;
+            max-width: 0.6cm;
+            white-space: nowrap;
+        }
+        .de-lado-total{
+            display: inline-block;
+            width: 2cm;
+            max-width: 2cm;
+            white-space: nowrap;
+        }
+         .de-lado-vendedor{
+            display: inline-block;
+            min-width: 2cm;
+            max-width: 2cm;
+           white-space: pre;
+           overflow: hidden;
+             
+        }
+        .det-producto{
+            width: 6.7cm;
+            display: block;
+            padding-bottom: 1px;
+        }
+        .titulo{
+				text-align: center;
+			}
+        .titulo-cab{
+            font-weight: bold;
+        }
+        .contenedor-titulo{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 7cm;">
+       <img src="#" class="logo-empresa" alt="Logo de la empresa" style="max-width: 100%; height: auto; margin: 0; padding-left: 0px;">
+       <div class="contenedor-titulo">
+            <span class="titulo-cab">COBRO</span>    
+       </div>
+       
+        <span class="cabecera">[[${parametro.empresa}]]</span>
+        <span class="cabecera">Ruc: [[${parametro.ruc}]]</span>
+        <span class="cabecera">Telefono: [[${parametro.telefono}]]</span>
+        <span class="cabecera">Cobro: [[${cobro.id}]]</span>
+        <span class="cabecera">Cliente: [[${cobro.cliente.id}]]</span>
+        <span class="cabecera">Fecha: [[${cobro.fecha}]]</span>
+        <span class="rayas"></span>
+        <span class="rayas"></span>
+        <div class="cabecera">
+            <span class="de-lado">Venta</span>
+            <span class="de-lado-vendedor">vendedor</span>
+            <span class="de-lado-total">total</span>
+            <span class="de-lado-moneda">Mon</span>
+        </div>
+        <div class="cabecera" th:each="item : ${itemCobros}">
+            <span class="de-lado" th:text="${item.venta.id}">Venta</span>
+            <span class="de-lado-vendedor" th:text="${item.venta.vendedor.nombre}">vendedor</span>
+            <span class="de-lado-total" th:text="${#numbers.formatDecimal(item.importe,1,'POINT',2,'COMMA')}">total</span>
+            <span class="de-lado-moneda" th:text="${item.venta.moneda.sigla}">Mon</span>
+        </div>
+        <span class="rayas"></span>
+        <span class="rayas"></span>
+        <div class="cabecera">
+            <span class="de-lado-condicion-titulo">Condicion</span>
+            <span class="de-lado-vendedor">Moneda</span>
+            <span class="de-lado-total">Importe</span>
+        </div>
+        <div class="cabecera" th:each="itemCobroImporte : ${itemCobrosImportes}">
+            <span class="de-lado-condicion-titulo" th:text="${itemCobroImporte.condicion}?${itemCobroImporte.condicion.nombre}:''">Condicion</span>
+            <span class="de-lado-vendedor" th:text="${itemCobroImporte.moneda}?${itemCobroImporte.moneda.sigla}:''">Moneda</span>
+            <span class="de-lado-total" th:text="${#numbers.formatDecimal(itemCobroImporte.importe,1,'POINT',2,'COMMA')}">Importe</span>
+        </div>
+         <span class="rayas"></span>
+        <span class="rayas"></span>
+        <span class="cabecera mas-grande">Total: [[${#numbers.formatDecimal(cobro.total,1,'POINT',2,'COMMA')}]]</span>
+        <span class="rayas"></span>
+        <span class="rayas"></span>
+        <span class="cabecera">Este documento no tiene valor fiscal</span>    
+    </div>
+</body>
+</html>

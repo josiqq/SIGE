@@ -1,0 +1,165 @@
+<html
+lang="es" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+    layout:decorate="~{padron}"
+    xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2;
+            font-size: 12px;
+        }
+        .mas-grande{
+            font-size: 18px;
+        }
+       @page {
+            margin: 0; /* Elimina márgenes de la página impresa */
+        }
+        .cabecera{
+            display: block;
+            width: 100%;
+            padding-bottom: 1px;
+        }
+        .rayas{
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed black;
+            padding-top: 2px;
+        }
+        .de-lado-codigo{
+            display: inline-block;
+            width: 2.4cm;
+            max-width: 2.4cm;
+            white-space: nowrap;
+            border-right: 1px solid;
+        }
+        .de-lado-nombre{
+            display: inline-block;
+            width: 10cm;
+            max-width: 10cm;
+            white-space: nowrap;
+            border-right: 1px solid;
+        }
+        .de-lado-precio{
+            display: inline-block;
+            width: 2cm;
+            max-width: 2cm;
+            white-space: nowrap;
+            border-right: 1px solid;
+        }
+         .de-lado-cantidad{
+            display: inline-block;
+            width: 1cm;
+            max-width: 1.2cm;
+            white-space: nowrap;
+            border-right: 1px solid;
+        }
+       
+       .titulo-cab{
+			text-align: center;
+			font-weight: bold;
+		}
+        .contenedor-cabecera{
+            display: grid;
+            /*grid-template-columns: repeat(3, 1fr);*/ /* Crear 3 columnas de igual ancho */
+            grid-template-columns: 4fr 8fr; /* La primera columna ocupa 4 fracciones, la segunda ocupa 8 fracciones */
+            margin-right: 5px;
+            grid-gap: 10px;
+        }
+        .lado-derecho{
+            background-color: #ddd;
+            padding: 20px;
+            border: 1px solid;
+            border-radius: 10px;
+        }
+        .lado-izquierdo{
+            background-color: #ddd;
+            padding: 20px;
+            border: 1px solid;
+            border-radius: 10px;
+        }
+        .cabecera-detalle{
+            border: 1px solid;
+            margin-top: 3px;
+            border-radius: 5px;
+            height: 15px;
+            padding-left: 2px;
+            margin-right: 5px;
+        }
+        .content-detail{
+            padding-left: 2px;
+           
+        }
+        .paquete-detail{
+            margin-top: 2px;
+            margin-bottom: 2px;
+            border: 1px solid;
+            border-radius: 5px;
+            margin-right: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .total-contenedor{
+            padding-top: 5px;
+            border: 1px solid;
+            border-radius: 5px;
+            margin-right: 5px;
+            padding-left: 5px;
+        }
+    </style>
+
+</head>
+<body>
+    <div style="width: 21cm;">
+        <!--<img src="#" class="logo-empresa" alt="Logo de la empresa" style="max-width: 100%; height: auto; margin: 0; padding-left: 0px;">-->
+        <h2 class="titulo-cab">PRESUPUESTO DE VENTA</h2>
+        <div class="contenedor-cabecera">
+            <div class="lado-derecho">
+                <span class="cabecera">[[${parametro.empresa}]]</span>
+                <span class="cabecera">Ruc: [[${parametro.ruc}]]</span>
+                <span class="cabecera">Telefono: [[${parametro.telefono}]]</span>
+            </div>
+            <div class="lado-izquierdo">
+                <span class="cabecera">Registro:[[${presupuesto.id}]] </span>
+                <span class="cabecera">Cliente:[[${presupuesto.cliente.nombre}]] </span>
+                <span class="cabecera">Vendedor:[[${presupuesto.vendedor.nombre}]] </span>
+                <span class="cabecera">Moneda:[[${presupuesto.moneda.nombre}]] </span>
+                <span class="cabecera">Condición:[[${presupuesto.condicionVenta.descripcion}]] </span>
+                <span class="cabecera">Fecha: [[${presupuesto.fecha}]]</span>
+            </div>
+            
+        </div>
+        
+       
+        <div class="cabecera-detalle">
+            <span class="de-lado-nombre">producto</span>
+            <span class="de-lado-codigo">codigo</span>
+            <span class="de-lado-cantidad">cant</span>
+            <span class="de-lado-precio">precio</span>
+            <span class="de-lado">sub total</span>
+        </div>
+        <div class="paquete-detail">
+            <div class=" content-detail" th:each="item :${items}">
+                <span class="de-lado-nombre" th:text="${item.producto.nombre}"></span>
+                <span class="de-lado-codigo" th:text="${item.producto.codigo}"></span>
+                <span class="de-lado-cantidad cantidad-detalle" th:text="${#numbers.formatDecimal(item.cantidad,1,'POINT',0,'COMMA')}"></span>
+                <span class="de-lado-precio precio-detalle" th:text="${#numbers.formatDecimal(item.precio,1,'POINT',2,'COMMA')}"></span>
+                <span class="de-lado sub-total-detalle" th:text="${#numbers.formatDecimal(item.subTotal,1,'POINT',2,'COMMA')}"></span>
+            </div>
+        </div>
+        
+        <div class="total-contenedor">
+            <span class="mas-grande">Total: [[${#numbers.formatDecimal(presupuesto.total,1,'POINT',2,'COMMA')}]]</span>
+        </div>
+        
+        
+        <h2>Este documento no tiene valor fiscal</h2>    
+    </div>
+    
+
+</body>
+
+</html>

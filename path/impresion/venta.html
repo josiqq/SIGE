@@ -1,0 +1,101 @@
+<html
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            font-size: 12px;
+        }
+        .mas-grande{
+            font-size: 18px;
+        }
+       @page {
+            margin: 0; /* Elimina márgenes de la página impresa */
+        }
+        .cabecera{
+            display: block;
+            width: 100%;
+            padding-bottom: 1px;
+        }
+        .rayas{
+            display: block;
+            width: 100%;
+            border-bottom: 1px dashed black;
+            padding-top: 2px;
+        }
+        .de-lado{
+            display: inline-block;
+            width: 1.4cm;
+            max-width: 1.6cm;
+            white-space: nowrap;
+        }
+        .de-lado-precio{
+            display: inline-block;
+            width: 2cm;
+            max-width: 2cm;
+            white-space: nowrap;
+        }
+         .de-lado-cantidad{
+            display: inline-block;
+            width: 1cm;
+            max-width: 1.2cm;
+            white-space: nowrap;
+        }
+        .det-producto{
+            width: 6.7cm;
+            display: block;
+            padding-bottom: 1px;
+        }
+       .titulo-cab{
+			
+			font-weight: bold;
+		}
+        .contenedor-titulo{
+            text-align: center;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div style="width: 7cm;">
+       <img src="#" class="logo-empresa" alt="Logo de la empresa" style="max-width: 100%; height: auto; margin: 0; padding-left: 0px;">
+       <div class="contenedor-titulo">
+            <span class="titulo-cab">VENTA</span>
+        </div>
+        <span class="cabecera">[[${parametro.empresa}]]</span>
+        <span class="cabecera">Ruc: [[${parametro.ruc}]] </span>
+        <span class="cabecera">Telefono: [[${parametro.telefono}]]</span>
+        <span class="cabecera">Registro:[[${venta.id}]] </span>
+        <span class="cabecera">Cliente:[[${venta.cliente.nombre}]] </span>
+        <span class="cabecera">Vendedor:[[${venta.vendedor.nombre}]] </span>
+        <span class="cabecera">Moneda:[[${venta.moneda.nombre}]] </span>
+         <span class="cabecera">Condición:[[${venta.condicionVenta.descripcion}]] </span>
+         <span class="cabecera">Fecha: [[${venta.fecha}]]</span>
+        <span class="rayas"></span>
+        <span class="rayas"></span>
+        <div class="cabecera">
+            <span class="de-lado">codigo</span>
+            <span class="de-lado-cantidad">cant</span>
+            <span class="de-lado-precio">precio</span>
+            <span class="de-lado">sub total</span>
+        </div>
+        <div class="cabecera content-detail" th:each="item :${items}">
+            <span class="det-producto" th:text="${item.producto.nombre}"></span>
+            <span class="de-lado" th:text="${item.producto.codigo}"></span>
+            <span class="de-lado-cantidad cantidad-detalle" th:text="${#numbers.formatDecimal(item.cantidad,1,'POINT',0,'COMMA')}"></span>
+            <span class="de-lado-precio precio-detalle" th:text="${#numbers.formatDecimal(item.precio,1,'POINT',2,'COMMA')}"></span>
+            <span class="de-lado sub-total-detalle" th:text="${#numbers.formatDecimal(item.subTotal,1,'POINT',2,'COMMA')}"></span>
+        </div>
+        <span class="rayas"></span>
+        <span class="rayas"></span>
+        <span class="cabecera mas-grande">Total: [[${#numbers.formatDecimal(venta.total,1,'POINT',2,'COMMA')}]]</span>
+        <span class="rayas"></span>
+        <span class="rayas"></span>
+        <span class="cabecera">Este documento no tiene valor fiscal</span>    
+    </div>
+  <!--<script src="/presupuesto.venta.js"></script>-->
+</body>
+
+</html>
