@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="utf-8">
+	<title>SIGE</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="" name="keywords">
+	<meta content="" name="description">
+
+	<!-- Favicon -->
+	<link th:href="@{/img/favicon.png}" rel="icon">
+
+	<link th:href="@{/css/meta/style.css}" rel="stylesheet">
+</head>
+
+<body>
+	<div class="fondo">
+		<div class="wrap" id="reloj-wrap">
+			<div class="widget">
+				<div class="fecha">
+					<p id="diaSemana" class="diaSemana"></p>
+					<p id="dia" class="dia"></p>
+					<p>de</p>
+					<p id="mes" class="mes"></p>
+					<p>del</p>
+					<p id="year" class="year"></p>
+				</div>
+				<div class="reloj">
+					<p id="horas" class="horas"></p>
+					<p>:</p>
+					<p id="minutos" class="minutos"></p>
+					<p>:</p>
+					<div class="caja-segundos">
+						<p id="ampm" class="ampm"></p>
+						<p id="segundos" class="segundos"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+	<script th:src="@{/js/jquery.maskMoney.min.js}"></script>
+	<script th:src="@{/js/jquery.mask.min.js}"></script>
+	<script th:src="@{/js/meta/meta.js}"></script>
+	<script th:src="@{/js/meta/fondo/fondo.js}"></script>
+</body>
+
+</html>

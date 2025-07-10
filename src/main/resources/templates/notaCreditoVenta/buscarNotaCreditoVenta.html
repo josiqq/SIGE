@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
+        	 <div class="row" > 
+				<div class="col-md-4">
+					<h6>Listado de notas de creditos venta</h6>		
+				</div> 	
+				<div class="col-md-8">
+					<a th:href="@{/ventas/notaCreditoVentas}" class="col-md-3 mb-6" sec:authorize="hasRole('ROLE_VENTAS_NOTA_CREDITO_MODIFICAR')">
+	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm">nuevo</button>
+                   </a>
+				</div>	 
+              </div>
+              <br>
+             
+            <form  th:object="${ventaFilter}">
+             	<div class="row">
+             		<div class="mb-3 col-md-2">
+                   		<label for="registro" class="control-label mediano">Registro</label> 
+                   		<input type="text" id="registro" class="form-control form-control-sm  mediano"  
+                   					autofocus="autofocus" placeholder="Registro de venta" autocomplete="off"
+                   					th:field="*{id}">
+                    </div>
+             	
+	             	<div class="mb-3  col-md-2">
+	                		<label for="fechaDesde" class="control-label mediano">Fecha desde</label> 
+							<input type="text" class="form-control form-control-sm mediano date " 
+							id="fechaDesde" th:field="*{{fechaDesde}}"
+							placeholder="DD/MM/AAAA" autocomplete="off">
+									
+	            	</div>
+	            	<div class="mb-3 col-md-2">
+	            		<label for="fechaHasta" class="control-label mediano">fecha hasta</label> 
+						<input type="text" class="form-control form-control-sm mediano date "
+						 id="fechaHasta" th:field="*{{fechaHasta}}" placeholder="DD/MM/AAAA" autocomplete="off">
+	            	</div>
+            		<div class="mb-3 col-md-2">
+                   		<label for="limite" class="control-label mediano">Límite</label> 
+                   		<input type="text" id="limite" class="form-control form-control-sm mediano"  
+                   					autofocus="autofocus" placeholder="Límite"
+                   					th:field="*{limite}">
+                    </div>
+            	
+            	
+	            	<div class="mb-2 col-md-12">
+	            		<button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+	            	</div>
+            	 </div>
+         	</form>
+	</div>
+     <div class="table-responsive 	p-3 m-2">
+         <table class="table">
+             <thead>
+                 <tr>
+                 <th scope="col">id</th>
+                 <th scope="col">Cliente</th>
+                 <th scope="col">Deposito</th>
+                 <th scope="col">fecha</th>
+                 <th scope="col">Total</th>
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 </tr>
+             </thead>
+             <tbody>
+                 
+             <tr th:each="venta:${ventas}" class="linea js-tabla-buscar-venta"  >
+                 <td scope="row" th:text="${venta.id}" ></td>
+                 <td ><a th:href="@{/ventas/{id}(id=${venta.id})}" th:text="${venta.cliente.nombre}" ></a> </td>
+                 <td th:text="${venta.deposito.nombre}"></td>
+                 <td th:text="${#temporals.format(venta.fecha,'dd/MM/yyyy')}"></td>
+                 <td th:text="${venta.total}" class="js-venta-total"></td>
+                 <td >
+					<button type="button" class="btn-det btn-detalle-venta" data:id="${venta.id}" data-bs-toggle="modal" data-bs-target="#itemVentaModal">
+					  <i class="far fa-file-alt tooltip-test"  title="Ver detalles"></i>
+					</button>
+					
+				</td>
+                 <td sec:authorize="hasRole('ROLE_VENTAS_NOTA_CREDITO_MODIFICAR')">
+						<a th:href="@{/ventas/notaCreditoVentas/{id}(id=${venta.id})}"
+							 class="btn-editar">
+							<i class="fa fa-pencil" title="Modificar"></i>
+						</a>
+					</td>
+                 <td sec:authorize="hasRole('ROLE_VENTAS_NOTA_CREDITO_ELIMINAR')">
+                 	<a data:url="@{/ventas/{id}(id=${venta.id})}" class="btn-eliminar"
+                 		data:objeto="${venta.cliente.nombre}" >
+                     	<i class="fa fa-trash" title="Eliminar"></i>
+                	</a>
+                 </td>
+             </tr>
+              
+             <tr th:if="${#lists.isEmpty(ventas)}">
+				<td colspan="6">Ne se encontraron notas de creditos</td>
+			</tr>
+         		
+             </tbody>
+         </table>
+     </div>
+	
+<th:block th:replace="venta/modal.item.venta"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/venta/item.venta.buscar.js}"></script>
+	<script th:src="@{/js/meta/notaCreditoVenta/buscar.nota.credito.venta.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	 <div id ="modal" class="contenedor-lista-cuenta-por-pagar" >
+	 	<div class="contenedor-tabla-cuenta-por-pagar">
+	 	<div class="conten-cabecera-cuenta-por-pagar">
+	 		<button type="button" class="btn btn-primary btn-procesar-cuenta">Procesar</button>
+	 		<span class="btn-cerrar-ctas">X</span>
+	 	</div>
+		<div class="table-responsive  ">
+			<table class="table">
+	             <thead>
+	                 <tr>
+	                 	<th scope="col">Compra</th>
+	                 	<th scope="col">Factura</th>
+	                 	<th scope="col">Fecha</th>
+	                 	<th scope="col">Importe</th>
+	                 	<th scope="col">Importe pagado</th>
+	                 	<th scope="col">Saldo</th>
+	                 </tr>
+	             </thead>
+	 			<tbody class="tbody-ctas-pagar">
+	 				<tr >
+						<td colspan="7">No hay cuentas por pagar </td>
+					</tr>
+	 			</tbody>
+			</table>
+		</div>
+	 	</div>
+	 </div>
+</html>

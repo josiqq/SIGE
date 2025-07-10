@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Ajuste de precio</title>
+<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+<link th:href="@{/css/easy-autocomplete.themes.min.css}"
+	rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="noMostrar js-cargando">
+			<div id="spinner"
+				class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+				<div class="spinner-border text-primary"
+					style="width: 3rem; height: 3rem;" role="status">
+					<span class="sr-only">Loading...</span>
+				</div>
+			</div>
+		</div>
+		<div class="row g-4">
+
+			<div class="col-sm-12 col-xl-12 ">
+				<div class="bg-light rounded h-100 p-4">
+
+					<form th:action="@{/ajustePrecios}" th:method="POST"
+						th:object="${ajustePrecio}">
+						<div class="row">
+							<h4 class="col-md-3" th:if="!${ajustePrecio.id}">Ajuste de
+								precio</h4>
+							<h4 class="col-md-3" th:if="${ajustePrecio.id}">Modificar -
+								[[${ajustePrecio.id}]]</h4>
+							<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar"
+								sec:authorize="hasRole('ROLE_VENTAS_AJUSTE_PRECIO_GUARDAR')">
+								<i class="fa fa-save"></i>
+							</button>
+							<a th:href="@{/ajustePrecios/buscar}"
+								class="btn btn-square btn-success m-2 "><i
+								class="fa fa-search btn-buscar"></i>
+							</a>
+							 <a th:href="@{/ajustePrecios}"
+								class="btn btn-square btn-primary m-2"><i
+								class="fa fa-desktop btn-nuevo"></i>
+							 </a>
+							 <button type="button"
+									class="btn btn-square btn-secondary m-2 btn-adicionar-producto">
+									<i class="fa fa-plus"></i>
+							 </button>
+							 
+							<div class="caja-adicionar-producto quitar">
+					            <section class="caja-adicionar-cabecera">
+					                <button type="button" class="btn-adicionar-salir">x</button>
+					            </section>
+					            <input type="text" placeholder="Id de compra" class="agregar-con-compra"/>
+					            <button type="button" class="btn-agregar-todo">agregar todos los productos</button>
+					        </div>
+							 
+						</div>
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<input type="hidden" id="uuid" th:field="*{uuid}"> <input
+							type="hidden" th:field="*{id}" class="idPrecio">
+						<div class="row ">
+							<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+								<label for="nombrePrecio" class="col-sm-12 col-form-label">Precio</label>
+								<select id="nombrePrecio" class="form-control js-select-precio"
+									th:field="*{precio}">
+									<option value="">seleccionar</option>
+									<option th:each="precio : ${precios}"
+										th:text="${precio.nombre}" 
+										th:value="${precio.id}"
+										data:moneda="${precio.moneda.id}"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-3 col-md-3">
+	                            <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control date js-fecha" id="fecha"  
+	                                		autocomplete="off" th:field="*{{fecha}}" >
+	                            </div>
+	                        </div>
+						</div>
+
+
+						<div class="row">
+							<div class=" mb-3 col-sm-12 col-xl-6 col-md-6">
+								<label for="producto" class="col-sm-12 col-form-label">Producto</label>
+								<div class="col-sm-10">
+									<input type="hidden" id="idProducto"> 
+									<input type="text" class="form-control " id="producto"
+										   placeholder="Escribe el nombre o codigo">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="costo" class="col-sm-12 col-form-label">Costo</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control money " id="costo"
+										autocomplete="off" readonly>
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="precioMinimo" class="col-sm-12 col-form-label">Precio mínimo</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control formato-numero "id="precioMinimo" autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="precio" class="col-sm-12 col-form-label">Precio</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control formato-numero " id="precio" autocomplete="off">
+									<button type="button" class="btn btn-primary js-boton-cargar-detalle">
+										<i class=" fa fa-plus"></i>
+									</button>
+								</div>
+							</div>
+
+						</div>
+						<div class="">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">foto</th>
+											<th scope="col">código</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Costo</th>
+											<th scope="col">Utilidad</th>
+											<th scope="col">Precio mínimo</th>
+											<th scope="col">Precio</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody class="js-item-precio">
+									<th:block th:replace="ajustePrecio/itemAjustePrecio"></th:block>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="hbs/template.auto.complete.producto.cotizado"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/ajustePrecio/autoCompleteProducto.ajustePrecio.js}"  type="module"></script>
+	<script th:src="@{/js/meta/ajustePrecio/ajuste.precio.js}" type ="module"></script>
+</th:block>
+</html>

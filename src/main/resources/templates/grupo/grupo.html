@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Grupos</title>
+	
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4 ">
+                <div class="row g-4 ">
+                    
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-light rounded h-100 p-4">
+                        	<div class="row" >
+                        		 
+                            	<a th:href="@{/grupos/buscar}" class="col-md-3 mb-6">
+                            		<button type="button" class="btn btn-success">Buscar
+                            	</button></a>
+                        	</div>
+                        	<br>
+                            <h3 class="mb-4 col-md-6" th:if="!${grupo.id}" sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS_GUARDAR')">Cargar Nuevo grupo</h3>
+                            <h3 class="mb-4 col-md-6" th:if="${grupo.id}" sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS_GUARDAR')">Modificar grupo - [[${grupo.nombre}]]</h3>
+                            <form th:action="@{/grupos}" th:method="POST" th:object="${grupo}" sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS_GUARDAR')">
+                            	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}" >
+						    		<div th:each="erro: ${#fields.detailedErrors()}">
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+						    	</div>
+						    	<div class="alert alert-success" th:if="${!#strings.isEmpty(mensaje)}">
+						    		<span th:text="${mensaje}">Mensaje de exito</span>
+						    	</div>
+						    	<div class="row">
+						    	<div class="col-sm-8">
+                            		<input type="hidden" th:field="*{id}">
+	                                <div class=" mb-3">
+	                                    <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+	                                    <div class="col-sm-10">
+	                                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" autofocus="autofocus"
+	                                        autocomplete="off">
+	                                    </div>
+	                                </div>
+	                                
+	                                <button type="submit" class="btn btn-primary" 
+	                                		sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS_GUARDAR')">Guardar</button>
+                                	<a th:href="@{/grupos}"><button type="button" class="btn btn-primary" 
+                            			sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS_GUARDAR')">Nuevo</button></a>
+                                </div>
+                                
+                                 
+                                </div>
+                                <div class="table-responsive">
+	                                <div class="col-sm-12 col-md-12 col-xl-12">
+				                        <div class="h-100 bg-light rounded p-4 ">
+				                            <div class="d-flex align-items-center justify-content-between mb-4">
+				                                <h6 class="mb-0">Lista de permisos</h6>
+				                            </div>
+				                            
+				                           <div class="row ">
+				                           
+					                            <div class="d-flex align-items-center border-bottom py-2 
+					                            			col-md-6 col-xl-6 col-sm-12 "
+					                             			th:each="permiso:${permisos}">     
+					                            	<div class="w-10 ms-3">
+					                                	<input class="form-check-input " type="checkbox" 
+					                                	th:value="${permiso.id}" th:field="*{permisos}">
+					                                </div>
+					                                <div class="w-100 ms-3">
+					                                    <div class="d-flex w-100 align-items-center justify-content-between ">
+					                                        <span th:text="${permiso.nombre}" class="permiso"></span>
+					                                    </div>
+					                                </div>
+					                            </div>
+				                            </div>
+				                        </div>
+			                    	</div>
+                                </div>
+                               
+                                
+                            </form>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+
+<th:block  layout:fragment="javascript-extra">
+
+</th:block>
+</html>

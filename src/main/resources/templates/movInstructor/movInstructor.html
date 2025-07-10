@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	
+             <h6 class="mb-4">Extracto de instructores</h6>
+             <h6 class="mb-4">Total:<span class="js-total-mov-instructor">[[${#numbers.formatInteger(totalMovimiento,3,'POINT')}]]</span></h6>
+             <form  th:object="${movInstructorFilter}">
+             <div class="row">
+             	
+             	<div class=" mb-3 col-md-4">
+                    <label for="instructor">Instructor</label>
+					<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
+						<option value="">seleccionar</option>
+						<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
+							th:value="${instructor.id}" ></option>
+					</select>
+                 </div>
+             	
+             	<div class="mb-3 col-md-3">
+                		<label for="fechaDesde">Fecha desde</label> 
+						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaIni}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" 
+								data-provide="datepicker" data-date-format="dd/mm/yyyy"
+								 data-date-orientation="bottom" data-date-language="es"
+								  data-date-today-highlight="true" data-date-autoclose="true" >
+            	</div>
+            	<div class="mb-3 col-md-3">
+	            		<label for="fechaHasta">fecha hasta</label> 
+						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaFin}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" 
+								data-provide="datepicker" data-date-format="dd/mm/yyyy"
+								 data-date-orientation="bottom" data-date-language="es"
+								  data-date-today-highlight="true" data-date-autoclose="true" >
+            	</div>
+            	
+            	
+            	
+            	<div class=" row">
+            		<div class="col-md-6 col-xs-12 mb-3">
+            			<button type="submit" class="btn btn-primary">Buscar</button>
+            		</div>
+            		<div class="col-md-6 col-xs-12 mb-3">
+						<button type="button" class="btn  btn-primary js-excel">excel</button>
+					</div>
+            	</div>
+             </div>
+             </form>
+             
+             <div class="table-responsive" id="tabla">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">id</th>
+                         <th scope="col">Instructor</th>
+                         <th scope="col">Cliente</th>
+                         <th scope="col">Observación</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col">Importe</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="movInstructor:${movInstructores}">
+                         <th scope="row" th:text="${movInstructor.id}"></th>
+                         <td th:text="${movInstructor.instructor}==null ? 'sin instructor': ${movInstructor.instructor.nombre}"></td>
+                         <td th:text="${movInstructor.membresia.cliente.nombre}"></td>
+                         <td th:text="${movInstructor.observacion}"></td>
+                         <td th:text="${#temporals.format(movInstructor.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${#numbers.formatInteger(movInstructor.credito,3,'POINT')}" class="js-entero"></td>
+                         
+                     </tr>
+                     <tr th:if="${#lists.isEmpty(movInstructores)}">
+						<td colspan="6">Ne se encontro movimiento</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/membresia/auto-complete-cliente.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/movInstructor/movInstructor.js}"></script>
+</th:block>
+</html>

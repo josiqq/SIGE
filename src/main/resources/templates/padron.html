@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html
+lang="es" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <title>SIGE</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    
+	<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+	<script th:src="@{/js/jquery.toast.min.js}"></script>
+	<script th:src="@{/js/stomp.umd.min.js}"></script>
+	<script th:src="@{/js/push.min.js}"></script>
+	<script th:src="@{/js/meta/meta.js?ver=0.1.8}"></script>
+    <!-- Favicon -->
+    <link th:href="@{/img/favicon.png}" rel="icon">
+    <link th:href="@{/css/css2.css}" rel="stylesheet">
+   
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+    <link th:href="@{/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css}" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/bootstrap-datepicker3.min.css}" rel="stylesheet">
+	<link th:href="@{/css/all.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
+    
+    <!-- Template Stylesheet -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+     <link th:href="@{/css/jquery.toast.min.css}" rel="stylesheet">
+    <link th:href="@{/css/meta/style.css?ver=0.2.0}" rel="stylesheet">
+    
+</head>
+
+<body>
+<div th:insert="fragmentos/barraNavegacion :: barraNavegacion"></div>
+<div th:replace="producto/modalProducto :: modalProducto"></div>
+<th:block th:replace="notificacion/notificacion.emergente"></th:block>
+<th:block th:replace="notificacion/modal.autorizacion.notificacion"></th:block>
+<th:block th:replace="licencia/modal.licencia"></th:block>    
+<audio id="notificationSound" th:src="@{/sound/noti.mp3}"></audio>
+    <!-- JavaScript Libraries -->
+    
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/lib/chart/chart.min.js}"></script>
+    <script th:src="@{/lib/easing/easing.min.js}"></script>
+    <script th:src="@{/lib/waypoints/waypoints.min.js}"></script>
+    <script th:src="@{/lib/owlcarousel/owl.carousel.min.js}"></script>
+    <script th:src="@{/lib/tempusdominus/js/moment.min.js}"></script>
+    <script th:src="@{/lib/tempusdominus/js/moment-timezone.min.js}"></script>
+    <script th:src="@{/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <!--<script th:src="@{/js/bootstrap.min.js}"></script>-->
+    <script th:src="@{/js/sweetalert2@11.js}"></script>
+    <script th:src="@{/js/meta/dialogoEliminar.js}"></script>
+    <script th:src="@{/js/calendario/bootstrap-datepicker.min.js}"></script>
+	<script th:src="@{/js/calendario/bootstrap-datepicker.es.min.js}"></script>
+	<script th:src="@{/js/jquery.maskMoney.min.js}"></script>
+	<script th:src="@{/js/jquery.mask.min.js}"></script>
+	<script th:src="@{/js/meta/jquery.number.min.js}"></script>
+	<script th:src="@{/js/numeral.min.js}"></script>
+	<script th:src="@{/js/es.min.js}"></script>
+	<script th:src="@{/js/meta/producto/buscador.producto.js?ver=0.0.1}" type="module"></script>
+	<script th:src="@{/js/meta/notificacion/notificacion.principal.js}" type="module"></script>
+	<script th:src="@{/js/meta/notificacion/notificacion.web.socket.js}" type="module"></script>
+    <th:block layout:fragment="javascript-extra"></th:block>
+    
+</body>
+
+</html>

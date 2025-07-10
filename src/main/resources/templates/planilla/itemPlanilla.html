@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	
+	<tr th:each="item, iterStat : ${itemPlanillas}" class="js-item-planilla-retorno">
+	<td th:text=${item.condicion.nombre} ></td>
+		<td th:text=${item.moneda.nombre} data:decimales="${item.moneda.decimales}" class="js-moneda-item-planilla"></td>
+		<td th:text=${item.importe} class="js-importe-item-planilla"></td>
+		
+		<td>
+			<button type="button" class="btn-item-quitar btn-item-planilla-quitar" data:indice = "${iterStat.count -1}" >
+				<i class="fa fa-times" aria-hidden="true" ></i>	
+			</button>
+		</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(itemPlanillas)}">
+		<td colspan="2">No se agregaron datos</td>
+	</tr>
+</html>

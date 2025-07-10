@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar Pago</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	 <div class="row">  		 
+                   <a th:href="@{/pagoInstructores}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-success">nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de pagos a instructores</h6>
+             <h6 class="mb-4">total: <span>[[${#numbers.formatInteger(totalImporte,3,'POINT')}]]</span></h6>
+             
+             <form  th:object="${pagoInstructorFilter}">
+             <div class="row">
+             	
+             		<div class=" mb-3 col-md-4">
+                        <label for="instructor">Instructor</label>
+						<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
+							<option value="">seleccionar</option>
+							<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
+								th:value="${instructor.id}" ></option>
+						</select>
+                    </div>
+             	
+             	<div class="mb-3 col-md-3">
+                		<label for="fechaDesde">Fecha desde</label> 
+						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaIni}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" 
+								data-provide="datepicker" data-date-format="dd/mm/yyyy"
+								 data-date-orientation="bottom" data-date-language="es"
+								  data-date-today-highlight="true" data-date-autoclose="true" >
+            	</div>
+            	<div class="mb-3 col-md-3">
+	            		<label for="fechaHasta">fecha hasta</label> 
+						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaFin}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" 
+								data-provide="datepicker" data-date-format="dd/mm/yyyy"
+								 data-date-orientation="bottom" data-date-language="es"
+								  data-date-today-highlight="true" data-date-autoclose="true" >
+            	</div>
+            	
+            	
+            	
+            	<div class="mb-3 col-md-12">
+            		<button type="submit" class="btn btn-primary">Buscar</button>
+            	</div>
+             </div>
+             </form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">id</th>
+                         <th scope="col">Instructor</th>
+                         <th scope="col">Cuenta</th>
+                         <th scope="col">Observación</th>
+                         <th scope="col">fecha</th>
+                         <th scope="col">Importe</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="pagoInstructor:${pagoInstructores}">
+                         <th scope="row" th:text="${pagoInstructor.id}"></th>
+                         <td ><a th:href="@{/pagoInstructores/{id}(id=${pagoInstructor.id})}" th:text="${pagoInstructor.instructor.nombre}" ></a> </td>
+                         <td th:text="${pagoInstructor.cuenta.nombre}"></td>
+                         <td th:text="${pagoInstructor.observacion}"></td>
+                         <td th:text="${#temporals.format(pagoInstructor.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${#numbers.formatInteger(pagoInstructor.importe,3,'POINT')}"  class="js-entero"></td>
+                         <td sec:authorize="hasRole('ROLE_FINANCIERO_PAGO_INSTRUCTOR_ELIMINAR')">
+                         	<a data:url="@{/pagoInstructores/{id}(id=${pagoInstructor.id})}" class="btn-eliminar"
+                         		data:objeto="${pagoInstructor.instructor.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                         </td>
+                     </tr>
+                     <tr th:if="${#lists.isEmpty(pagoInstructores)}">
+						<td colspan="6">Ne se encontro Pagos</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/membresia/auto-complete-cliente.js}"></script>
+</th:block>
+</html>

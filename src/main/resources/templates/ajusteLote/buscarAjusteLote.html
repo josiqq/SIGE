@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
+        	 <div class="row" > 
+				<div class="col-md-4">
+					<h6>Listado de ajustes de lotes</h6>		
+				</div> 	
+				<div class="col-md-8">
+					<a th:href="@{/ajuste-lote}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm" sec:authorize="hasRole('ROLE_STOCK_AJUSTE_LOTE_MODIFICAR')">nuevo</button>
+                   </a>
+				</div>	 
+              </div>
+              <br>
+             
+            <form  th:object="${ajusteLoteFilter}">
+             	<div class="row">
+             		<div class="mb-3 col-md-2">
+                   		<label for="registro" class="control-label mediano">Registro</label> 
+                   		<input type="text" id="registro" class="form-control form-control-sm  mediano"  
+                   					autofocus="autofocus" placeholder="Registro de venta" autocomplete="off"
+                   					th:field="*{id}">
+                    </div>
+             	
+	             	<div class="mb-3  col-md-2">
+	                		<label for="fechaDesde" class="control-label mediano">Fecha desde</label> 
+							<input type="text" class="form-control form-control-sm mediano date " 
+							id="fechaDesde" th:field="*{{fechaDesde}}"
+							placeholder="DD/MM/AAAA" autocomplete="off">
+									
+	            	</div>
+	            	<div class="mb-3 col-md-2">
+	            		<label for="fechaHasta" class="control-label mediano">fecha hasta</label> 
+						<input type="text" class="form-control form-control-sm mediano date "
+						 id="fechaHasta" th:field="*{{fechaHasta}}" placeholder="DD/MM/AAAA" autocomplete="off">
+	            	</div>
+            	
+	            	<div class="mb-2 col-md-12">
+	            		<button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+	            	</div>
+            	 </div>
+         	</form>
+	</div>
+     <div class="table-responsive 	p-3 m-2">
+         <table class="table">
+             <thead>
+                 <tr>
+                 <th scope="col">id</th>
+                 <th scope="col">Deposito</th>
+                 <th scope="col">fecha</th>
+                 
+                 
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 </tr>
+             </thead>
+             <tbody>
+                 
+             <tr th:each="ajuste:${ajustes}" class="linea js-tabla-buscar-venta"  >
+                 <td scope="row" th:text="${ajuste.id}" ></td>
+                 <td th:text="${ajuste.deposito.nombre}"></td>
+                 <td th:text="${#temporals.format(ajuste.fecha,'dd/MM/yyyy')}"></td>
+                 <td>
+					<button type="button" class="btn-det btn-ver-detalle" data:id="${ajuste.id}" data-bs-toggle="modal" data-bs-target="#itemAjusteLoteModal">
+					  <i class="far fa-file-alt tooltip-test"  title="Ver detalles"></i>
+					</button>
+					
+				</td>
+                 <td >
+						<a th:href="@{/ajuste-lote/{id}(id=${ajuste.id})}"
+							 class="btn-editar" sec:authorize="hasRole('ROLE_STOCK_AJUSTE_LOTE_MODIFICAR')">
+							<i class="fa fa-pencil" title="Modificar"></i>
+						</a>
+					</td>
+                 <td >
+                 	<a data:url="@{/ajuste-lote/{id}(id=${ajuste.id})}" class="btn-eliminar" 
+                 		data:objeto="${ajuste.id}" sec:authorize="hasRole('ROLE_STOCK_AJUSTE_LOTE_ELIMINAR')">
+                     	<i class="fa fa-trash" title="Eliminar"></i>
+                	</a>
+                 </td>
+             </tr>
+              
+             <tr th:if="${#lists.isEmpty(ajustes)}">
+				<td colspan="6">Ne se encontraron Ajustes de lotes</td>
+			</tr>
+         		
+             </tbody>
+         </table>
+     </div>
+	
+<th:block th:replace="ajusteLote/modal.item.ajuste.lote"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/ajusteLote/buscar.ajuste.lote.js}" type="module"></script>
+	<script th:src="@{/js/meta/ajusteLote/buscar.ajuste.lote.item.js}" type="module"></script>
+</th:block>
+</html>

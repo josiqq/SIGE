@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row">
+                        		<div class="col-lg-4">
+                            		<h6 class="mb-4">Listado de clientes</h6>
+                            	</div>
+                            	<div class=" mb-4 col-lg-4" sec:authorize="hasRole('ROLE_VENTAS_CLIENTES_GUARDAR')">
+                                		<a th:href="@{/clientes}">
+                                			<button type="button" class="btn btn-primary btn-agregar " accesskey="N" title="Presiona Alt+N">
+                                				Agregar
+                                				
+                               				</button>
+                             			</a>
+                            	</div>
+                            </div>
+                            <form th:object=${clienteFilter} >
+								<div class="row">
+									<div class="mb-3 col-lg-5" >
+				                          <input type="text" class="form-control" id="nombreCodigo" 
+				                          			autocomplete="off" placeholder="Nombre o Documento"
+				                          			autofocus="autofocus" th:field="*{nombreDocumento}">
+				                    </div>
+				                    
+				                    
+				                    <div class=" col-lg-1 mb-4">
+                                		<button type="submit" class="btn btn-primary btn-guardar" >Buscar</button>
+                                	</div>
+								</div>
+							</form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col" class="campo-foto">Foto</th>
+                         <th scope="col">Id</th>
+                         <th scope="col">Nombre</th>
+                         <th scope="col">Documento</th>
+                         <th scope="col">Estado</th>
+                         <th scope="col">Fecha ingreso</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="cliente:${clientes}">
+                     	 <th scope="row" class="foto-img-td">
+                     	 	<a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                     	 		data:url="@{/fotos/{nombre}(nombre=${cliente.fotoONada})}" 
+                     	 		data:objeto="${cliente.nombre}"
+                     	 		class="btn-foto-cliente">
+                     	 		<img loading="lazy" alt="foto" 
+              	 					 th:src="@{/fotos/thumbnail.{nombre}(nombre=${cliente.fotoONada})}" 
+                	 				 class ="foto-img"></img>
+                     	 	</a>
+                     	 </th>
+                         <th scope="row" th:text="${cliente.id}"></th>
+                         <td ><a th:href="@{/clientes/{id}(id=${cliente.id})}" th:text="${cliente.nombre}" ></a> </td>
+                         <td th:text="${cliente.documento}"></td>
+                         <td th:text="${cliente.activo}?'Activo':'desactivado'"></td>
+                         <td th:text="${#temporals.format(cliente.fechaIngreso,'dd/MM/yyyy')}"></td>
+                         <td sec:authorize="hasRole('ROLE_VENTAS_CLIENTES_ELIMINAR')">
+                         	<a data:url="@{/clientes/{id}(id=${cliente.id})}" class="btn-eliminar"
+                         		data:objeto="${cliente.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                       	</td>
+                     </tr>
+                 	<tr th:if="${#lists.isEmpty(clientes)}">
+						<td colspan="7">No hay clientes recuperados</td>
+					</tr>
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+<div th:replace="clientes/fotoCliente :: modalfoto"></div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/foto/foto.cliente.js}"></script>
+</th:block>
+</html>

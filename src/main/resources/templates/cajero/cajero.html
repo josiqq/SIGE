@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{padron}">
+<head>
+<title>Cajeros</title>
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4 ">
+                <div class="row g-4 ">
+                    
+                    <div class="col-sm-12 col-xl-12 col-md-12">
+                        <div class="bg-light rounded h-100 p-4">
+                        	
+                            <form th:action="@{/cajeros}" th:method="POST" th:object="${cajero}">
+                            	
+                            	<div class="col-md-12">
+			                		<h6 class="mb-4 col-md-6" th:if="!${cajero.id}">Cargar nuevo cajero</h6>
+		                            <h6 class="mb-4 col-md-6" th:if="${cajero.id}">Modificar cajero - [[${cajero.nombre}]]</h6>
+			                		<div class=" row">
+				                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+				                			sec:authorize="hasRole('ROLE_FINANCIERO_CAJEROS_GUARDAR')"><i class="fa fa-save"></i>
+			                			</button>
+				                		<a th:href="@{/cajeros/buscar}" class="btn  btn-square btn-success m-2 col-md-1">
+				                			<i class="fa fa-search btn-buscar"></i>
+			                			</a>
+				                		<a th:href="@{/cajeros}" class="btn btn-square btn-primary m-2 col-md-1">
+				                			<i class="fa fa-desktop btn-nuevo"></i>
+			                			</a>
+			                		</div>
+	                		
+	                			</div>
+                            	
+                            	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}" >
+						    		<div th:each="erro: ${#fields.detailedErrors()}">
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+						    	</div>
+						    	<div class="alert alert-success" th:if="${!#strings.isEmpty(mensaje)}">
+						    		<span th:text="${mensaje}">Mensaje de exito</span>
+						    	</div>
+                            	<input type="hidden" th:field="*{id}">
+                            	<div class="row">
+	                                <div class="mb-3 col-sm-5">
+	                                    <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+	                                    <div class="col-sm-12">
+	                                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" autocomplete="off" autofocus="autoficus">
+	                                    </div>
+	                                </div>
+	                               <div class="mb-3 col-sm-5">
+	                                    <label for="documento" class="col-sm-3 col-form-label">Documento</label>
+	                                    <div class="col-sm-12">
+	                                        <input type="text" class="form-control" id="documento" th:field="*{documento}" autocomplete="off">
+	                                    </div>
+	                                </div>
+                            	</div>
+                               
+                                <div class="mb-3">
+                                    <legend class="col-form-label col-sm-2 pt-0">Estado</legend>
+                                    <div class="col-sm-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{activo}">
+                                            <label class="form-check-label" for="gridCheck1">
+                                                Activo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </form>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	
+	
+</th:block>
+</html>

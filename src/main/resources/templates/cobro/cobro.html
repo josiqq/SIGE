@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Cobro a clientes</title>
+<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+<link th:href="@{/css/easy-autocomplete.themes.min.css}"
+	rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+
+	<div class="container-fluid pt-4 px-4 ">
+		<div class="row g-4 ">
+
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<form th:action="@{/cobros}" th:method="POST" th:object="${cobro}">
+						<div class="row">
+							<div class="col-md-4">
+								<h2 th:if="!${cobro.id}">Cobro a clientes</h2>
+								<h2 th:if="${cobro.id}">Modificar cobro - [[${cobro.id}]]</h2>
+							</div>
+							<button type="submit"
+								class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+								sec:authorize="hasRole('ROLE_FINANCIERO_COBRO_CLIENTE_GUARDAR')">
+								<i class="fa fa-save"></i>
+							</button>
+							<a th:href="@{/cobros/buscar}"
+								class="btn  btn-square btn-success m-2 col-md-1"> <i
+								class="fa fa-search btn-buscar"></i>
+							</a> <a th:href="@{/cobros}"
+								class="btn btn-square btn-primary m-2 col-md-1"> <i
+								class="fa fa-desktop btn-nuevo"></i>
+							</a> <a href="#"
+								class="btn btn-square btn-primary btn-abrir-cuentas-a-cobrar m-2 col-md-1 col-xs-2">
+								<i class="fa fa-plus "></i>
+							</a> <span class="negrita col-md-3">Usuario alta:
+								[[${cobro.usuario.nombre}]]</span>
+						</div>
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<th:block
+							th:replace="cuentaPorCobrar/modal.cuenta.por.cobrar.html"></th:block>
+						<th:block th:replace="cobro/modal.comision.tarjeta.html"></th:block>
+						<input type="hidden" th:field="*{id}"> <input
+							type="hidden" th:field="*{uuid}"> <input type="hidden"
+							th:field="*{usuario}"> <input type="hidden"
+							th:field="*{cajero}"> <input type="hidden" id="cuenta"
+							th:field="*{cuenta}"> <input type="hidden" id="registro"
+							th:value="${registro}"> <input type="hidden"
+							id="identificador-cuenta"
+							th:value="${cobro.usuario.cuenta}?${cobro.usuario.cuenta.identificador} :''">
+						<!--  <input type="hidden" id="moneda-cuenta"
+							th:value="${cobro.usuario.cuenta}?${cobro.usuario.cuenta.moneda.id} :''">-->
+						<input type="hidden" id="condicion-ms"
+							th:value="${cobro.condicion}?${cobro.condicion.id}:''"> <input
+							type="hidden" id="planilla" th:field="*{planilla}">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="row">
+									<div class="mb-3 col-md-6 col-xs-8">
+										<label for="cliente" class="col-md-3 col-form-label">Cliente</label>
+										<input type="hidden" id="idCliente" th:field="*{cliente}">
+										<div class="col-sm-12">
+											<input type="text" id="cliente"
+												class="form-control js-cliente col-sm-6"
+												autofocus="autofocus"
+												placeholder="Buscar por nombre o documento"
+												th:value=" ${cobro.id}?${cobro.cliente.nombre}:''">
+										</div>
+									</div>
+									<div class="mb-3 col-md-3">
+										<label for="fecha" class="col-md-3 col-form-label">Fecha</label>
+										<div class="col-sm-12">
+											<input type="text" id="fecha"
+												class="form-control date col-sm-6 js-fecha "
+												placeholder="dia/mes/año" th:field="*{fecha}"
+												autocomplete="off">
+										</div>
+									</div>
+									<div class="mb-3 col-md-3">
+										<label for="venta-id" class="col-md-3 col-form-label">Venta</label>
+										<div class="input-group">
+											<input type="text" id="venta-id"
+												class="form-control col-sm-6 js-id-venta"
+												placeholder="Id de venta" autocomplete="off">
+											<button class="btn btn-primary btn-agregar-con-venta"
+												type="button">
+												<i class="bi bi-search"></i>
+											</button>
+										</div>
+									</div>
+									<div class=" mb-3 col-sm-12 col-md-3 col-lg-3">
+										<select id="moneda-cobro" class="form-control" th:field="*{moneda}">
+											<option value="">Moneda</option>
+											<option th:each="moneda : ${monedas}"
+												th:text="${moneda.nombre}" th:value="${moneda.id}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 ">
+								<div class="col-md-12">
+									<input type="hidden"  id="total" class="formato-numero"  th:field="*{total}"> <span
+										class="negrita js-totales-estilo">Total:</span> <span
+										class="total-cobro negrita js-totales-estilo money"
+										th:text="${cobro.total}"></span>
+								</div>
+								<div class="col-md-12">
+									<input type="hidden" id="cobrado" th:field="*{cobrado}">
+									<span class="negrita js-totales-estilo">Cobrado:</span> <span
+										class="cobrado-cobro negrita js-totales-estilo money"
+										th:text="${cobro.cobrado}"></span>
+								</div>
+								<div class="col-md-12">
+									<input type="hidden" id="saldo" th:field="*{saldo}"> <span
+										class="negrita js-totales-estilo">Saldo:</span> <span
+										class="saldo-cobro negrita js-totales-estilo money"
+										th:text="${cobro.saldo}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Venta</th>
+										<th scope="col">fecha</th>
+										<th scope="col">Importe</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody class="tbody-cuentas">
+									<th:block th:replace="cobro/itemCobroPrincipal">
+								</tbody>
+							</table>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<button type="button"
+									class=" btn btn-primary js-btn-comision-tarjeta noMostrar">Comisión
+									de tarjeta</button>
+							</div>
+							<div class=" mb-3 col-md-2 ">
+								<label for="condicion" class="col-form-label">Condicion</label>
+								<select id="condicion" class="form-control js-condicion">
+									<option value="">seleccionar</option>
+									<option th:each="condicion : ${condiciones}"
+										th:text="${condicion.nombre}" th:value="${condicion.id}"
+										data:comision="${condicion.comision}"
+										data:condi ="${condicion.condicionCobro}"
+										th:selected="${cobro.condicion}? ${condicion.id == cobro.condicion.id}: 0"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-md-2 cont-moneda">
+								<label for="moneda" class="col-form-label">Moneda</label> <select
+									id="moneda" class="form-control js-moneda">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"
+										data:decimales="${moneda.decimales}"
+										th:selected="${cobro.moneda}? ${moneda.id == cobro.moneda.id}: 0">
+									</option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2 cont-cotizacion">
+								<label for="cotizacion" class="col-sm-12 col-form-label">Cotización</label>
+								<div class="col-sm-12">
+									<input type="text" id="cotizacion"
+										class="form-control money col-sm-6 js-cobro-cotizacion"
+										readonly="readonly">
+								</div>
+							</div>
+							<div class="mb-3 col-md-3">
+								<label for="importe" class="col-md-3 col-form-label">Importe</label>
+								<div class="col-sm-12">
+									<input type="text" id="importe"
+										class="form-control  col-sm-6 js-cobro-iporte-importe formato-numero"
+										autocomplete="off"> <input type="hidden"
+										id="importe-ms">
+								</div>
+							</div>
+							<div class="mb-3 col-md-3">
+								<label for="importe-cobrado" class="col-sm-12 col-form-label">Importe
+									cobrado</label>
+								<div class="col-sm-12">
+									<input type="text" id="importe-cobrado"
+										class="form-control  col-sm-6 js-cobro-importe-cobrado formato-numero"
+										autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-md-2 cont-moneda-vuelto">
+								<label for="moneda-vuelto" class="col-form-label">Moneda
+									vuelto</label> <select id="moneda-vuelto"
+									class="form-control js-moneda-vuelto">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"
+										data:decimales="${moneda.decimales}"
+										th:selected="${cobro.usuario.cuenta.moneda}? ${moneda.id == cobro.usuario.cuenta.moneda.id}: 0"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2 cont-cotizacion-vuelto">
+								<label for="cotizacion-vuelto" class="col-sm-12 col-form-label">Cotización
+									vuelto</label>
+								<div class="col-sm-12">
+									<input type="text" id="cotizacion-vuelto"
+										class="form-control formato-numero col-sm-6 js-cobro-cotizacion-vuelto"
+										readonly="readonly">
+								</div>
+							</div>
+							<div class="mb-3 col-md-3 cont-vuelto">
+								<label for="vuelto" class="col-md-3 col-form-label">Vuelto</label>
+								<div class="col-sm-12">
+									<input type="text" id="vuelto"
+										class="form-control formato-numero col-sm-6 js-cobro-iporte-vuelto"
+										readonly="readonly"> <input type="hidden"
+										id="vuelto-moneda-cobro">
+								</div>
+							</div>
+							<div class=" mb-3 col-md-2 cont-banco">
+								<label for="banco" class="col-form-label">banco</label> <select
+									id="banco" class="form-control js-banco">
+									<option value="">seleccionar</option>
+									<option th:each="banco : ${bancos}" th:text="${banco.nombre}"
+										th:value="${banco.id}"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2 cont-boleta">
+								<label for="boleta" class="col-md-3 col-form-label">boleta</label>
+								<div class="col-sm-12">
+									<input type="text" id="boleta"
+										class="form-control  col-sm-6 js-boleta" autocomplete="off">
+
+								</div>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Condicion</th>
+										<th scope="col">Moneda</th>
+										<th scope="col">Cotizacion</th>
+										<th scope="col">Importe</th>
+										<th scope="col">Importe Cobrado</th>
+										<th scope="col">Moneda vuelto</th>
+										<th scope="col">Cotizacion vuelto</th>
+										<th scope="col">Vuelto</th>
+										<th scope="col">Banco</th>
+										<th scope="col">Boleta</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody class="js-item-cobro-importe">
+									<th:block th:replace="cobro/itemCobroImportePrincipal">
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/numero.en.letras.js?ver=0.2.4}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js?ver=0.2.4}"></script>
+	<script th:src="@{/js/meta/venta/impresion.factura.ancha.js?ver=0.2.4}"></script>
+	<script
+		th:src="@{/js/meta/cliente/buscador.generico.cliente.js?ver=0.2.4}"></script>
+	<script th:src="@{/js/meta/venta/venta.factura.js?ver=0.2.4}"></script>
+	<script th:src="@{/js/meta/venta/nota.comun.venta.js?ver=0.2.4}"></script>
+	<script
+		th:src="@{/js/meta/impresion/impresion.venta.termica.cinco.js?ver=0.2.4}"></script>
+	<script th:src="@{/js/meta/cobro/cobro.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/cobro/item.cobro.js?ver=0.2.4}"
+		type="module"></script>
+	<script th:src="@{/js/meta/cobro/item.cobro.importe.js?ver=0.2.5}"
+		type="module"></script>
+	<script th:src="@{/js/meta/cobro/impresion.cobro.js?ver=0.4.1}" type="module"></script>
+	<script th:src="@{/js/meta/cobro/cambio.importe.vuelto.js?ver=0.2.5}"
+		type="module"></script>
+	<script th:src="@{/js/meta/cobro/cambio.condicion.cobro.js?ver=0.2.4}"
+		type="module"></script>
+</th:block>
+</html>

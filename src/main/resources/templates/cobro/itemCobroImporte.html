@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es"
+ xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	
+	<tr th:each="item : ${items}" class="item-cobro-importe-tr" data:cuenta="${item.cuenta.id}" data:total-importe=${totalImporteCobrado}>
+		<td>
+			<select id="cuenta" class="form-control cobro-item-cuenta" 
+					th:value="${item.cuenta}?${item.cuenta.nombre}:''" >
+				<option value="">seleccionar</option>
+				<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
+					th:value="${cuenta.id}" th:selected="${cuenta.id} == ${item.cuenta.id}" ></option>
+			</select>
+       </td>
+       <td>
+            <input type="text" class="form-control item-cobro-importe-importe money" id="importedet"  
+            		autocomplete="off"  th:value="${item.importe}" readonly="readonly">
+       </td>
+       <td>
+           <input type="text" class="form-control item-cobro-importe-importe-cobrado money" id="importeCobradodet"  
+                 		autocomplete="off"  th:value="${item.importeCobrado}">
+       </td>
+       <td>
+           <input type="text" class="form-control item-cobro-importe-vuelto money" id="vueltodet"  
+           		autocomplete="off"  th:value="${item.vuelto}" readonly="readonly">
+       </td>
+    </tr>
+</html>

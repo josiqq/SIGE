@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Cotizaciones</title>
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4">
+                <div class="row g-4 ">
+                    
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-light rounded h-100 p-4">
+                        	
+                        	
+                            <h2 class="mb-4 col-md-6"  
+                            	sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_GUARDAR')" >Cargar cotizaciones</h2>
+                            <form th:action="@{/cotizaciones}" th:method="POST" th:object="${cotizacion}"
+                            	sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_GUARDAR')">
+                            	
+                            	<div class=" row">
+			                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1" title="Guardar"
+			                			sec:authorize="hasRole('ROLE_VENTAS_VENTAS_GUARDAR')"><i class="fa fa-save"></i>
+		                			</button>
+			                		<a th:href="@{/cotizaciones/buscar}" class="btn  btn-square btn-success m-2 col-md-1" title="Buscar">
+			                			<i class="fa fa-search btn-buscar"></i>
+		                			</a>
+			                		<a th:href="@{/cotizaciones}" class="btn btn-square btn-primary m-2 col-md-1" title="Nueva">
+			                			<i class="fa fa-desktop btn-nuevo"></i>
+		                			</a>
+	                			
+	                			</div>
+                            	
+                            	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+		                      		<div th:each="erro: ${#fields.detailedErrors()}">
+		                      			<i class="fa fa-exclamation-circle me-2"></i>
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+	                        		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 		</div>
+					    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+		                       		<i class="fa fa-exclamation-circle me-2"></i>
+		                       			<span th:text="${mensaje}">Mensaje de exito</span>
+		                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		                   		 </div>
+                            	<input type="hidden" id="id-cotizacion" th:field="*{id}">
+                            	<div class="row">
+                            		<div class=" mb-3 col-sm-12  col-md-3">
+			                            <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+			                            <div class="col-sm-10">
+			                                <input type="text" class="form-control date" id="fecha"  
+			                                		autocomplete="off" placeholder="dd/mm/aaaa" th:field="*{{fecha}}">
+			                            </div>
+			                        </div>
+	                                <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+		                                <label for="monedaOrigen" class="col-sm-12 col-form-label">Moneda origen</label>
+										<select id="monedaOrigen" class="form-control" th:field="*{monedaOrigen}">
+											<option value="">seleccionar</option>
+											<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}" 
+												th:value="${moneda.id}" ></option>
+										</select>
+		                            </div>
+	                                <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+		                                <label for="monedaDestino" class="col-sm-12 col-form-label">Moneda Destino</label>
+										<select id="monedaDestino" class="form-control" th:field="*{monedaDestino}">
+											<option value="">seleccionar</option>
+											<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}" 
+												th:value="${moneda.id}" ></option>
+										</select>
+		                            </div>
+		                            <div class=" mb-3 col-sm-12 col-lg-2 col-md-3">
+			                            <label for="cotizacion" class="col-sm-12 col-form-label">Cotizacion</label>
+			                            <div class="col-sm-10">
+			                                <input type="text" class="form-control money2" id="cotizacion"  
+			                                		autocomplete="off"  th:field="*{valor}">
+			                            </div>
+			                        </div>
+                            	</div>
+                                <div class="mb-3">
+                                   <h6 class="mb-1">Operación</h6>
+		                            <div class="form-check">
+		                                <input class="form-check-input js-multiplicar" type="checkbox" id="flexCheckDefault" 
+		                                	th:field="*{multiplicar}">
+		                                <label class="form-check-label" for="flexCheckDefault">
+		                                    Multiplicar
+		                                </label>
+		                            </div>
+		                            <div class="form-check">
+		                                <input class="form-check-input js-dividir" type="checkbox" id="flexCheckDefault"
+		                                th:field="*{dividir}">
+		                                <label class="form-check-label" for="flexCheckDefault">
+		                                    Dividir
+		                                </label>
+		                            </div>
+                                </div>
+                               
+                            </form>
+                            <div class="col-md-12">
+                               	<div class="accordion accordion-flush" id="accordionFlushExample">
+									  <div class="accordion-item">
+									    <h2 class="accordion-header" id="flush-headingOne">
+									      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+									        Cotizacion en cambios chaco
+									      </button>
+									    </h2>
+									    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+									      <div class="accordion-body">									      	
+									      		<iframe width="800" height="600" src="http://www.cambioschaco.com.py/widgets/cotizacion/?lang=es" frameborder="0"></iframe>
+									      </div>
+									    </div>
+									  </div>
+								   </div>
+                               </div>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/cotizacion/cotizacion.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Bancos</title>
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4">
+                <div class="row g-4 ">
+                    
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h2 class="mb-4 col-md-6"  
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_BANCOS_GUARDAR')" >Cargar bancos</h2>
+                            <form th:action="@{/bancos}" th:method="POST" th:object="${banco}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_BANCOS_GUARDAR')">
+                            	
+                            	<div class=" row">
+			                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1" title="Guardar"
+			                			sec:authorize="hasRole('ROLE_FINANCIERO_BANCOS_GUARDAR')"><i class="fa fa-save"></i>
+		                			</button>
+			                		<a th:href="@{/bancos/buscar}" class="btn  btn-square btn-success m-2 col-md-1" title="Buscar">
+			                			<i class="fa fa-search btn-buscar"></i>
+		                			</a>
+			                		<a th:href="@{/bancos}" class="btn btn-square btn-primary m-2 col-md-1" title="Nuevo">
+			                			<i class="fa fa-desktop btn-nuevo"></i>
+		                			</a>
+	                			
+	                			</div>
+                            	
+                            	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+		                      		<div th:each="erro: ${#fields.detailedErrors()}">
+		                      			<i class="fa fa-exclamation-circle me-2"></i>
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+	                        		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 		</div>
+					    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+		                       		<i class="fa fa-exclamation-circle me-2"></i>
+		                       			<span th:text="${mensaje}">Mensaje de exito</span>
+		                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		                   		 </div>
+                            	<input type="hidden" id="id-cotizacion" th:field="*{id}">
+                            	<div class="row">
+                            		<div class=" mb-3 col-sm-12  col-md-3">
+			                            <label for="nombre" class="col-sm-12 col-form-label">Nombre</label>
+			                            <div class="col-sm-10">
+			                                <input type="text" class="form-control" id="nombre"  
+			                                		autocomplete="off" placeholder="nombre" th:field="*{nombre}" autofocus="autofocus">
+			                            </div>
+			                        </div>
+	                                
+                            	</div>
+                               
+                               
+                            </form>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/banco/banco.js}"></script>
+</th:block>
+</html>

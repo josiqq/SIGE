@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+     <tr th:each="item : ${items}"  class="js-tabla-item" data:total="${total}">
+		<td th:text="${item.compra.id}"></td>
+		<td th:text="${item.compra.factura}"></td>
+		<td th:text="${item.compra.fecha}" class="date"></td>
+		<td><input type="text" th:value="${item.importe}" 
+			class="form-control  js-pago-importe formato-numero"  data:id="${item.compra.id}"/></td>
+		<td>
+				<button type="button" class="btn-item-quitar" data:id="${item.compra.id}">
+					<i class="fa fa-times" aria-hidden="true" ></i>	
+				</button>
+			
+		</td>
+     </tr>
+	 <tr th:if="${#lists.isEmpty(items)}">
+			<td colspan="4">Sin documentos agregados</td>
+	 </tr>
+</html>

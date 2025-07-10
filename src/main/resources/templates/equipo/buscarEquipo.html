@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row">
+                        		<div class="col-lg-4">
+                            		<h6 class="mb-4">Listado de Equipos</h6>
+                            	</div>
+                            	<div class=" mb-4 col-lg-4" >
+                                		<a th:href="@{/equipos}">
+                                			<button type="button" class="btn btn-primary btn-agregar " 
+                                				accesskey="N" title="Presiona Alt+N">
+                                				Agregar
+                                				
+                               				</button>
+                             			</a>
+                            	</div>
+                            </div>
+                            <form th:object=${equipo} >
+								<div class="row">
+									<div class="mb-3 col-lg-5" >
+				                          <input type="text" class="form-control" id="nombre" 
+				                          			autocomplete="off" placeholder="Nombre"
+				                          			autofocus="autofocus" th:field="*{nombre}">
+				                    </div>
+				                    
+				                    
+				                    <div class=" col-lg-1 mb-4">
+                                		<button type="submit" class="btn btn-primary btn-guardar" >Buscar</button>
+                                	</div>
+								</div>
+							</form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col" class="campo-foto">Foto</th>
+                         <th scope="col">Id</th>
+                         <th scope="col">Nombre</th>
+                         <th scope="col">Nombre corto</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="equipo:${equipos}">
+                     	 <th scope="row" class="foto-img-td">
+                     	 	<a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                     	 		data:url="@{/fotos/{nombre}(nombre=${equipo.fotoONada})}" 
+                     	 		data:objeto="${equipo.nombre}"
+                     	 		class="btn-foto-cliente">
+                     	 		<img loading="lazy" alt="foto" 
+              	 					 th:src="@{/fotos/thumbnail.{nombre}(nombre=${equipo.fotoONada})}" 
+                	 				 class ="foto-img"></img>
+                     	 	</a>
+                     	 </th>
+                         <th scope="row" th:text="${equipo.id}"></th>
+                         <td ><a th:href="@{/equipos/{id}(id=${equipo.id})}" th:text="${equipo.nombre}" ></a> </td>
+                         <td th:text="${equipo.nombreCorto}"></td>
+                         <td sec:authorize="hasRole('ROLE_DEPORTES_EQUIPOS_ELIMINAR')">
+                         	<a data:url="@{/equipos/{id}(id=${equipo.id})}" class="btn-eliminar"
+                         		data:objeto="${equipo.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                       	</td>
+                     </tr>
+                 	<tr th:if="${#lists.isEmpty(equipos)}">
+						<td colspan="7">No hay equipos recuperados</td>
+					</tr>
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+<div th:replace="clientes/fotoCliente :: modalfoto"></div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/foto/foto.cliente.js}"></script>
+</th:block>
+</html>

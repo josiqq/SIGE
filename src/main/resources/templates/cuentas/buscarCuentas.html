@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+		xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar cuentas</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row" sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">  		 
+                   <a th:href="@{/cuentas}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-buscar">nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de cuentas</h6>
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                            <th scope="col">id</th>
+                         <th scope="col">Nombre</th>
+                         <th scope="col">Estado</th>
+                         <th scope="col">Saldo</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="cuenta:${cuentas}">
+                         <th scope="row" th:text="${cuenta.id}"></th>
+                         <td ><a th:href="@{/cuentas/{id}(id=${cuenta.id})}" th:text="${cuenta.nombre}" ></a> </td>
+                         <td th:text="${cuenta.activo}?'Activo':'desactivado'">jhon@email.com</td>
+                         <td th:text="${#numbers.formatInteger(cuenta.saldo,3,'POINT')}"></td>
+                         <td sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_ELIMINAR')">
+                         	<a data:url="@{/cuentas/{id}(id=${cuenta.id})}" class="btn-eliminar"
+                         		data:objeto="${cuenta.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                         </td>
+                     </tr>
+                 
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+</html>

@@ -1,0 +1,27 @@
+package com.meta.service;
+
+import com.meta.modelo.Notificacion;
+import com.meta.repository.Notificaciones;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class NotificacionService {
+   @Autowired
+   private Notificaciones notificaciones;
+
+   public void guardar(Notificacion notificacion) {
+      this.notificaciones.save(notificacion);
+   }
+
+   public Notificacion modificar(Notificacion notificacion) {
+      this.notificaciones.modificarNotificacion(notificacion);
+      this.notificaciones.flush();
+      return (Notificacion)this.notificaciones.findById(notificacion.getId()).orElse(null);
+   }
+
+   public List<Notificacion> getAllNotificaciones() {
+      return this.notificaciones.findAll();
+   }
+}

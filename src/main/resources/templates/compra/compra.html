@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Compras</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		
+        <div class="row g-4">
+            
+            <div class="col-sm-12 col-xl-12 ">
+                <div class="bg-light rounded h-100 p-4">
+	                <form th:action="@{/compras}" th:method="POST" th:object="${compra}">
+	                	<div class="row">
+	                		<h4 class="col-md-3" th:if="!${compra.id}">Compras</h4>
+	                		<h4 class="col-md-3" th:if="${compra.id}">Modificar - [[${compra.id}]]</h4>
+	                		<h3 class="col-md-2">total:</h3>
+	                		<h3 th:text="${compra.total}" class="total-cabecera col-md-2 "></h3>
+	                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar"
+	                			sec:authorize="hasRole('ROLE_COMPRAS_COMPRAS_GUARDAR')"><i class="fa fa-save"></i></button>
+	                		<a th:href="@{/compras/buscar}" class="btn btn-square btn-success m-2">
+	                			<i class="fa fa-search btn-buscar"></i></a>
+	                		<a th:href="@{/compras}" class="btn btn-square btn-primary m-2">
+	                			<i class="fa fa-desktop btn-nuevo"></i></a>
+	                	</div>
+	                	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                      		<div th:each="erro: ${#fields.detailedErrors()}">
+                      			<i class="fa fa-exclamation-circle me-2"></i>
+				    			<span th:text="${erro.message}">Mensaje de error</span>
+				    		</div>
+                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+			    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                       		<i class="fa fa-exclamation-circle me-2"></i>
+                       			<span th:text="${mensaje}">Mensaje de exito</span>
+                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+	                	<input type= "hidden" id="uuid" th:field="*{uuid}">
+	                	<input type="hidden" th:field="*{id}" class="idCompra">
+	                	<div class= "row ">
+	                		<div class=" mb-3 col-sm-12 col-xl-4 col-md-4">
+	                            <label for="proveedor" class="col-sm-12 col-form-label">Proveedor</label>
+	                            <input type="hidden" id="idProveedor" th:field="*{proveedor}">
+	                            <div class="col-sm-10">
+	                            	<div class="meta-conten-group">
+		                                <input type="text"  id="proveedor"  
+		                                	class="form-control js-proveedor" 
+		                                	autocomplete="off" placeholder="Escribe el nombre o ruc"
+		                                	th:value=" ${compra.id}?${compra.proveedor.nombre}:''">
+		                                	<a href="#" class="a-icono-agrandado" title="Adicionar nuevo proveedor"
+		                                			data-bs-toggle="modal" data-bs-target="#modal-cargar-proveedor"
+		                                			accesskey="a">
+		                                		<i class="bi bi-plus-circle-fill"></i>
+		                                	</a>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        
+	                        <div class=" mb-3 col-sm-12 col-xl-3 col-md-3">
+	                            <label for="factura" class="col-sm-12 col-form-label">Factura</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control" id="factura"  
+	                                	autocomplete="off" th:field="*{factura}">
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+	                            <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+	                            <div class="col-sm-10">
+	                            	
+	                                <input type="text" class="form-control date" id="fecha"  
+	                                		autocomplete="off" th:field="*{{fecha}}" >
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+                                <label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
+								<select id="deposito" class="form-control" th:field="*{deposito}">
+									<option value="">seleccionar</option>
+									<option th:each="deposito : ${depositos}" th:text="${deposito.nombre}" 
+										th:value="${deposito.id}" ></option>
+								</select>
+                            </div>
+                            <div class=" mb-3 col-sm-12 col-md-3 col-lg-2 js-contenedor-preciov-compra noMostrar">
+                                <label for="com-precio-venta" class="col-sm-12 col-form-label">Precio</label>
+								<select id="com-precio-venta" class="form-control" th:field="*{precio}">
+									<option value="">seleccionar</option>
+									<option th:each="precio : ${precios}" th:text="${precio.nombre}" 
+										th:value="${precio.id}" ></option>
+								</select>
+                            </div>
+                             <div class=" mb-3 col-sm-12 col-xl-3 col-md-3">
+	                            <label for="plazo" class="col-sm-12 col-form-label">Plazo</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control formato-numero" id="plazo"  
+	                                	autocomplete="off" th:field="*{plazo}">
+	                            </div>
+	                        </div>
+	                          <div class=" mb-3 col-sm-12 col-xl-3 col-md-3">
+	                            <label for="vencimiento" class="col-sm-12 col-form-label">Fecha de vencimiento</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control date" id="vencimiento"  readonly="readonly"  
+	                                		autocomplete="off" th:field="*{{vencimiento}}" >
+	                            </div>
+	                        </div>
+	                         <div class=" mb-3 col-sm-12 col-md-4 col-xl-4">
+                                <label for="moneda" class="col-sm-12 col-form-label">Moneda</label>
+                                <div class="row col-md-12">
+	                                <div class="col-md-6">
+										<select id="moneda" class="form-control" th:field="*{moneda}">
+											<option value="">seleccionar</option>
+											<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}" 
+												th:value="${moneda.id}" ></option>
+										</select>
+										
+									</div>
+									<div class="mb-3 col-md-6 ">
+										<button  class="btn btn-primary" type="button"  data-bs-toggle="modal" 
+												data-bs-target="#modal-lista-presupuesto-compra">Presupuesto</button>
+									</div>
+								</div>
+                            </div>
+                        
+	                	</div>
+	                	</form>
+	                	<div class="row">
+	                		<div class=" mb-3 col-sm-12 col-xl-6 col-md-5">
+	                            <label for="producto" class="col-sm-12 col-form-label">Producto</label>
+	                            <div class="col-sm-10">
+	                            	<input type="hidden" id="idProducto">
+	                                <input type="text" class="form-control js-producto-compra" id="producto"  
+	                                	 placeholder="Escribe el nombre o codigo" autocomplete="off">
+	                                <div class="lista-auto-complete-producto">
+	                            		
+                            			
+	                            	</div>
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+	                            <label for="cantidad" class="col-sm-12 col-form-label">Cantidad</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control  formato-numero"  id="cantidad"  
+	                                	autocomplete="off">
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+	                            <label for="precio" class="col-sm-12 col-form-label">Precio</label>
+	                            <div class="col-sm-12 input-group">
+	                                <input type="text" class="form-control  formato-numero " id="precio"  
+	                                	autocomplete="off">
+	                                <button type="button" class="btn btn-primary js-boton-cargar-detalle ">
+										<i class=" fa fa-plus"></i>
+									</button>
+	                            </div>
+	                        </div>
+	                         <div class=" mb-3 col-sm-12 col-xl-2 col-md-2 contenedor-precio-venta-compra noMostrar">
+	                            <label for="precioVenta" class="col-sm-12 col-form-label">Pr de venta</label>
+	                            <div class="col-sm-12">
+	                                <input type="text" class="form-control money " id="precioVenta"  
+	                                	autocomplete="off">
+	                            </div>
+	                        </div>
+	                        
+	                	</div>
+	                	<div class="">
+	                		<div class="table-responsive">
+				                 <table class="table">
+				                     <thead>
+				                         <tr>
+				                         <th scope="col" >foto</th>
+				                         <th scope="col">código</th>
+				                         <th scope="col">Producto</th>
+				                         <th scope="col">Cantidad</th>
+				                         <th scope="col">Precio</th>
+				                         <th scope="col" class="noMostrar js-precio-venta-com">Pr venta</th>
+				                         <th scope="col">Total</th>				                         
+				                         <th scope="col"></th>
+				                         </tr>
+				                     </thead>
+				                    <tbody class="js-item-compra">
+				                    <th:block th:replace="compra/itemCompra"></th:block>
+        		                    </tbody>
+				                 </table>
+             				</div>
+	                	</div>
+	                
+                </div>
+            </div>                                                         
+        </div>
+    </div>
+    <th:block th:replace="hbs/templateAutoCompleteProducto"></th:block>
+    <th:block th:replace ="proveedor/modal.carga.rapida.proveedor"></th:block>
+    <th:block th:replace ="presupuestoCompra/modal.presupuesto.compra"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/gasto/auto-complete-proveedor.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/compra/auto.complete.producto.compra.js?ver=0.2.1} " type="module" ></script>
+	<script th:src="@{/js/meta/compra/teclado.compra.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/compra/compra.js?ver=0.2.1}"  type="module"></script>
+	<script th:src="@{/js/meta/compra/compra.carga.proveedor.modal.js?ver=0.2.1}" ></script>
+	<script th:src="@{/js/meta/compra/modal.presupuesto.compra.manipular.js?ver=0.2.2}" type="module"></script>
+</th:block>
+</html>

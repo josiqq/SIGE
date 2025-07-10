@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cobro" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a34b009f-2c5b-4b04-a91d-64adb4933c4e">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[dmVuZGVkb3IgLDI1NCw2NywxZDc1OWJiMS0wZDQwLTQ4YTItYWY1OS1mZGI0MDVhOGZkNGQ7Y29i
+cm9fc2VydmljaW8gLDEyMywxNSxlNWVkMTQzMi1hNDBkLTQ1NTQtYjQ4MC1jYWYzMzA5ZTA5Mjk7
+Y2xpZW50ZSAsMTUsNjcsZDY2MDFiMDgtZDI3NS00YTRkLTk0Y2YtMTkxMTc2NmJhODNjOw==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="meta-adapter"/>
+	<parameter name="id" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT cobro_servicio.id,
+	cobro_servicio.fecha,
+	cobro_servicio.importe,
+	cobro_servicio.observacion,
+	concat( cliente.nombre,' - ',cliente.id) AS cliente,
+	concat( vendedor.nombre,' - ',vendedor.id) AS vendedor
+FROM cobro_servicio,
+	vendedor,
+	cliente
+WHERE 
+	 cobro_servicio.id =  $P{id} 
+	 AND cobro_servicio.id_cliente = cliente.id 
+	 AND cobro_servicio.id_vendedor = vendedor.id]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cobro_servicio"/>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cobro_servicio"/>
+	</field>
+	<field name="importe" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="importe"/>
+		<property name="com.jaspersoft.studio.field.label" value="importe"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cobro_servicio"/>
+	</field>
+	<field name="observacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="observacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="observacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cobro_servicio"/>
+	</field>
+	<field name="cliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="cliente"/>
+	</field>
+	<field name="vendedor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vendedor"/>
+		<property name="com.jaspersoft.studio.field.label" value="vendedor"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="181" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="10" width="170" height="20" uuid="9a759346-43d5-42d1-9478-c04330a9904f"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Cobro de servicios]]></text>
+			</staticText>
+			<line>
+				<reportElement x="10" y="36" width="170" height="1" uuid="67041676-a580-48cc-a882-1623804e565d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="13" y="40" width="37" height="15" uuid="4c1c40f3-b443-41de-a8b1-09545fc5c660">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Id:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="59" width="37" height="15" uuid="0c1ca710-4c26-44aa-92b9-b9f1e9033c06">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="76" width="37" height="15" uuid="cbece19d-a495-40ee-ae02-978c6e6e7cfc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="40" width="100" height="15" uuid="fa9dbd64-3bba-40dd-9417-bcc5bf08ec56">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="50" y="60" width="130" height="15" uuid="a1d7d3d5-6501-4f36-8989-5e444f3c3a1b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="90" width="166" height="15" uuid="7e0f39fc-4d98-4ec7-b790-3107e1076db0"/>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="110" width="100" height="15" uuid="6521268e-a26e-4e0d-a0c3-ef1958af62b2"/>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="13" y="127" width="167" height="30" uuid="39771c02-a7b3-4fb1-815b-b7730dc537a0"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="11" y="108" width="170" height="1" uuid="f3b9f7bc-d2e7-40d7-aa61-963a993dce14">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

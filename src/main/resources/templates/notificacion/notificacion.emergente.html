@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	<div class="toast-container">
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img th:src="@{/img/favicon.png}" class=" ajuste-icono-favicon rounded me-2" alt="...">
+      <strong class="me-auto">Autorización</strong>
+      <small class="hora-notificacion-emergente">11 mins ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body cuerpo-notificacion-emergente">
+      
+    </div>
+  </div>
+</div>
+	</div>
+</html>

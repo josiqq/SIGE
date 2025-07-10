@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Agendar Citas</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="noMostrar js-cargando">
+		 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"> 
+             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"> 
+                 <span class="sr-only">Loading...</span> 
+             </div> 
+         </div>
+		</div> 
+        <div class="row g-4">
+            
+            <div class="col-sm-12 col-xl-12 ">
+                <div class="bg-light rounded h-100 p-4 agenda-form">
+                	
+	                <form th:action="@{/agendas}" th:method="POST" th:object="${agenda}">
+	                	<div class="row">
+	                		<h4 class="col-md-3">Agendar citas</h4>
+	                		
+	                	</div>
+	                	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                      		<div th:each="erro: ${#fields.detailedErrors()}">
+                      			<i class="fa fa-exclamation-circle me-2"></i>
+				    			<span th:text="${erro.message}">Mensaje de error</span>
+				    		</div>
+                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+			    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                       		<i class="fa fa-exclamation-circle me-2"></i>
+                       			<span th:text="${mensaje}">Mensaje de exito</span>
+                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+	                	<input type= "hidden" id="uuid" th:field="*{uuid}">
+	                	<input type="hidden" th:field="*{id}" id="id" class="id-agenda">
+	                	<div class= "row ">
+	                		<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+                                <label for="nombrePrecio" class="col-sm-12 col-form-label">Vendedor</label>
+								<select id="vendedor" class="form-control js-vendedor" th:field="*{vendedor}">
+									<option value="">seleccionar</option>
+									<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
+										th:value="${vendedor.id}" ></option>
+								</select>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                           		<label for="fechaEstimado" class="col-form-label">Fecha</label> 
+								<input type="text" class="form-control js-fecha-agenda js-fecha" id="fechaEstimado" th:field="*{{fecha}}"
+										autocomplete="off" placeholder="dd/mm/aaaa" 
+										data-provide="datepicker" data-date-format="dd/mm/yyyy"
+										 data-date-orientation="bottom" data-date-language="es"
+										  data-date-today-highlight="true" data-date-autoclose="true" >
+                           	</div>
+	                    </div>
+	                       
+	                	<div class="js-item-precio"></div>
+	                	
+	                </form>
+                </div>
+            </div>                                                         
+        </div>
+    </div>
+    
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/agenda/agenda.js}"></script>
+</th:block>
+</html>

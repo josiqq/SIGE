@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	
+	<div class="contenedor-cobro noMostrar">
+		
+		<div class="box-cobro ">
+			<div class="row">
+				<h3 class= "col-md-3">Procesar cobro</h3>
+				<h3 class="col-md-2">Total:</h3>
+				<h3 class="js-total-cabecera-cobro col-md-3"></h3>
+				<h3 class="col-md-2">Saldo:</h3>
+				<h3 class="js-total-importe col-md-2"></h3>
+			</div>
+			<div class="row">
+				
+				<div class="mb-3 col-sm-12 col-lg-3 col-md-3">
+                    <label for="cajero" class="col-sm-12 col-form-label">Cajero</label>
+                    <div class="col-sm-10">
+                    	<input type="hidden" id="cajero-cobro-id">
+                        <input type="text" class="form-control" id="cajero-cobro"  
+                        		autocomplete="off">
+                    </div>
+                </div>
+               
+                <div class=" mb-3 col-sm-12 col-lg-3 col-md-3">
+                    <label for="fecha-cobro" class="col-sm-12 col-form-label">Fecha cobro</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control date" id="fecha-cobro"  
+                        		autocomplete="off" >
+                    </div>
+                </div>
+			</div>
+			
+			<div class="table-responsive">
+		         <table class="table">
+		             <thead>
+		                 <tr>
+		                     <th scope="col" >Venta</th>
+		                     <th scope="col">Fecha</th>
+		                     <th scope="col">Importe</th>
+		                 </tr>
+		             </thead>
+		            <tbody class="js-item-cobro">
+		            	
+		            </tbody>
+		         </table>
+			</div>
+			
+		<div class="table-responsive">
+		         <table class="table">
+		             <thead>
+		                 <tr>
+		                     <th scope="col" >Cuenta</th>
+		                     <th scope="col">Importe</th>
+		                     <th scope="col">Importe cobrado</th>
+		                     <th scope="col">Vuelto</th>
+		                 </tr>
+		             </thead>
+		            <tbody class="js-item-cobro-importe">
+		            	
+		            </tbody>
+		         </table>
+			</div>
+		<div class="row">
+			 <div class=" col-sm-5 col-lg-2 col-md-2">
+	        	<br>
+	        	<br>
+	        	<button type="button" 
+	        		class="btn btn-success btn-procesar-cobro">
+	        		Procesar
+	        	</button>
+	        </div>
+	        <div class="col-sm-5 col-lg-2 col-md-2">
+	        	<br>
+	        	<br>
+	        	<button type="button" class="btn btn-danger btn-cancelar-cobro">
+	        		Cancelar
+	        	</button>
+	        </div>
+		</div>
+		
+		</div>
+		
+	</div>
+	
+<html>
