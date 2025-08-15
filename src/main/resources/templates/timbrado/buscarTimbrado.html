@@ -13,11 +13,11 @@
          <div class="bg-light rounded h-100 p-4">
         	 <div class="row">  		 
                    <a th:href="@{/timbrados}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-nuevo btn-success">nuevo</button>
+	                    <button type="button" class="btn btn-nuevo btn-success">Nuevo</button>
                     </a>
               </div>
               <br>
-             <h6 class="mb-4">Listado de timbrados</h6>
+             <h6 class="mb-4">Listado de Timbrados</h6>
             <form  th:object="${timbrado}">
              	<div class="row">
              		<div class=" row mb-3 col-md-4">
@@ -30,14 +30,14 @@
                     </div>
              	
 	             	<div class="mb-3 col-md-3">
-	                		<label for="fechaInicio" class= "col-md-6 col-form-label">Fecha inicio</label> 
+	                		<label for="fechaInicio" class= "col-md-6 col-form-label">Fecha Inicio</label> 
 	                		<div class="col-sm-12"> 
 								<input type="text" class="form-control date" id="fechaInicio" th:field="*{{fechaInicio}}"
 									placeholder="DD/MM/AAAA" autocomplete="off">
 							</div>
 	            	</div>
 	            	<div class="mb-3 col-md-3">
-	            		<label for="fechaFin" class= "col-md-6 col-form-label">fecha final</label> 
+	            		<label for="fechaFin" class= "col-md-6 col-form-label">Fecha Final</label> 
 	            		<div class="col-sm-12"> 
 							<input type="text" class="form-control date" id="fechaFin" th:field="*{{fechaFin}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
@@ -57,11 +57,11 @@
                          <tr>
                          <th scope="col">id</th>
                          <th scope="col">Expedicion</th>
-                         <th scope="col">fecha inicio</th>
-                         <th scope="col">fecha final</th>
-                         <th scope="col">número</th>
-                         <th scope="col">numeración ini</th>
-                         <th scope="col">numeración fin</th>
+                         <th scope="col">Fecha Inicio</th>
+                         <th scope="col">Fecha Final</th>
+                         <th scope="col">Número</th>
+                         <th scope="col">Numeración Ini</th>
+                         <th scope="col">Numeración Fin</th>
                          <th scope="col"></th>
                          <th scope="col"></th>
                          <th scope="col"></th>
@@ -92,7 +92,7 @@
                      </tr>
                       
                      <tr th:if="${#lists.isEmpty(timbrados)}">
-						<td colspan="10">No se encontraron timbrados</td>
+						<td colspan="10">No se encontraron Timbrados</td>
 					</tr>
                  		
                      </tbody>

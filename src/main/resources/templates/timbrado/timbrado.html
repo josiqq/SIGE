@@ -16,7 +16,7 @@
                  		<div class="row">
                  			<div class="col-md-6">
                  				<h2 th:if="!${timbrado.id}">Timbrados</h2>
-                 				<h2 th:if="${timbrado.id}">Modificar timbrado - [[${timbrado.id}]]</h2>
+                 				<h2 th:if="${timbrado.id}">Modificar Timbrado - [[${timbrado.id}]]</h2>
                  			</div>
                  			<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
 		                			sec:authorize="hasRole('ROLE_VENTAS_TIMBRADOS_GUARDAR')"><i class="fa fa-save"></i>
@@ -81,21 +81,21 @@
 		                            </div>
 	                   		 	</div>
 	                   		 	<div class="mb-3 col-md-12">
-	                   		 		<label for="numero" class= "col-md-12 col-form-label">número de timbrado</label>
+	                   		 		<label for="numero" class= "col-md-12 col-form-label">Número de Timbrado</label>
 	                           		<div class="col-sm-12"> 
 	                           			<input type="text" id="numero" class="form-control col-sm-6 money"  
 	                           					autofocus="autofocus" th:field="*{numero}" >
 	                            	</div>
 	                   		 	</div>
 	                   		 	<div class="mb-3 col-md-12">
-	                   		 		<label for="numeracionIni" class= "col-md-12 col-form-label">numeración inicial</label>
+	                   		 		<label for="numeracionIni" class= "col-md-12 col-form-label">Numeración Inicial</label>
 	                           		<div class="col-sm-12"> 
 	                           			<input type="text" id="numeracionIni" class="form-control col-sm-6 money"  
 	                           					autofocus="autofocus" th:field="*{numeracionIni}">
 	                            	</div>
 	                   		 	</div>
 	                   		 	<div class="mb-3 col-md-12">
-	                   		 		<label for="numeracionFin" class= "col-md-12 col-form-label">numeración final</label>
+	                   		 		<label for="numeracionFin" class= "col-md-12 col-form-label">Numeración Final</label>
 	                           		<div class="col-sm-12"> 
 	                           			<input type="text" id="numeracionFin" class="form-control col-sm-6 money"  
 	                           					autofocus="autofocus" th:field="*{numeracionFin}">

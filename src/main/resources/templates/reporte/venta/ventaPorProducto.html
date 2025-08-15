@@ -6,7 +6,7 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>Ventas por producto</title>
+<title>Ventas por Producto</title>
  <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
 	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
 </head>
@@ -26,14 +26,14 @@
              		</div>
              	
 	             	<div class="mb-3 col-md-3">
-	                		<label for="fechaDesde" class="col-form-label">Fecha desde</label>
+	                		<label for="fechaDesde" class="col-form-label">Fecha Desde</label>
 	                		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaDesde" th:field="*{{fechaDesde}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
 	                		</div>	
 	            	</div>
 	            	<div class="mb-3 col-md-3">
-		            		<label for="fechaHasta" class="col-form-label">fecha hasta</label>
+		            		<label for="fechaHasta" class="col-form-label">Fecha Hasta</label>
 		            		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaHasta" th:field="*{{fechaHasta}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">

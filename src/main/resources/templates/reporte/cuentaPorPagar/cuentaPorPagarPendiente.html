@@ -22,7 +22,7 @@
 <div class="container-fluid pt-4 px-4 contenedor-reporte">
          <div class="bg-light rounded h-100 p-4 ">
         	 
-             <h3 class="mb-4 js-titulo-reporte">Cuentas por pagar</h3>
+             <h3 class="mb-4 js-titulo-reporte">Cuentas por Pagar</h3>
             <form  th:object="${cuentaPorPagarFilter}" class="js-filtros">
              	<div class="row">
              		<div class="mb-3 col-md-4">
@@ -38,20 +38,20 @@
                    		<label for="registro" class="col-form-label">Id Compra</label>
                    		<div class="col-md-12"> 
                    			<input type="text" id="registro" class="form-control"  
-                   					autofocus="autofocus" placeholder="Registro de compra" autocomplete="off"
+                   					autofocus="autofocus" placeholder="Registro de Compra" autocomplete="off"
                    					th:field="*{idCompra}">
                     	</div>
                		</div>
              		<div class="row col-md-12">
 	             	<div class="mb-3 col-md-2">
-	                		<label for="fechaDesde" class="col-form-label">Fecha desde</label>
+	                		<label for="fechaDesde" class="col-form-label">Fecha Desde</label>
 	                		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaDesde" th:field="*{{fechaDesde}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
 	                		</div>	
 	            	</div>
 	            	<div class="mb-3 col-md-2">
-		            		<label for="fechaHasta" class="col-form-label">fecha hasta</label>
+		            		<label for="fechaHasta" class="col-form-label">Fecha Hasta</label>
 		            		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaHasta" th:field="*{{fechaHasta}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
@@ -60,14 +60,14 @@
             	
             	
             	<div class="mb-3 col-md-2">
-	                		<label for="vencimientoDesde" class="col-form-label">Vencimiento desde</label>
+	                		<label for="vencimientoDesde" class="col-form-label">Vencimiento Desde</label>
 	                		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="vencimientoDesde" th:field="*{{vencimientoDesde}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
 	                		</div>	
 	            	</div>
 	            	<div class="mb-3 col-md-2">
-		            		<label for="vencimientoHasta" class="col-form-label">Vencimiento hasta</label>
+		            		<label for="vencimientoHasta" class="col-form-label">Vencimiento Hasta</label>
 		            		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="vencimientoHasta" th:field="*{{vencimientoHasta}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">

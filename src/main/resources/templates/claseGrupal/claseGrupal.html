@@ -6,7 +6,7 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-	<title>Clases grupales</title>
+	<title>Clases Grupales</title>
 	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
 	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
 </head>
@@ -21,12 +21,12 @@
                 
 	                <form th:action="@{/clasegrupales}" th:method="POST" th:object="${claseGrupal}">
 	                	<div class="col-md-12">
-	                		<h2>Clases grupales</h2>
+	                		<h2>Clases Grupales</h2>
 	                		<div class=" row">
 		                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
 		                			sec:authorize="hasRole('ROLE_FICHAS_CLASES_GRUPALES_GUARDAR')"><i class="fa fa-save"></i>
 	                			</button>
-		                		<a th:href="@{/clasegrupales/buscar}" class="btn  btn-square btn-success m-2 col-md-1">
+		                		<a th:href="@{/clasegrupales/buscar?id=&horaDesde=&horaHasta=&instructor=}" class="btn  btn-square btn-success m-2 col-md-1">
 		                			<i class="fa fa-search btn-buscar"></i>
 	                			</a>
 		                		<a th:href="@{/clasegrupales}" class="btn btn-square btn-primary m-2 col-md-1">
@@ -76,14 +76,14 @@
 								</select>
                             </div>
                             <div class="mb-3 col-lg-2" >
-                                 <label for="horaDesde" class="col-form-label">Hora inicial</label>
+                                 <label for="horaDesde" class="col-form-label">Hora Inicial</label>
                                  <div class="col-md-12">
                                  	<input type="text" class="form-control time" id="horaDesde" autocomplete="off"
                                  		th:field="*{horaDesde}" placeholder="HH:mm">
                                  </div>
                              </div>
                                <div class="mb-3 col-lg-2" >
-                                  <label for="horaHasta" class="col-form-label">Hora final</label>
+                                  <label for="horaHasta" class="col-form-label">Hora Final</label>
                                   <div class="col-md-12">
                                   	<input type="text" class="form-control time" id="horaHasta" autocomplete="off" 
                                   		th:field="*{horaHasta}" placeholder="HH:mm">

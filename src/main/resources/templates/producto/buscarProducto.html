@@ -6,18 +6,18 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>buscar Producto</title>
+<title>Buscar Producto</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
          <div class="bg-light rounded h-100 p-4">
          	 <div class="row">  		 
                    <a th:href="@{/productos}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-success btn-nuevo">nuevo</button>
+	                    <button type="button" class="btn btn-success btn-nuevo">Nuevo</button>
                     </a>
               </div>
               <br>
-             <h6 class="mb-4">Listado de productos</h6>
+             <h6 class="mb-4">Listado de Productos</h6>
              <form th:object=${productoFilter} >
 				<div class="row">
 					<div class="mb-3 col-md-6 col-lg-5" >
@@ -39,11 +39,11 @@
                  <table class="table">
                      <thead>
                          <tr>
-                            <th scope="col" >foto</th>
-                         <th scope="col">id</th>
-                         <th scope="col">código</th>
-                         <th scope="col">nombre</th>
-                         <th scope="col">marca</th>
+                            <th scope="col" >Foto</th>
+                         <th scope="col">Id</th>
+                         <th scope="col">Código</th>
+                         <th scope="col">Nombre</th>
+                         <th scope="col">Marca</th>
                          <th scope="col"></th>
                          </tr>
                      </thead>
@@ -59,7 +59,7 @@
                        		</a>
                          </td>
                          <th scope="row" th:text="${producto.id}"></th>
-                          <td th:text="${producto.codigo}">Doe</td>
+                          <td th:text="${producto.codigo}"></td>
                          <td >
                          	<a th:href="@{/productos/{id}(id=${producto.id})}" 
                          			th:text="${producto.nombre}" >

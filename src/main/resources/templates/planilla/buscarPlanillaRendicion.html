@@ -6,7 +6,7 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>buscar</title>
+<title>Buscar Planilla</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
@@ -24,9 +24,9 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
-                         <th scope="col">fecha</th>
-                         <th scope="col">cuenta</th>
+                         <th scope="col">Id</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col">Cuenta</th>
                          <th scope="col">Estado</th>
                          <th scope="col"></th>
                          <th scope="col"></th>
@@ -55,7 +55,7 @@
                      </tr>
                       
                      <tr th:if="${#lists.isEmpty(planillas)}">
-						<td colspan="6">Ne se encontraron datos</td>
+						<td colspan="6">No se encontraron datos</td>
 					</tr>
                  		
                      </tbody>

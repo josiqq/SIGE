@@ -28,12 +28,12 @@
                    		</div>
              	
              	<div class="mb-3 col-md-2">
-                		<label for="fechaDesde" class="col-sm-12 col-form-label">Fecha desde</label> 
+                		<label for="fechaDesde" class="col-sm-12 col-form-label">Fecha Desde</label> 
 						<input type="text" class="form-control  date js-fecha-desde" id="fechaDesde" th:field="*{{fechaDesde}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" >
             	</div>
             	<div class="mb-3 col-md-2">
-	            		<label for="fechaHasta" class="col-sm-12 col-form-label">fecha hasta</label> 
+	            		<label for="fechaHasta" class="col-sm-12 col-form-label">Fecha Hasta</label> 
 						<input type="text" class="form-control date js-fecha-hasta" id="fechaHasta" th:field="*{{fechaHasta}}"
 								autocomplete="off" placeholder="dd/mm/aaaa">
             	</div>
@@ -71,14 +71,14 @@
                  <table class="table" id="tb-extracto-producto">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
-                         <th scope="col">registro</th>
+                         <th scope="col">ID</th>
+                         <th scope="col">Registro</th>
                          <th scope="col">Deposito</th>
                          <th scope="col">Producto</th>
                          <th scope="col">Fecha</th>
                          <th scope="col">Observación</th>
-                         <th scope="col" class="lado-derecho ">entrada</th>
-                         <th scope="col" class="lado-derecho ">salida</th>
+                         <th scope="col" class="lado-derecho ">Entrada</th>
+                         <th scope="col" class="lado-derecho ">Salida</th>
                          </tr>
                      </thead>
                      <tbody>
@@ -103,7 +103,7 @@
                      		class="lado-derecho td-saldo"></td>
                      </tr>
                      <tr th:if="${#lists.isEmpty(extractoProductos)}">
-						<td colspan="6">Ne se encontraron datos</td>
+						<td colspan="6">No se encontraron datos</td>
 					</tr>
                  		
                      </tbody>

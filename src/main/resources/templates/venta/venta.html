@@ -23,7 +23,7 @@
 					<form th:action="@{/ventas}" th:method="POST" th:object="${venta}">
 						<div class="col-md-12">
 							<h2 th:if="!${venta.id}">Ventas</h2>
-							<h2 th:if="${venta.id}">Modificar venta - [[${venta.id}]]</h2>
+							<h2 th:if="${venta.id}">Modificar Venta - [[${venta.id}]]</h2>
 							<div class=" row">
 								<button type="submit"
 									class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
@@ -39,7 +39,7 @@
 									title="Nueva venta"> <i class="fa fa-desktop btn-nuevo"></i>
 								</a> <span class="negrita col-md-2">Usuario alta:</span> <span
 									class="col-md-2"> [[${venta.usuario.nombre}]]</span>
-								<h3 class="col-md-2">total:</h3>
+								<h3 class="col-md-2">Total:</h3>
 								<h3 th:text="${venta.total}"
 									class="total-cabecera col-md-2 "></h3>
 							</div>
@@ -173,7 +173,7 @@
 								sec:authorize="hasRole('ROLE_CONSORCIO_VENTA')">
 								<select id="consorcio" class="form-control js-consorcio"
 									th:field="*{consorcio}">
-									<option value="">Seleccionar consorcio</option>
+									<option value="">Seleccionar Consorcio</option>
 									<option th:each="consorcio : ${consorcios}"
 										th:text="${consorcio.nombre}" th:value="${consorcio.id}2"></option>
 								</select>
@@ -222,7 +222,7 @@
 								<table class="table">
 									<thead>
 										<tr>
-											<th scope="col">foto</th>
+											<th scope="col">Foto</th>
 											<th scope="col">código</th>
 											<th scope="col">Producto</th>
 											<th scope="col">Cantidad</th>

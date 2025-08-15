@@ -17,7 +17,7 @@
                         <div class="bg-light rounded h-100 p-4">
                         
                         	<div class="row" >
-                            	<a th:href="@{/usuarios/buscar}" class="col-md-3 mb-6">
+                            	<a th:href="@{/usuarios/buscar?nombre=}" class="col-md-3 mb-6">
                             		<button type="button" class="btn btn-buscar btn-success">Buscar
                             	</button></a>
                         	</div>
@@ -51,7 +51,7 @@
 	                                	<div class="row">
 	                                	
 		                                 	<div class="mb-3 col-md-4">
-		                                    	<label for="password" class="col-form-label">Password</label>
+		                                    	<label for="password" class="col-form-label">Contraseña</label>
 		                                    	<div class="col-md-10">
 		                                      	 	<input type="password" class="form-control" id="password" th:field="*{password}" autocomplete="off">
 		                                   		 </div>

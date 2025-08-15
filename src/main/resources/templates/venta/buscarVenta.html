@@ -13,28 +13,28 @@
          <div class="bg-light rounded h-100 p-4">
         	 <div class="row" >  		 
                    <a th:href="@{/ventas}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-nuevo btn-success">nuevo</button>
+	                    <button type="button" class="btn btn-nuevo btn-success">Nuevo</button>
                     </a>
               </div>
               <br>
-             <h4 class="mb-4">Listado de ventas</h4>
+             <h4 class="mb-4">Listado de Ventas</h4>
             <form  th:object="${ventaFilter}">
              	<div class="row">
              		<div class="mb-2 m-2 row col-md-4">
                    		<label for="registro" class="col-form-label">Registro</label> 
                    		<input type="text" id="registro" class="form-control m-2"  
-                   					autofocus="autofocus" placeholder="Registro de venta" autocomplete="off"
+                   					autofocus="autofocus" placeholder="Registro de Venta" autocomplete="off"
                    					th:field="*{id}">
                     </div>
              	
 	             	<div class="mb-2 row m-2 col-md-3">
-	                		<label for="fechaDesde" class="col-form-label">Fecha desde</label> 
+	                		<label for="fechaDesde" class="col-form-label">Fecha Desde</label> 
 							<input type="text" class="form-control date m-2" id="fechaDesde" th:field="*{{fechaDesde}}"
 							placeholder="DD/MM/AAAA" autocomplete="off">
 									
 	            	</div>
 	            	<div class=" mb-2 m-2 row col-md-3">
-	            		<label for="fechaHasta" class="col-form-label ">fecha hasta</label> 
+	            		<label for="fechaHasta" class="col-form-label ">Fecha Hasta</label> 
 						<input type="text" class="form-control date m-2 " id="fechaHasta" th:field="*{{fechaHasta}}"
 						placeholder="DD/MM/AAAA" autocomplete="off">
 	            	</div>
@@ -56,11 +56,11 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
+                         <th scope="col">Id</th>
                          <th scope="col">Cliente</th>
                          <th scope="col">Deposito</th>
                          <th scope="col">Fatura</th>
-                         <th scope="col">fecha</th>
+                         <th scope="col">Fecha</th>
                          <th scope="col">Total</th>
                          <th scope="col"></th>
                          <th scope="col"></th>
@@ -104,7 +104,7 @@
                      </tr>
                       
                      <tr th:if="${#lists.isEmpty(ventas)}">
-						<td colspan="6">Ne se encontraron ventas</td>
+						<td colspan="6">No se encontraron Ventas</td>
 					</tr>
                  		
                      </tbody>

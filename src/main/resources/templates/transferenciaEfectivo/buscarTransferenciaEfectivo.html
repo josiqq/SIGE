@@ -5,25 +5,25 @@
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 
 <head>
-	<title>Buscar transferencia</title>
+	<title>Buscar Transferencia Efectivo</title>
 </head>
 <section layout:fragment="contenido">
 	<div class="container-fluid pt-4 px-4">
 		<div class="bg-light rounded h-100 p-4">
 			<div class="row" sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
 				<a th:href="@{/transferenciaEfectivos}" class="col-md-3 mb-6">
-					<button type="button" class="btn btn-success">nuevo</button>
+					<button type="button" class="btn btn-success">Nuevo</button>
 				</a>
 			</div>
 			<br>
-			<h6 class="mb-4">Lista de transferencias de efectivo</h6>
+			<h6 class="mb-4">Lista de Transferencia Efectivo</h6>
 			<h6 class="mb-4">total: <span>[[${#numbers.formatInteger(totalImporte,3,'POINT')}]]</span></h6>
 
 			<form th:object="${transferenciaEfectivoFilter}">
 				<div class="row">
 
 					<div class=" mb-3 col-md-2">
-						<label for="cuentaOrigen">Cuenta origen</label>
+						<label for="cuentaOrigen">Cuenta Origen</label>
 						<select id="cuentaOrigen" class="form-control js-cuenta" th:field="*{cuentaOrigen}">
 							<option value="">seleccionar</option>
 							<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" th:value="${cuenta.id}">
@@ -31,7 +31,7 @@
 						</select>
 					</div>
 					<div class=" mb-3 col-md-2">
-						<label for="cuentaDestino">Cuenta destino</label>
+						<label for="cuentaDestino">Cuenta Destino</label>
 						<select id="cuentaDestino" class="form-control js-cuenta" th:field="*{cuentaDestino}">
 							<option value="">seleccionar</option>
 							<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" th:value="${cuenta.id}">
@@ -66,11 +66,11 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th scope="col">id</th>
-							<th scope="col">Cuenta origen</th>
+							<th scope="col">ID</th>
+							<th scope="col">Cuenta Origen</th>
 							<th scope="col">Cuenta Destino</th>
 							<th scope="col">Observación</th>
-							<th scope="col">fecha</th>
+							<th scope="col">Fecha</th>
 							<th scope="col">Importe</th>
 							<th scope="col"></th>
 							<th scope="col"></th>
@@ -100,7 +100,7 @@
 							</td>
 						</tr>
 						<tr th:if="${#lists.isEmpty(transferenciaEfectivos)}">
-							<td colspan="6">No se encontraron transferencias</td>
+							<td colspan="6">No se encontraron Transferencias</td>
 						</tr>
 
 					</tbody>

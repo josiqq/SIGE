@@ -6,18 +6,18 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>buscar</title>
+<title>Buscar Presupuesto de Venta</title>
 </head>
 <section layout:fragment="contenido" >
 	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
         	 <div class="row" > 
 				<div class="col-md-4">
-					<h6>Listado de presupuestos de ventas</h6>		
+					<h6>Listado de Presupuestos de Ventas</h6>		
 				</div> 	
 				<div class="col-md-8">
 					<a th:href="@{/presupuestoVentas}" class="col-md-3 mb-6">
 	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm"
-	                    sec:authorize="hasRole('ROLE_VENTAS_PRESUPUESTO_VENTAS_MODIFICAR')">nuevo</button>
+	                    sec:authorize="hasRole('ROLE_VENTAS_PRESUPUESTO_VENTAS_MODIFICAR')">Nuevo</button>
                    </a>
 				</div>	 
               </div>
@@ -33,14 +33,14 @@
                     </div>
              	
 	             	<div class="mb-3  col-md-2">
-	                		<label for="fechaDesde" class="control-label mediano">Fecha desde</label> 
+	                		<label for="fechaDesde" class="control-label mediano">Fecha Desde</label> 
 							<input type="text" class="form-control form-control-sm mediano date " 
 							id="fechaDesde" th:field="*{{fechaDesde}}"
 							placeholder="DD/MM/AAAA" autocomplete="off">
 									
 	            	</div>
 	            	<div class="mb-3 col-md-2">
-	            		<label for="fechaHasta" class="control-label mediano">fecha hasta</label> 
+	            		<label for="fechaHasta" class="control-label mediano">Fecha Hasta</label> 
 						<input type="text" class="form-control form-control-sm mediano date "
 						 id="fechaHasta" th:field="*{{fechaHasta}}" placeholder="DD/MM/AAAA" autocomplete="off">
 	            	</div>
@@ -65,7 +65,7 @@
                  <th scope="col">id</th>
                  <th scope="col">Cliente</th>
                  <th scope="col">Deposito</th>
-                 <th scope="col">fecha</th>
+                 <th scope="col">Fecha</th>
                  <th scope="col">Total</th>
                  <th scope="col"></th>
                  <th scope="col"></th>
@@ -102,7 +102,7 @@
              </tr>
               
              <tr th:if="${#lists.isEmpty(presupuestos)}">
-				<td colspan="6">Ne se encontraron presupuestos de ventas</td>
+				<td colspan="6">No se encontraron presupuestos de ventas</td>
 			</tr>
          		
              </tbody>

@@ -6,14 +6,14 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-	<title>Seguimiento de costo</title>
+	<title>Seguimiento de Costo</title>
 	<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
 	<link th:href="@{/css/easy-autocomplete.themes.min.css}">
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
       <div class="bg-light rounded h-100 p-4">
-           <h6 class="mb-4">Seguimiento de costo</h6>
+           <h6 class="mb-4">Seguimiento de Costo</h6>
              <form  th:object="${seguimientoCostoFilter}">
              		<div class="row">
              	
@@ -26,12 +26,12 @@
                    		</div>
              	
              	<div class="mb-3 col-md-2">
-                		<label for="fechaDesde">Fecha desde</label> 
+                		<label for="fechaDesde">Fecha Desde</label> 
 						<input type="text" class="form-control  date js-fecha-desde" id="fechaDesde" th:field="*{{fechaDesde}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" >
             	</div>
             	<div class="mb-3 col-md-2">
-	            		<label for="fechaHasta">fecha hasta</label> 
+	            		<label for="fechaHasta">Fecha Hasta</label> 
 						<input type="text" class="form-control date js-fecha-hasta" id="fechaHasta" th:field="*{{fechaHasta}}"
 								autocomplete="off" placeholder="dd/mm/aaaa">
             	</div>
@@ -47,20 +47,20 @@
                  <table class="table table-bordered" id="tb-seguimiento-costo">
                      <thead>
                          <tr>
-                         <th>id</th>
-                         <th>registro</th>
+                         <th>ID</th>
+                         <th>Registro</th>
                          <th>Producto</th>
                          <th>Observacion</th>
                          <th>Fecha</th>
-                         <th>cantidad actual</th>
-                         <th>costo actual</th>
-                         <th>cantidad comprada</th>
-                         <th>precio de compra</th>
-                         <th>sumatoria costo actual</th>
-                         <th>sumatoria costo compra</th>
-                         <th>costo total</th>
-                         <th>cantidad total</th>
-                         <th>costo calculo</th>
+                         <th>Cantidad Actual</th>
+                         <th>Costo Actual</th>
+                         <th>Cantidad Comprada</th>
+                         <th>Precio de Compra</th>
+                         <th>Sumatoria Costo Actual</th>
+                         <th>Sumatoria Costo Compra</th>
+                         <th>Costo Total</th>
+                         <th>Cantidad Total</th>
+                         <th>Costo Calculo</th>
                          
                          </tr>
                      </thead>
@@ -84,7 +84,7 @@
                          
                      </tr>
                      <tr th:if="${#lists.isEmpty(seguimientoCostos)}">
-						<td colspan="6">Ne se encontraron datos</td>
+						<td colspan="6">No se encontraron datos</td>
 					</tr>
                  		
                      </tbody>

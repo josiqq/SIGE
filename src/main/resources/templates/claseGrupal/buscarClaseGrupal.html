@@ -13,11 +13,11 @@
          <div class="bg-light rounded h-100 p-4">
         	 <div class="row" sec:authorize="hasRole('ROLE_COMPRAS_COMPRAS_GUARDAR')">  		 
                    <a th:href="@{/clasegrupales}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-nuevo btn-success">nuevo</button>
+	                    <button type="button" class="btn btn-nuevo btn-success">Nuevo</button>
                     </a>
               </div>
               <br>
-             <h4 class="mb-4">Listado de clases</h4>
+             <h4 class="mb-4">Listado de Clases</h4>
             <form  th:object="${claseGrupal}">
              	<div class="row">
              		<div class=" row mb-3 col-md-4">
@@ -37,7 +37,7 @@
 							</div>	
 	            	</div>
 	            	<div class="mb-3 col-md-3">
-		            		<label for="fechaHasta" class="col-form-label">hora final</label>
+		            		<label for="fechaHasta" class="col-form-label">Hora final</label>
 		            		<div class="col-md-12"> 
 								<input type="text" class="form-control time" id="fechaHasta" th:field="*{horaHasta}"
 								placeholder="HH:mm" autocomplete="off">
@@ -63,12 +63,12 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
+                         <th scope="col">ID</th>
                          <th scope="col">Nombre</th>
                          <th scope="col">Instructor</th>
                          <th scope="col">Hora inicial</th>
                          <th scope="col">Hora final</th>
-                         <th scope="col">fecha creacion</th>
+                         <th scope="col">Fecha creación</th>
                          <th scope="col"></th>
                          <th scope="col"></th>
                          <th scope="col"></th>

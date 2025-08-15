@@ -63,7 +63,7 @@
 							<div class="col-md-12">
 								<div class="row">
 									<div class="mb-3 col-md-2">
-										<label for="fecha" class="col-md-12 col-form-label">Fecha de apertura</label>
+										<label for="fecha" class="col-md-12 col-form-label">Fecha de Apertura</label>
 										<div class="col-sm-12">
 											<input type="text" id="fecha"
 												class="form-control date col-sm-6 js-fecha "
@@ -72,7 +72,7 @@
 										</div>
 									</div>
 									<div class="mb-3 col-md-2">
-										<label for="fecha-cierre" class="col-md-12 col-form-label">Fecha de cierre</label>
+										<label for="fecha-cierre" class="col-md-12 col-form-label">Fecha de Cierre</label>
 										<div class="col-sm-12">
 											<input type="text" id="fecha-cierre"
 												class="form-control date col-sm-6 js-fecha "
@@ -102,7 +102,7 @@
 										</div>
 									</div>
 									<div class="mb-3 col-md-3">
-										<label for="total-rendido" class="col-md-12 col-form-label">Total rendido</label>
+										<label for="total-rendido" class="col-md-12 col-form-label">Total Rendido</label>
 										<div class="col-sm-12">
 											<input type="text" id="total-rendido"
 												class="form-control date col-sm-6 js-total-rendido-planilla "
@@ -141,16 +141,16 @@
 							<thead>
 								<tr>
 									<th>Condición</th>
-									<th>Mon</th>
+									<th>Moneda</th>
 									<th>Cobro</th>
-									<th>Apert</th>
+									<th>Apertura</th>
 									<th> In vuelto</th>
 									<th> Eg vuelto</th>
 									<th> Tran cred</th>
 									<th> Tran deb</th>
-									<th>Impor neto</th>
-									<th>Cotiz</th>
-									<th>Mon Nac</th>
+									<th>Importe Neto</th>
+									<th>Cotización</th>
+									<th>Moneda Nac</th>
 								</tr>
 							</thead>
 							<tbody class="js-planilla-importes">
@@ -162,7 +162,7 @@
 						<h6>Rendición</h6>
 						<div class="row">
 							<div class=" mb-3 col-md-2 ">
-								<label for="condicion" class="col-form-label">Condicion</label>
+								<label for="condicion" class="col-form-label">Condición</label>
 								<select id="condicion" class="form-control js-condicion">
 									<option value="">seleccionar</option>
 									<option th:each="condicion : ${condiciones}"
@@ -189,7 +189,7 @@
 								</div>
 							</div>
 							<div class=" mb-3 col-md-3 cont-cuenta">
-									<label for="cuenta-destino" class="col-form-label">Cuenta destino</label> 
+									<label for="cuenta-destino" class="col-form-label">Cuenta Destino</label> 
 									<select id="cuenta-destino" class="form-control js-cuenta-destino" >
 										<option value="">seleccionar</option>
 										<option th:each="cuenta : ${cuentas}"
@@ -208,7 +208,7 @@
 									<th>Condición</th>
 									<th>Moneda</th>
 									<th>Importe</th>
-									<th>Cuenta destino</th>
+									<th>Cuenta Destino</th>
 								</tr>
 							</thead>
 							<tbody class="js-planilla-rendicion">

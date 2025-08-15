@@ -6,13 +6,13 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>Ajustes de precios</title>
+<title>Ajustes de Precios</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4 contenedor-reporte">
          <div class="bg-light rounded h-100 p-4 ">
         	 
-             <h3 class="mb-4 js-titulo-reporte">Listado de ajuste de precios</h3>
+             <h3 class="mb-4 js-titulo-reporte">Listado de Ajuste de Precios</h3>
             <form  th:object="${ajustePrecioFilter}" class="js-filtros">
              	<div class="row">
              		<div class="mb-3 col-md-4">
@@ -25,14 +25,14 @@
                		</div>
              	
 	             	<div class="mb-3 col-md-3">
-	                		<label for="fechaDesde" class="col-form-label">Fecha desde</label>
+	                		<label for="fechaDesde" class="col-form-label">Fecha Desde</label>
 	                		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaDesde" th:field="*{{fechaDesde}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
 	                		</div>	
 	            	</div>
 	            	<div class="mb-3 col-md-3">
-		            		<label for="fechaHasta" class="col-form-label">fecha hasta</label>
+		            		<label for="fechaHasta" class="col-form-label">Fecha Hasta</label>
 		            		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaHasta" th:field="*{{fechaHasta}}"
 								placeholder="DD/MM/AAAA" autocomplete="off">
@@ -74,7 +74,7 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
+                         <th scope="col">Id</th>
                          <th scope="col">Lista</th>
                          <th scope="col">Moneda</th>
                          <th scope="col">Codigo</th>
@@ -95,7 +95,7 @@
 	                     </tr>
 	                     
 	                     <tr th:if="${#lists.isEmpty(items)}">
-							<td colspan="6">Ne se encontraron ajustes ...</td>
+							<td colspan="6">No se encontraron ajustes ...</td>
 						 </tr>
                      </tbody>
                  </table>

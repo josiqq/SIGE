@@ -10,7 +10,7 @@
 		<div id="spinner"
 			class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
 			<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-				<span class="sr-only">Loading...</span>
+				<span class="sr-only">Cargando...</span>
 			</div>
 		</div>
 		<!-- Spinner End -->
@@ -18,8 +18,8 @@
 		<div class="sidebar pe-4 pb-3">
 			<nav class="navbar bg-light navbar-light">
 				<a th:href="@{/}" class="navbar-brand mx-4 mb-3">
-<!-- 					<h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>META</h3> -->
-					<img alt="" th:src="@{/img/Logosinfondo.png}" width="150" height="150">
+				<!--<h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>SIGE</h3> -->
+					<img alt="" th:src="@{/img/Logosinfondo.png}" width="200" height="200">
 				</a>
 
 				<div class="d-flex align-items-center ms-4 mb-4">
@@ -58,7 +58,7 @@
 								sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS')">Grupos</a>
 							<a th:href="@{/usuarios/buscar/{nombre}(nombre = ${#authentication.name})}"
 								class="dropdown-item"
-								sec:authorize="hasRole('ROLE_CREDENCIALES_CAMBIAR_PASSWORD')">Cambiar password</a>
+								sec:authorize="hasRole('ROLE_CREDENCIALES_CAMBIAR_PASSWORD')">Cambiar contraseña</a>
 						</div>
 					</div>
 					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_FICHAS')">
@@ -239,7 +239,7 @@
 					</div>
 					
 					<div class="p-4">
-						<span> version: 0.5.9-SNAPSHOT</span>
+						<span> version: 2025.08.15-RELEASE</span>
 					</div>
 					
 <!-- 					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_DEPORTES')"> -->

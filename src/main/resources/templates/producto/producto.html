@@ -23,8 +23,8 @@
 						id="form-producto">
 						<div class="row">
 							<div class="col-md-4">
-								<h2 th:if="!${producto.id}">Cargar producto</h2>
-								<h2 th:if="${producto.id}">Modificar producto -
+								<h2 th:if="!${producto.id}">Cargar Producto</h2>
+								<h2 th:if="${producto.id}">Modificar Producto -
 									[[${producto.codigo}]]</h2>
 							</div>
 							<button type="submit"
@@ -165,7 +165,7 @@
 								</select>
 							</div>
 							<div class="mb-3 col-md-2">
-								<label for="stock-minimo" class="col-sm-12 col-form-label">Stock minimo</label>
+								<label for="stock-minimo" class="col-sm-12 col-form-label">Stock Mínimo</label>
 								<div class="col-sm-12">
 									<input type="text" class="form-control  formato-numero"
 										id="stock-minimo" th:field="*{stockMinimo}" autocomplete="off">
@@ -191,8 +191,8 @@
 											<button class="accordion-button collapsed" type="button"
 												data-bs-toggle="collapse"
 												data-bs-target="#flush-collapseOne" aria-expanded="false"
-												aria-controls="flush-collapseOne">Agregar codigos
-												alternativos</button>
+												aria-controls="flush-collapseOne">Agregar Códigos
+												Alternativos</button>
 										</h2>
 										<div id="flush-collapseOne"
 											class="accordion-collapse collapse"
@@ -202,8 +202,7 @@
 
 												<div class="mb-3 col-md-12">
 													<label for="codigoAlternativo"
-														class="col-sm-12 col-form-label">Codigo
-														alternativo</label>
+														class="col-sm-12 col-form-label">Código Alternativo</label>
 													<div class=" input-group col-sm-12">
 														<input type="text" class="form-control"
 															id="codigoAlternativo" autocomplete="off">
@@ -252,7 +251,7 @@
 											<div class="js-container-foto">
 												<div id="upload-drop" class="bw-upload ">
 													<i class="glyphicon  glyphicon-cloud-upload"></i> <span>Arrastre
-														la foto aqui o </span> <a class="bw-upload-form-file">seleccione
+														la foto aquí o </span> <a class="bw-upload-form-file">seleccione
 														<input id="upload-select" type="file"
 														accept=".jpg,.jpeg,.png" />
 													</a>

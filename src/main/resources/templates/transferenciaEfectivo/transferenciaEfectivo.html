@@ -23,10 +23,10 @@
 					<br>
 					<h6 class="mb-4 col-md-6" th:if="!${transferenciaEfectivo.id}"
 						sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
-						Cargar transferencia de efectivo</h6>
+						Cargar Transferencia Efectivo</h6>
 					<h6 class="mb-4 col-md-6" th:if="${transferenciaEfectivo.id}"
 						sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
-						Modificar Transferencia- [[${transferenciaEfectivo.id}]]</h6>
+						Modificar Transferencia Efectivo - [[${transferenciaEfectivo.id}]]</h6>
 					<form th:action="@{/transferenciaEfectivos}" th:method="POST" th:object="${transferenciaEfectivo}"
 						sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
 						<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
@@ -52,7 +52,7 @@
 							<div class="row">
 
 								<div class=" mb-3 col-md-2 ">
-									<label for="condicion" class="col-form-label">Condicion</label>
+									<label for="condicion" class="col-form-label">Condición</label>
 									<select id="condicion" class="form-control js-condicion" th:field="*{condicion}">
 										<option value="">seleccionar</option>
 										<option th:each="condicion : ${condiciones}" th:text="${condicion.nombre}"
@@ -60,7 +60,7 @@
 									</select>
 								</div>
 								<div class=" mb-3 col-md-4">
-									<label for="cuentaOrigen" class="col-form-label">Cuenta origen</label> <select
+									<label for="cuentaOrigen" class="col-form-label">Cuenta Origen</label> <select
 										id="cuentaOrigen" class="form-control js-cuentaOrigen"
 										th:field="*{cuentaOrigen}">
 										<option value="">seleccionar</option>
@@ -72,7 +72,7 @@
 									</select>
 								</div>
 								<div class=" mb-3 col-md-4">
-									<label for="cuentaDestino" class="col-form-label">Cuenta destino</label> <select
+									<label for="cuentaDestino" class="col-form-label">Cuenta Destino</label> <select
 										id="cuentaDestino" class="form-control js-cuentaDestino"
 										th:field="*{cuentaDestino}">
 										<option value="">seleccionar</option>
@@ -89,7 +89,7 @@
 										th:field="*{importe}" autocomplete="off">
 								</div>
 								<div class=" mb-3 col-md-3 ">
-									<label for="moneda" class="col-form-label">Moneda origen</label>
+									<label for="moneda" class="col-form-label">Moneda Origen</label>
 									<select id="moneda" class="form-control js-moneda" th:field="*{moneda}">
 										<option value="">seleccionar</option>
 										<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}"
@@ -97,7 +97,7 @@
 									</select>
 								</div>
 								<div class=" mb-3 col-md-3 ">
-									<label for="moneda-destino" class="col-form-label">Moneda destino</label>
+									<label for="moneda-destino" class="col-form-label">Moneda Destino</label>
 									<select id="moneda-destino" class="form-control js-moneda" th:field="*{monedaDestino}">
 										<option value="">seleccionar</option>
 										<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}"
