@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<tr th:each="item,indice : ${itemCobros}" data:total="${totalImporteMs}" class="tr-item-cobro-importe">
+	<td th:text="${item.condicion} ? ${item.condicion.nombre}: ''">Efectivo</td>
+	<td th:text="${item.moneda.nombre}">Guaranies</td>
+	<td class="importe-item" th:text="${item.valorCotizacion}">0</td>
+	<td class="importe-item" th:text="${item.importe}">8000</td>
+	<td class="importe-item" th:text="${item.importeCobrado}">8000</td>
+	<td th:text="${item.monedaVuelto.nombre}">guaranies</td>
+	<td class="importe-item" th:text="${item.cotizacionVuelto}">0</td>
+	<td class="importe-item" th:text="${item.vuelto}">0</td>
+	<td>
+		<button type="button" class="btn btn-danger btn-eliminar-linea-cv" data:indice="${indice.index}">
+			<i class="bi bi-trash"></i>
+		</button>
+	</td>
+</tr>
+<tr th:if="${#lists.isEmpty(itemCobros)}">
+	<td colspan="3">No existen importes agregados</td>
+</tr>
+</html>

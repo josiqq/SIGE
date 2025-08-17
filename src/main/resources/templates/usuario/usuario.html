@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Usuarios</title>
+	
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4 ">
+                <div class="row g-4 ">
+                    
+                    <div class="col-sm-12 col-xl-10">
+                        <div class="bg-light rounded h-100 p-4">
+                        
+                        	<div class="row" >
+                            	<a th:href="@{/usuarios/buscar?nombre=}" class="col-md-3 mb-6">
+                            		<button type="button" class="btn btn-buscar btn-success">Buscar
+                            	</button></a>
+                        	</div>
+                        	
+                        	<br>
+                            <h3 class="mb-4 col-md-6" th:if="!${usuario.id}"
+                            	 sec:authorize="hasRole('ROLE_CREDENCIALES_USUARIOS_GUARDAR')">Cargar Nuevo usuario</h3>
+                            <h3 class="mb-4 col-md-6" th:if="${usuario.id}" 
+                            	sec:authorize="hasRole('ROLE_CREDENCIALES_USUARIOS_GUARDAR')">Modificar usuario - [[${usuario.nombre}]]</h3>
+                            <form th:action="@{/usuarios}" th:method="POST" th:object="${usuario}" 
+                            		sec:authorize="hasRole('ROLE_CREDENCIALES_USUARIOS_GUARDAR')">
+                            	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}" >
+						    		<div th:each="erro: ${#fields.detailedErrors()}">
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+						    	</div>
+						    	<div class="alert alert-success" th:if="${!#strings.isEmpty(mensaje)}">
+						    		<span th:text="${mensaje}">Mensaje de exito</span>
+						    	</div>
+						    	
+						    	<div class="row">
+						    	<div class=" mb-2 col-sm-12 col-lg-12">
+                            		<input type="hidden" th:field="*{id}">
+	                                <div class=" mb-3">
+	                                    <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+	                                    <div class="col-sm-10">
+	                                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" autofocus="autofocus"
+	                                        autocomplete="off">
+	                                    </div>
+	                                </div>
+	                                	<div class="row">
+	                                	
+		                                 	<div class="mb-3 col-md-4">
+		                                    	<label for="password" class="col-form-label">Contraseña</label>
+		                                    	<div class="col-md-10">
+		                                      	 	<input type="password" class="form-control" id="password" th:field="*{password}" autocomplete="off">
+		                                   		 </div>
+		                                	</div>
+		                                	
+		                                	<div class=" mb-3 col-md-4">
+							                    <label for="instructor" class="col-form-label">Instructor</label>
+												<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
+													<option value="">seleccionar</option>
+													<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
+														th:value="${instructor.id}" ></option>
+												</select>
+						                 	</div>
+						                 	<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+				                                <label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
+												<select id="vendedor" class="form-control" th:field="*{vendedor}">
+													<option value="">seleccionar</option>
+													<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
+														th:value="${vendedor.id}" ></option>
+												</select>
+				                            </div>
+				                            <div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+				                                <label for="cajero" class="col-sm-12 col-form-label">Cajero</label>
+												<select id="cajero" class="form-control" th:field="*{cajero}">
+													<option value="">seleccionar</option>
+													<option th:each="cajero : ${cajeros}" th:text="${cajero.nombre}" 
+														th:value="${cajero.id}" ></option>
+												</select>
+				                            </div>
+		                                	<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+				                                <label for="cuenta" class="col-sm-12 col-form-label">Cuenta</label>
+												<select id="cuenta" class="form-control" th:field="*{cuenta}">
+													<option value="">seleccionar</option>
+													<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
+														th:value="${cuenta.id}" ></option>
+												</select>
+				                            </div>
+						    			</div>
+						    			<div class= "row">
+			                                <div class="row mb-3 col-md-2">
+			                                    
+			                                    <div class="col-sm-8">
+			                                        <div class="form-check">
+			                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{activo}">
+			                                            <label class="form-check-label" for="gridCheck1">
+			                                                Activo
+			                                            </label>
+			                                        </div>
+			                                    </div>
+		                                	</div>
+	                                	
+		                                	<div class="row mb-3 col-md-5">
+			                                  
+			                                    <div class="col-sm-10 col-md-4">
+			                                        <div class="form-check">
+			                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{supervisor}">
+			                                            <label class="form-check-label" for="gridCheck1">
+			                                                Supervisor
+			                                            </label>
+			                                        </div>
+			                                    </div>
+		                                	</div>
+						    			</div>
+		                                <button type="submit" class="btn btn-primary" 
+		                                	sec:authorize="hasRole('ROLE_CREDENCIALES_USUARIOS_GUARDAR')">Guardar</button>
+	                               		 <a th:href="@{/usuarios}"><button type="button" class="btn btn-primary">Nuevo</button></a>
+                               		 </div>
+                                
+                         
+	                        <div class="col-md-12">
+	                         	<div class="d-flex align-items-center justify-content-between mb-4">
+		                                <h6 class="mb-0">Lista de grupos</h6>
+		                            </div>
+		                           <div class="row">
+			                           <div class="d-flex align-items-center border-bottom  col-md-4" th:each="grupo:${grupos}">
+			                                <input class="form-check-input m-0" type="checkbox" th:value="${grupo.id}" th:field="*{grupos}">
+			                                <div class="w-100 ms-3">
+			                                    <div class="d-flex w-100 align-items-center justify-content-between ">
+			                                        <span th:text="${grupo.nombre}"></span>
+			                                    </div>
+			                                </div>
+			                            </div>
+		                            </div>
+			                        
+	                        </div>
+                        </div>
+                       
+                    </form>
+               </div>
+          </div>                                                         
+     </div>
+</div>
+</section>
+
+<th:block  layout:fragment="javascript-extra">
+
+</th:block>
+</html>

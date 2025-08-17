@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorate="~{padron}">
+<head>
+<title>Pago a proveedores</title>
+<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+<link th:href="@{/css/easy-autocomplete.themes.min.css}"
+	rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="row g-4 ">
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<form th:action="@{/pagos}" th:method="POST" th:object="${pago}">
+						<div class="row">
+							<div class="col-md-6">
+								<h2 th:if="!${pago.id}">Pago a proveedores</h2>
+								<h2 th:if="${pago.id}">Modificar pago - [[${pago.id}]]</h2>
+							</div>
+							<button type="submit"
+								class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PAGO_PROVEEDOR_GUARDAR')">
+								<i class="fa fa-save"></i>
+							</button>
+							<a th:href="@{/pagos/buscar}"
+								class="btn  btn-square btn-success m-2 col-md-1"> <i
+								class="fa fa-search btn-buscar"></i>
+							</a> <a th:href="@{/pagos}"
+								class="btn btn-square btn-primary m-2 col-md-1"> <i
+								class="fa fa-desktop btn-nuevo"></i>
+							</a> <a href="#"
+								class="btn btn-square btn-primary btn-abrir m-2 col-md-1"> <i
+								class="fa fa-plus "></i>
+							</a>
+						</div>
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<th:block th:replace="cuentaPorPagar/listaCuentaPorPagar"></th:block>
+						<input type="hidden" th:field="*{uuid}"> <input
+							type="hidden" th:field="*{id}">
+						<div class="row">
+							<div class="col-md-8">
+								<div class="row">
+									<div class="mb-3 col-md-6 col-xs-8">
+										<label for="proveedor" class="col-md-3 col-form-label">Proveedor</label>
+										<input type="hidden" id="idProveedor" th:field="*{proveedor}">
+										<div class="col-sm-12">
+											<input type="text" id="proveedor"
+												class="form-control js-proveedor col-sm-6"
+												autofocus="autofocus"
+												placeholder="Buscar por nombre o documento"
+												th:value=" ${pago.proveedor}?${pago.proveedor.nombre}:''">
+										</div>
+									</div>
+									<div class="mb-3 col-md-3">
+										<label for="fecha" class="col-md-3 col-form-label">Fecha</label>
+										<div class="col-sm-12">
+											<input type="text" id="fecha"
+												class="form-control date col-sm-6 js-fecha"
+												placeholder="dia/mes/año" th:field="*{fecha}"
+												autocomplete="off">
+										</div>
+									</div>
+									<div class=" mb-3 col-md-3 ">
+										<label for="moneda-pago" class="col-form-label">Moneda</label> 
+										<select id="moneda-pago" class="form-control js-moneda-pago"  th:field="*{moneda}">
+											<option value="">seleccionar</option>
+											<option th:each="moneda : ${monedas}"
+												th:text="${moneda.nombre}" th:value="${moneda.id}"
+												data:decimales="${moneda.decimales}">
+											</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-4 ">
+								<div class="col-md-12">
+									<input type="hidden" id="total" th:field="*{total}"> <span
+										class="negrita js-totales-estilo">Total:</span> <span
+										class="total-pago negrita js-totales-estilo money"
+										th:text="${pago.total}"></span>
+								</div>
+								<div class="col-md-12">
+									<input type="hidden" id="pagado" th:field="*{pagado}">
+									<span class="negrita js-totales-estilo">Pagado:</span> <span
+										class="pagado-pago negrita js-totales-estilo money"
+										th:text="${pago.pagado}"></span>
+								</div>
+								<div class="col-md-12">
+									<input type="hidden" id="saldo" th:field="*{saldo}"> <span
+										class="negrita js-totales-estilo">Saldo:</span> <span
+										class="saldo-pago negrita js-totales-estilo money"
+										th:text="${pago.saldo}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Compra</th>
+										<th scope="col">Factura</th>
+										<th scope="col">fecha</th>
+										<th scope="col">Importe</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody class="tbody-cuentas">
+									<th:block th:replace="pago/itemPago">
+										<tr>
+											<td colspan="4">Sin documentos agregados</td>
+										</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="row">
+							<div class=" mb-3 col-md-2 ">
+								<label for="condicion" class="col-form-label">Condicion</label>
+								<select id="condicion" class="form-control js-condicion">
+									<option value="">seleccionar</option>
+									<option th:each="condicion : ${condiciones}"
+										th:text="${condicion.nombre}" th:value="${condicion.id}"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-md-2 cont-moneda">
+								<label for="moneda" class="col-form-label">Moneda</label> <select
+									id="moneda" class="form-control js-moneda">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"
+										data:decimales="${moneda.decimales}">
+									</option>
+								</select>
+							</div>
+							<div class=" mb-3 col-md-4">
+								<label for="cuenta" class="col-form-label">Cuenta</label> <select
+									id="cuenta" class="form-control js-cuenta">
+									<option value="">seleccionar</option>
+									<option th:each="cuenta : ${cuentas}"
+										th:text="${cuenta.nombre}" th:value="${cuenta.id}"
+										data:moneda="${cuenta.moneda}?${cuenta.moneda.id}: 0"   ></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-3">
+								<label for="importe" class="col-md-3 col-form-label">Importe</label>
+								<div class="col-sm-12">
+									<input type="hidden"  id="importe-ms">
+									<input type="text" id="importe"
+										class="form-control formato-numero col-sm-6 js-pago-iporte-importe">
+								</div>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Condición</th>
+										<th scope="col">Moneda</th>
+										<th scope="col">Cuenta</th>
+										<th scope="col">Importe</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody class="js-item-pago-importe">
+									<th:block th:replace="pago/itemPagoImporte">
+										<tr>
+											<td colspan="4">No hay detalles de importe</td>
+										</tr>
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/proveedor/buscador.generico.proveedor.js}"></script>
+	<script th:src="@{/js/meta/pago/pago.js}"></script>
+	<script th:src="@{/js/meta/pago/item.pago.js}" type="module"></script>
+	<script th:src="@{/js/meta/pago/item.pago.importe.js}" type="module"></script>
+</th:block>
+</html>

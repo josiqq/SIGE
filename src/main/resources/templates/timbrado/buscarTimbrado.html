@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>buscar timbrado</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	 <div class="row">  		 
+                   <a th:href="@{/timbrados}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-nuevo btn-success">Nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de Timbrados</h6>
+            <form  th:object="${timbrado}">
+             	<div class="row">
+             		<div class=" row mb-3 col-md-4">
+                   		<label for="registro" class= "col-md-3 col-form-label">Registro</label> 
+                   		<div class="col-sm-12"> 
+                   			<input type="text" id="registro" class="form-control"  
+                   					autofocus="autofocus" placeholder="Registro de venta" autocomplete="off"
+                   					th:field="*{id}">
+                   		</div>
+                    </div>
+             	
+	             	<div class="mb-3 col-md-3">
+	                		<label for="fechaInicio" class= "col-md-6 col-form-label">Fecha Inicio</label> 
+	                		<div class="col-sm-12"> 
+								<input type="text" class="form-control date" id="fechaInicio" th:field="*{{fechaInicio}}"
+									placeholder="DD/MM/AAAA" autocomplete="off">
+							</div>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<label for="fechaFin" class= "col-md-6 col-form-label">Fecha Final</label> 
+	            		<div class="col-sm-12"> 
+							<input type="text" class="form-control date" id="fechaFin" th:field="*{{fechaFin}}"
+								placeholder="DD/MM/AAAA" autocomplete="off">
+						</div> 
+	            	</div>
+            		
+            	
+	            	<div class="mb-3 col-md-12">
+            			<button type="submit" class="btn btn-primary">Buscar</butto>
+	            	</div>
+             	</div>
+         	</form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">id</th>
+                         <th scope="col">Expedicion</th>
+                         <th scope="col">Fecha Inicio</th>
+                         <th scope="col">Fecha Final</th>
+                         <th scope="col">Número</th>
+                         <th scope="col">Numeración Ini</th>
+                         <th scope="col">Numeración Fin</th>
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="timbrado:${timbrados}" class="linea"  >
+                         <td scope="row" th:text="${timbrado.id}" ></td>
+                         <td th:text="${timbrado.expedicion}"></td>
+                         <td th:text="${#temporals.format(timbrado.fechaInicio,'dd/MM/yyyy')}"></td>
+                         <td th:text="${#temporals.format(timbrado.fechaFin,'dd/MM/yyyy')}"></td>
+                         <td th:text="${#numbers.formatInteger(timbrado.numero,3,'POINT')}" class="js-entero"></td>
+                         <td th:text="${#numbers.formatInteger(timbrado.numeracionIni,3,'POINT')}" class="js-entero"></td>
+                          <td th:text="${#numbers.formatInteger(timbrado.numeracionFin,3,'POINT')}" class="js-entero"></td>
+                         <td sec:authorize="hasRole('ROLE_VENTAS_TIMBRADOS_MODIFICAR')">
+								<a th:href="@{/timbrados/{id}(id=${timbrado.id})}"
+									 class="btn-editar">
+									<i class="fa fa-pencil"></i>
+								</a>
+							</td>
+                         <td sec:authorize="hasRole('ROLE_VENTAS_TIMBRADOS_ELIMINAR')">
+                         	<a data:url="@{/timbrados/{id}(id=${timbrado.id})}" class="btn-eliminar"
+                         		data:objeto="${timbrado.expedicion}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                         </td>
+                     </tr>
+                      
+                     <tr th:if="${#lists.isEmpty(timbrados)}">
+						<td colspan="10">No se encontraron Timbrados</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+		<script th:src="@{/js/meta/timbrado/timbrado.js}" ></script>
+</th:block>
+</html>

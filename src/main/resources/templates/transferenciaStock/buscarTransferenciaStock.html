@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Buscar Transferencia de Stock</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
+        	 <div class="row" > 
+				<div class="col-md-4">
+					<h6>Listado de Transferencia de Stock</h6>		
+				</div> 	
+				<div class="col-md-8">
+					<a th:href="@{/transferencia-stock}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm" 
+	                    sec:authorize="hasRole('ROLE_STOCK_TRANSFERENCIA_STOCK_MODIFICAR')"
+	                    >Nuevo</button>
+                   </a>
+				</div>	 
+              </div>
+              <br>
+             <div class="mensaje-emergente"></div>
+            <form  th:object="${transferenciaStockFilter}">
+             	<div class="row">
+             		<div class="mb-3 col-md-2">
+                   		<label for="registro" class="control-label mediano">Registro</label> 
+                   		<input type="text" id="registro" class="form-control form-control-sm  mediano"  
+                   					autofocus="autofocus" placeholder="Registro de venta" autocomplete="off"
+                   					th:field="*{id}">
+                    </div>
+             	
+	             	<div class="mb-3  col-md-2">
+	                		<label for="fechaDesde" class="control-label mediano">Fecha Desde</label> 
+							<input type="text" class="form-control form-control-sm mediano date " 
+							id="fechaDesde" th:field="*{{fechaDesde}}"
+							placeholder="DD/MM/AAAA" autocomplete="off">
+									
+	            	</div>
+	            	<div class="mb-3 col-md-2">
+	            		<label for="fechaHasta" class="control-label mediano">Fecha Hasta</label> 
+						<input type="text" class="form-control form-control-sm mediano date "
+						 id="fechaHasta" th:field="*{{fechaHasta}}" placeholder="DD/MM/AAAA" autocomplete="off">
+	            	</div>
+            	
+	            	<div class="mb-2 col-md-12">
+	            		<button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+	            	</div>
+            	 </div>
+         	</form>
+	</div>
+     <div class="table-responsive 	p-3 m-2">
+         <table class="table">
+             <thead>
+                 <tr>
+                 <th scope="col">ID</th>
+                 <th scope="col">Fecha</th>
+                 <th scope="col">Depósito Origen</th>
+                 <th scope="col">Depósito Destino</th>
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 <th scope="col"></th>
+                 </tr>
+             </thead>
+             <tbody>
+                 
+             <tr th:each="transferencia:${transferencias}" class="linea js-tabla-buscar-venta"  >
+                 <td scope="row" th:text="${transferencia.id}" ></td>
+                 <td th:text="${#temporals.format(transferencia.fecha,'dd/MM/yyyy')}"></td>
+                 <td th:text="${transferencia.depositoOrigen.nombre}"></td>
+                 <td th:text="${transferencia.depositoDestino.nombre}"></td>
+                 <td>
+					<button type="button" class="btn-det btn-ver-detalle" data:id="${transferencia.id}" 
+							data-bs-toggle="modal" data-bs-target="#itemTransferenciaStockModal">
+					  <i class="far fa-file-alt tooltip-test"  title="Ver detalles"></i>
+					</button>
+					
+				</td>
+                 <td >
+						<a th:href="@{/transferencia-stock/{id}(id=${transferencia.id})}"
+							 class="btn-editar" sec:authorize="hasRole('ROLE_STOCK_TRANSFERENCIA_STOCK_MODIFICAR')">
+							<i class="fa fa-pencil" title="Modificar"></i>
+						</a>
+					</td>
+                 <td >
+                 	<a data:url="@{/transferencia-stock/{id}(id=${transferencia.id})}" class="btn-eliminar"
+                 		data:objeto="${transferencia.id}" sec:authorize="hasRole('ROLE_STOCK_TRANSFERENCIA_STOCK_ELIMINAR')">
+                     	<i class="fa fa-trash" title="Eliminar"></i>
+                	</a>
+                 </td>
+             </tr>
+              
+             <tr th:if="${#lists.isEmpty(transferencias)}">
+				<td colspan="6">No se encontraron Transferencias de Stock</td>
+			</tr>
+         		
+             </tbody>
+         </table>
+     </div>
+	
+<th:block th:replace="transferenciaStock/modal.item.transferencia.stock"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/transferenciaStock/buscar.transferencia.stock.js}" type="module"></script>
+	<script th:src="@{/js/meta/transferenciaStock/buscar.transferencia.stock.item.js}" type="module"></script>
+</th:block>
+</html>

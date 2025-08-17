@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Listado de lotes</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-4 px-4 contenedor-reporte">
+		 <div class="bg-light rounded h-100 p-4 ">
+		 <h6 class="js-titulo-reporte">Listado de lotes</h6>
+		 <!-- aqui debe iniciar el form -->
+		 <form th:object="${loteFilter}" class="js-filtros">
+		 	<div class="row col-md-12 mb-2">
+		 		<div class=" row mb-3 col-sm-12 col-lg-5 col-md-5">
+				<label for="producto" class="col-sm-12 col-form-label mediano">Producto</label>
+				<input type="hidden" id="id-producto" class="js-ac-id-producto"  th:field="*{producto}">
+				<div class="col-sm-10">
+					<div class="meta-conten-group mediano">
+						<input type="text" id="producto-nombre" class="form-control js-producto-nc mediano js-ac-nombre-producto"  
+								autocomplete="off" placeholder="Código o descripción" 
+								th:value="${loteFilter.producto}? ${loteFilter.producto.nombre}: ''">
+						<a href="#" class="mediano btn btn-primary" title="Presiona ALT+P para buscar producto" data-bs-toggle="modal"
+									data-bs-target="#modal-buscar-producto" accesskey="p"> <i
+									class="bi bi-search"></i>
+						</a>
+					</div>
+					<div class="contenedor-lista-producto ">
+						
+						
+					</div>
+				</div>
+				
+			</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label col-md-12 mediano">Deposito</label>
+		 			<select class="form-control mediano"  th:field="*{deposito}">
+			 			<option value="">seleccionar</option>
+			 			<option th:each="deposito : ${depositos}"
+			 					th:text="${deposito.nombre}" th:value="${deposito.id}"></option>
+		 			</select>
+		 		</div>
+		 		
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Vencimiento desde</label>
+		 			<input type="text" class="form-control mediano date" placeholder="dd/mm/yyyy" th:field="*{fechaDesde}"
+		 				autocomplete="off">
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Vencimiento Hasta</label>
+		 			<input type="text" class="form-control mediano date" placeholder="dd/mm/yyyy" th:field="*{fechaHasta}" 
+		 				autocomplete="off">
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Nro de lote</label>
+		 			<input type="text" class="form-control mediano " placeholder="nro lote" th:field="*{nroLote}" 
+		 				autocomplete="off">
+		 		</div>
+		 	</div>
+		 	<div class="row col-md-12">
+		 		<div class="mb-3 col-md-3">
+	            		<button type="submit" class="btn btn-primary mediano">
+	            			<i class="fa-solid fa-magnifying-glass"></i>
+	            			Buscar
+	            		</button>
+	            	</div>
+	            	
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-success js-excel-exportar mediano">
+	            			<i class="fa-solid fa-file-excel"></i>
+	            			Excel
+	            		</button>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary js-imprimir mediano">
+	            			<i class="fa-solid fa-print"></i>
+	            			Imprimir
+	            		</button>
+	            	</div>
+		 	</div>
+		 	</form>
+		 	<!-- final del formulario -->
+		 	<div class="table-responsive js-tabla">
+		 		<table class="table mediano">
+		 			<thead>
+		 				<tr>
+		 					<th>Código</th>
+		 					<th>Producto</th>
+		 					<th>Vencimiento</th>
+		 					<th>Deposito</th>
+		 					<th>Nro lote</th>
+		 					<th class="lado-derecho">Cantidad</th>
+		 				</tr>
+		 			</thead>
+		 			<tbody>
+		 				<tr th:each="lote : ${lotes}" class="js-listado-lotes">
+		 					<td th:text="${lote.producto.codigo}"></td>
+		 					<td th:text="${lote.producto.nombre}"></td>
+		 					<td th:text="${#temporals.format(lote.vencimiento,'dd/MM/yyyy')}"></td>
+		 					<td th:text="${lote.deposito.nombre}"></td>
+		 					<td th:text="${lote.nroLote}"></td>
+		 					<td class="lado-derecho lote-cantidad" th:text="${lote.cantidad}"></td>
+		 				</tr>
+		 				<tr th:if="${!#lists.isEmpty(lotes)}">
+							<td colspan="6" class="lado-derecho " >
+								<strong th:text="${total}" class="js-lote-total"></strong>
+							</td>
+						</tr>
+						
+		 				<tr th:if="${#lists.isEmpty(lotes)}">
+							<td colspan="9">Ne se encontraron movimientos</td>
+						</tr>
+		 			</tbody>
+		 		</table>
+		 	</div>
+		 </div>
+	</div>
+	<th:block th:replace="producto/modal.buscar.producto"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/reporte/venta/jspdf.debug.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/html2canvas.min.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/reporte/exportacion.impresion.js}"></script>
+	<script th:src="@{/js/meta/producto/modal.buscar.producto.js}" type="module"></script>
+	<script th:src="@{/js/meta/lote/listado.lote.js?ver=0.0.1}" type="module"></script>
+</th:block>
+</html>

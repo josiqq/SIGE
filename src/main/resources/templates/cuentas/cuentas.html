@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{padron}">
+<head>
+<title>Cuentas</title>
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    
+                    <div class="col-md-12">
+                        <div class="bg-light rounded h-100 p-4">
+                        	<div class="row">
+                            	<a th:href="@{/cuentas/buscar}" class="col-md-3 mb-6">
+                            		<button type="button" class="btn btn-buscar btn-success">Buscar
+                            	</button></a>
+                            	<a th:href="@{/movimientoCajas}" class="col-md-6 mb-6" 
+                            		sec:authorize="hasRole('ROLE_INICIO_MOVIMIENTO_CAJA')">
+                            		<button type="button" class="btn btn-movimiento-caja">Movimientos de cajas
+                            	</button></a>
+                        	</div>
+                        	<br>
+                            <h6 class="mb-4 col-md-6" th:if="!${cuenta.id}"
+                            	 sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">Cargar Nueva cuenta</h6>
+                            <h6 class="mb-4 col-md-6" th:if="${cuenta.id}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">Modificar la cuenta - [[${cuenta.nombre}]]</h6>
+                            <form th:action="@{/cuentas}" th:method="POST" th:object="${cuenta}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">
+                            	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}" >
+						    		<div th:each="erro: ${#fields.detailedErrors()}">
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+						    	</div>
+						    	<div class="alert alert-success" th:if="${!#strings.isEmpty(mensaje)}">
+						    		<span th:text="${mensaje}">Mensaje de exito</span>
+						    	</div>
+						    	<div class="row">
+                            	<input type="hidden" th:field="*{id}">
+                                <div class="row mb-3 col-md-4">
+                                    <label for="nombre" class="col-sm-12 col-form-label">Nombre</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" autocomplete="off">
+                                    </div>
+                                </div>
+                               
+                               <div class="row mb-3 col-md-4">
+                                    <label for="saldo" class="col-sm-12 col-form-label">Saldo</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control js-entero-plugin" 
+                                        	id="saldo" th:field="*{saldo}" autocomplete="off" >
+                                    </div>
+                                </div>
+                                 <div class="row mb-3 col-md-6">
+                                    <label for="identificador" class="col-sm-12 col-form-label">Identificador</label>
+                                    <div class="row col-sm-12">
+                                    	<div class="col-md-11">
+                                        	<input type="text" class="form-control" id="identificador" 
+                                        		th:field="*{identificador}" autocomplete="off">
+                                    	</div>
+                                        <div class="col-md-1">
+                                        	<a href="#" class="btn btn-square btn-primary add-identificador
+                                        						  col-md-1 col-xs-2">
+                								<i class="fa fa-plus "></i>
+               								</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" mb-3 col-md-4">
+	                                <label for="timbrado" class="col-form-label">Timbrado</label>
+									<select id="timbrado" class="form-control" th:field="*{timbrado}" >
+										<option value="">seleccionar</option>
+										<option th:each="timbrado : ${timbrados}" th:text="${timbrado.expedicion}" 
+											th:value="${timbrado.id}"></option>
+									</select>
+                            	</div>
+                                <div class="row mb-3">
+                                    
+                                    <div class="col-sm-10 col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{activo}">
+                                            <label class="form-check-label" for="gridCheck1">
+                                                Activo
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10 col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{cajaCobranza}">
+                                            <label class="form-check-label" for="gridCheck1">
+                                                Caja cobranza
+                                            </label>
+                                        </div>
+                                    </div>
+                                     <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+		                                <label for="moneda" class="col-sm-12 col-form-label">Moneda</label>
+										<select id="moneda" class="form-control" th:field="*{moneda}">
+											<option value="">seleccionar</option>
+											<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}" 
+												th:value="${moneda.id}" ></option>
+										</select>
+		                            </div>
+                                </div>
+                                <div class="row">
+                                	<div class="col-md-3">
+                                		<button type="submit" class="btn btn-primary">Guardar</button>
+                                	</div>
+                                	<div class="col-md-3">
+                                		<a th:href="@{/cuentas}"><button type="button" class="btn btn-primary">Nuevo</button></a>
+                                	</div>
+                                </div>
+						    	</div>
+                            </form>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/cuenta/cuenta.js}"></script>
+	
+</th:block>
+</html>

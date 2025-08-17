@@ -1,0 +1,20 @@
+export function teclado(){
+	$('#fecha').keydown(function(e){
+		if(e.keyCode===13){
+			e.preventDefault();
+			$('#deposito-origen').focus();
+		}
+	})
+	$('#deposito-origen').keydown(function(e){
+		if(e.keyCode===13){
+			e.preventDefault();
+			$('#deposito-destino').focus();
+		}
+	})
+	$('#deposito-destino').keydown(function(e){
+		if(e.keyCode===13){
+			e.preventDefault();
+			$('#observacion').focus();
+		}
+	})
+}

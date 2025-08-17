@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Equipos</title>
+	<link th:href="@{/css/meta/upload/css/uikit.min.css}" rel="stylesheet">
+ 	<link th:href="@{/css/meta/upload/upload.min.css}" rel="stylesheet">
+    <link th:href="@{/css/meta/upload/componente.css}" rel="stylesheet"> 
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-4 px-4 ">
+          <div class="col-sm-12 col-xl-12 col-md-12">
+		<div class="bg-light rounded h-100 p-4">
+			<div class="row" >
+            	<a th:href="@{/equipos/buscar}" class="col-md-3 mb-6">
+            		<button type="button" class="btn btn-success">Buscar
+            	</button></a>
+        	</div>
+
+        	<h3 class="mb-4 col-md-12" th:if="!${equipo.id}"
+        		sec:authorize="hasRole('ROLE_DEPORTES_EQUIPOS_GUARDAR')" >Cargar Nuevo Equipo</h3>
+            <h3 class="mb-4 col-md-12" th:if="${equipo.id}" 
+            	sec:authorize="hasRole('ROLE_DEPORTES_EQUIPOS_GUARDAR')" >Modificar equipo - [[${equipo.nombre}]]</h3>
+
+
+             <form th:action="@{/equipos}" th:method="POST" th:object="${equipo}" 
+            		sec:authorize="hasRole('ROLE_DEPORTES_EQUIPOS_GUARDAR')">
+
+					<div class="row">
+	            		<div class="col-sm-8 col-md-8 col-xl-8">
+	            			<div class="row">
+		            			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+		                      		<div th:each="erro: ${#fields.detailedErrors()}">
+		                      			<i class="fa fa-exclamation-circle me-2"></i>
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+		                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		                   		</div>
+		                   		<div class="alert alert-primary alert-dismissible fade show"
+		                   			 role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+		                       		<i class="fa fa-exclamation-circle me-2"></i>
+		                   			<span th:text="${mensaje}">Mensaje de exito</span>
+		                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		                   		</div>
+		                   		<input type="hidden" th:field="*{id}">
+		                   		<div class=" mb-3 col-sm-12 col-xl-12 col-md-12">
+		                            <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+		                            <div class="col-sm-10">
+		                                <input type="text" class="form-control" id="nombre" th:field="*{nombre}" autofocus="autofocus"
+		                                autocomplete="off">
+		                            </div>
+		                        </div>
+		                        <div class=" mb-3 col-sm-12 col-xl-12 col-md-12">
+		                            <label for="nombreCorto" class="col-sm-6 col-form-label">Nombre corto</label>
+		                            <div class="col-sm-6">
+		                                <input type="text" class="form-control" id="nombreCorto" 
+		                                	th:field="*{nombreCorto}" autofocus="autofocus"
+		                                autocomplete="off">
+		                            </div>
+		                        </div>
+		                        <div class=" col-xs-4 col-sm-3 col-md-3 col-xl-6 mb-3">
+		   				 			<button type="submit" class="btn btn-primary js-guardar-cliente">Guardar</button>
+		                		</div>
+		                		<div class=" col-xs-4 col-sm-3 col-md-3 mb-3">
+		    						<a th:href="@{/equipos}"><button type="button" class="btn btn-primary ">Nuevo</button></a>
+		                		</div>		
+	            			</div>
+	            		</div>
+	            		<div class="col-sm-4 col-md-4 col-xl-4">
+	            			<input type="hidden" th:field="*{foto}" class="in-foto">
+	                        <input type="hidden" th:field="*{contentType}" class="in-contentType">
+	                        <input type="hidden" th:field="*{nuevaFoto}" class="in-nueva">
+	                        <div class="col-sm-12 col-md-12 col-xl-12 ">
+	                        	<div class="form-group">
+									<label class="control-label">Foto</label>
+									<div class="js-container-foto">
+										<div id="upload-drop" class="bw-upload ">
+											<i class="glyphicon  glyphicon-cloud-upload"></i>
+											<span>Arrastre la foto aqui o </span>
+											<a class="bw-upload-form-file">seleccione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>
+										</div>
+										
+									</div>
+								</div>		
+	                        </div>
+	            		</div>
+					</div>
+            </form>
+
+		</div>
+	</div>    
+	</div>
+	<th:block th:replace="hbs/foto"></th:block>
+</section>
+
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/js/uikit.min.js}"></script>
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/meta/upload/componente.js}" type="module"></script>
+	<script th:src="@{/js/meta/cliente/cliente.js}"></script>
+</th:block>
+</html>

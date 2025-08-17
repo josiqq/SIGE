@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+		xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Movimientos de cuentas</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row">  		 
+                   <a th:href="@{/}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-success">inicio</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4 js-titulo-reporte " >Moviminetos de cuantas</h6>
+         	<div class="row col-md-12  " >
+         		<div class="mb-4 col-md-3">
+         			<h6 class="mb-4 col-12  js-titulo-reporte">Crédito anterior: <span class="credito-anterior">[[${creditoAnterior}]]</span></h6>
+	             	<h6 class="mb-4 col-12  js-titulo-reporte">Total crédito: <span class="total-credito">[[${totalCredito}]]</span></h6>
+         		</div>
+         		<div class="mb-4 col-md-3"> 
+	             	<h6 class="mb-4 col-12  js-titulo-reporte ">Débito anterior: <span class="debito-anterior">[[${debitoAnterior}]]</span></h6>
+	             	<h6 class="mb-4 col-12  js-titulo-reporte">Total débito: <span class="total-debito">[[${totalDebito}]]</span></h6>
+	            </div>
+	             <h6 class="mb-4 col-md-3 js-titulo-reporte ">Saldo: <span class="total-saldo">[[${saldo}]]</span></h6>
+         	</div>
+             <form  th:object="${movimientoCajaFilter}"  class="js-filtros">
+             <div class="row">
+             	<div class="mb-3 col-md-3">
+                		<label for="fechaDesde">Fecha desde</label> 
+						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaDesde}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" 
+								data-provide="datepicker" data-date-format="dd/mm/yyyy"
+								 data-date-orientation="bottom" data-date-language="es"
+								  data-date-today-highlight="true" data-date-autoclose="true" >
+            	</div>
+            	<div class="mb-3 col-md-3">
+	            		<label for="fechaHasta">fecha hasta</label> 
+						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaHasta}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" 
+								data-provide="datepicker" data-date-format="dd/mm/yyyy"
+								 data-date-orientation="bottom" data-date-language="es"
+								  data-date-today-highlight="true" data-date-autoclose="true" >
+            	</div>
+            	<div class="row mb-3 col-md-3">
+                                    <label for="cuenta">Cuenta</label>
+									<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
+										<option value="">seleccionar</option>
+										<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
+											th:value="${cuenta.id}" ></option>
+									</select>
+                                </div>
+            
+             </div>
+             <div class="row col-md-12">
+		 		<div class="mb-3 col-md-3">
+	            		<button type="submit" class="btn btn-primary mediano">
+	            			<i class="fa-solid fa-magnifying-glass"></i>
+	            			Buscar
+	            		</button>
+	            	</div>
+	            	
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-success js-excel-exportar mediano">
+	            			<i class="fa-solid fa-file-excel"></i>
+	            			Excel
+	            		</button>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary js-imprimir mediano">
+	            			<i class="fa-solid fa-print"></i>
+	            			Imprimir
+	            		</button>
+	            	</div>
+		 	</div>
+             </form>
+             
+             
+             <div class="table-responsive js-tabla">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                            <th scope="col">id</th>
+                         <th scope="col">Cuenta</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col">Obseración</th>
+                         <th scope="col">Crédito</th>
+                         <th scope="col">Débito</th>
+            
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr class="js-lista-movimiento-cuenta" th:each="movimientoCaja:${movimientoCajas}">
+                         <th th:text="${movimientoCaja.id}"></th>
+               			 <th th:text="${movimientoCaja.cuenta.nombre}"></th>
+               			 <td th:text="${#temporals.format(movimientoCaja.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${movimientoCaja.observacion}"></td>
+                         <td class="js-credito" th:text="${movimientoCaja.credito}"></td>
+                         <td class="js-debito"  th:text="${movimientoCaja.debito}"></td>
+                     </tr>
+                 
+                     </tbody>	
+                 </table>
+             </div>
+         </div>
+     </div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+<script th:src="@{/js/meta/reporte/venta/jspdf.debug.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/html2canvas.min.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/reporte/exportacion.impresion.js}"></script>
+	<script th:src="@{/js/meta/movimientoCuenta/movimiento.cuenta.js}"></script>
+</th:block>
+</html>

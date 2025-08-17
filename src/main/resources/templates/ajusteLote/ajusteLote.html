@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Ajuste de lotes</title>
+</head>
+<section layout:fragment="contenido">
+	
+	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
+		<form th:method="POST" th:action="@{/ajuste-lote}" th:object="${ajusteLote}">	
+		<div class="row">
+			<div class="mensaje-emergente"></div>
+			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+				<div th:each="erro: ${#fields.detailedErrors()}">
+					<i class="fa fa-exclamation-circle me-2"></i> 
+					<span th:text="${erro.message}">Mensaje de error</span>
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+			</div>
+			<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+				<i class="fa fa-exclamation-circle me-2"></i> 
+				<span th:text="${mensaje}">Mensaje de exito</span>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+			</div>
+			<div class=" row col-md-10 mb-2">
+					<input type="hidden" id="uuid" th:field="*{uuid}">
+					<input type="hidden" id="id" th:field="*{id}">
+					<input type="hidden" id = "usuario" th:field="*{usuario}">
+					<input type="hidden" id="registro" th:value="${registro}">
+					<div class="row col-md-12 mb-2">
+						<div class="col-md-3">
+					        <h6 th:if="!${ajusteLote.id}">Ajuste de lotes</h6>
+					        <h6 th:if="${ajusteLote.id}">Modificar ajuste de lote - [[${ajusteLote.id}]] </h6>
+					    </div>
+						<div class="col-md-6">
+							<button class="btn btn-primary btn-sm btn-guardar" sec:authorize="hasRole('ROLE_STOCK_AJUSTE_LOTE_GUARDAR')"
+									type="submit" accesskey="g" title="Presiona ALT + G ">Guardar</button>
+							<a th:href="@{/ajuste-lote/buscar}">
+								<button class="btn btn-success btn-sm " 
+										type="button" >Buscar</button>	
+							</a>
+							
+							<a th:href="@{/ajuste-lote}">
+								<button class="btn btn-secondary btn-sm" type="button">Nuevo</button>	
+							</a>
+							
+						</div>
+					</div>
+					
+					<div class="col-md-3  mb-3">
+						<label class="control-label mediano">Fecha</label>
+						<input type="text" class="form-control mediano date" autocomplete="off" 
+							id="fecha" th:field="*{fecha}" placeholder="dia/mes/año">
+					</div>
+					<div class="col-md-3">
+						<label class="control-label mediano">Deposito</label>
+						<select class="form-select form-select-sm mb-3" id="deposito" th:field="*{deposito}">
+							<option value="">Seleccionar</option>
+							<option th:each="deposito: ${depositos}" th:value="${deposito.id}" th:text="${deposito.nombre}">
+							</option>
+						</select>
+					</div>
+					
+					<div class="mb-3">
+                   		<label for="observacion" class="mediano">Observación</label>
+                   		<textarea type="text" id="observacion" class="form-control mediano" th:field="*{observacion}"></textarea>
+                   	</div>
+					
+			</div>
+			
+			
+		</div>
+		</form>
+		<div class="col-md-12 row border border-4">
+			<div class=" row mb-3 col-sm-12 col-lg-5 col-md-5">
+				<label for="producto" class="col-sm-12 col-form-label mediano">Producto</label>
+				<input type="hidden" id="id-producto" class="js-ac-id-producto" >
+				<div class="col-sm-10">
+					<div class="meta-conten-group mediano">
+						<input type="text" id="producto-nombre" class="form-control js-producto-nc mediano js-ac-nombre-producto"  autocomplete="off"
+														placeholder="Código o descripción">
+						<a href="#" class="mediano btn btn-primary" title="Presiona ALT+P para buscar producto" data-bs-toggle="modal"
+									data-bs-target="#modal-buscar-producto" accesskey="p"> <i
+									class="bi bi-search"></i>
+						</a>
+					</div>
+					<div class="contenedor-lista-producto ">
+						
+						
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-md-2 mediano mb-3">
+				<label class="col-form-label">Numero de lote</label>	
+				<input type="text" id="numero-lote" class="form-control  mediano  js-input-pos-ac"  
+				       autocomplete="off" >
+			</div>
+			<div class="col-md-2 mediano mb-3">
+				<label class="col-form-label">Vencimiento</label>	
+				<input type="text" id="vencimiento" class="form-control  mediano  date "  
+				       autocomplete="off" >
+			</div>
+			<div class="col-md-1 mediano mb-3">
+				<label class="col-form-label">Can act</label>	
+				<input type="text" id="cantidad-actual" class="form-control  mediano  "  
+				       autocomplete="off" readonly="readonly" >
+			</div>
+			<div class="col-md-2 mediano mb-3">
+				<label class="col-form-label">Cantidad</label>
+				<div class="col-sm-10">
+					<div class="meta-conten-group mediano">
+						<input type="text" id="cantidad-lote" class="form-control  mediano formato-numero "  
+						       autocomplete="off" >
+						<a href="#" class="mediano btn btn-primary btn-adiciona-item" title="adicionar item"> 
+							<i class="bi bi-plus-circle"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="table-responsive p-3 m-2">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>codigo</th>
+					<th>Producto</th>
+					<th>Numero de lote</th>
+					<th>Vencimiento</th>
+					<th>Cantidad</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody class="item-ajuste-lote">
+				<th:block th:replace="ajusteLote/itemAjusteLote"></th:block>
+			</tbody>
+		</table>
+	</div>
+	<th:block th:replace="producto/modal.buscar.producto"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/producto/modal.buscar.producto.js?ver=0.0.1}" type="module"></script>
+	<script th:src="@{/js/meta/ajusteLote/ajuste.lote.js?ver=0.0.1}" type="module"></script>
+	<script th:src="@{/js/meta/ajusteLote/item.ajuste.lote.js?ver=0.0.1}" type="module"></script>
+</th:block>
+</html>

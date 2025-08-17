@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Presupuesto de Ventas</title>
+</head>
+<section layout:fragment="contenido">
+	
+	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
+		<form th:method="POST" th:action="@{/presupuestoVentas}" th:object="${presupuestoVenta}">	
+		<div class="row">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+				<div th:each="erro: ${#fields.detailedErrors()}">
+					<i class="fa fa-exclamation-circle me-2"></i> 
+					<span th:text="${erro.message}">Mensaje de error</span>
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+			</div>
+			<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+				<i class="fa fa-exclamation-circle me-2"></i> 
+				<span th:text="${mensaje}">Mensaje de exito</span>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+			</div>
+			<div class=" row col-md-10 mb-2">
+					<input type="hidden" id="uuid" th:field="*{uuid}">
+					<input type="hidden" id="id" th:field="*{id}">
+					<input type="hidden" id="registro" th:value="${registro}">
+					<div class="row col-md-12 mb-2">
+						<div class="col-md-3">
+					        <h6>Presupuesto de ventas</h6>
+					    </div>
+						<div class="col-md-6">
+							<button class="btn btn-primary btn-sm btn-guardar" type="submit" 
+							sec:authorize="hasRole('ROLE_VENTAS_PRESUPUESTO_VENTAS_GUARDAR')">Guardar</button>
+							<a th:href="@{/presupuestoVentas/buscar}">
+								<button class="btn btn-success btn-sm" type="button">Buscar</button>	
+							</a>
+							
+							<a th:href="@{/presupuestoVentas}">
+								<button class="btn btn-secondary btn-sm" type="button">Nuevo</button>	
+							</a>
+							
+						</div>
+					</div>
+					<div class="col-md-4">
+						<label class="control-label mediano">Cliente</label>
+						<div class="input-group col-md-12">
+						  <input type="hidden" id="id-cliente" th:field="*{cliente}">
+						  <input type="text" id="cliente-nombre" class="form-control mediano form-control-sm" placeholder="Cliente"
+						  	th:value="${presupuestoVenta.cliente}?${presupuestoVenta.cliente.nombre}: ''">
+						  <div class="input-group-append">
+						    <button class="btn btn-primary btn-recupera-cliente mediano"  type="button"  data-bs-toggle="modal" 
+								data-bs-target="#modal-buscar-cliente" accesskey="c" title="Presiona ALT+C para buscar cliente">
+						      <i class="bi bi-search"></i> 
+						    </button>
+						  </div>
+						</div>
+					</div>
+					<div class="col-md-3  mb-3">
+						<label class="control-label mediano">Fecha</label>
+						<input type="text" class="form-control mediano date" autocomplete="off" id="fecha" th:field="*{fecha}">
+					</div>
+					<div class="col-md-3">
+						<label class="control-label mediano">Depósito</label>
+						<select class="form-select form-select-sm mb-3" id="deposito" th:field="*{deposito}">
+							<option value="">Seleccionar</option>
+							<option th:each="deposito: ${depositos}" th:value="${deposito.id}" th:text="${deposito.nombre}">
+							</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<label class="control-label mediano">Moneda</label>
+						<select class="form-select form-select-sm mb-3 solo-lectura" id="moneda" th:field="*{moneda}">
+							<option value="">Seleccionar</option>
+							<option th:each="moneda : ${monedas}" th:value="${moneda.id}" th:text="${moneda.nombre}"></option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<label class="control-label mediano">Vendedor</label>
+						<select class="form-select form-select-sm mb-3 solo-lectura" id="vendedor" th:field="*{vendedor}">
+							<option value="">Seleccionar</option>
+							<option th:each="vendedor : ${vendedores}" 
+							th:value="${vendedor.id}" th:text="${vendedor.nombre}"></option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<label class="control-label mediano">Precio</label>
+						<select class="form-select form-select-sm mb-3" id="precio" th:field="*{precio}">
+							<option value="">Seleccionar</option>
+							<option th:each="precio : ${precios}" th:value="${precio.id}" 
+								th:text="${precio.nombre}" data:moneda = "${precio.moneda}?${precio.moneda.id}:0"></option>
+						</select>
+					</div>
+				
+			</div>
+			
+			<div class="col-md-2 mb-2">
+				<div class="col-sm-12 mb-2">
+			        <div class="form-group">
+			            <label for="usuario" class="mediano">Usuario</label>
+						<input type="hidden" id="usuario" th:field="*{usuario}">
+			            <input type="text" class="form-control mediano" id="usuario" 
+							 th:value="${presupuestoVenta.usuario.nombre}" placeholder="usuario" readonly>
+			        </div>
+			    </div>
+				<div class="col-sm-12 mb-2">
+			        <div class="form-group">
+			            <label for="total" class="mediano">Total</label>
+			            <input type="text" class="form-control mediano" id="total" 
+							th:field="*{total}" placeholder="Total" readonly>
+			        </div>
+			    </div>
+				
+			</div>
+		</div>
+		</form>
+		<div class="col-md-12 row border border-4">
+			<div class=" row mb-3 col-sm-12 col-lg-5 col-md-5">
+				<label for="producto" class="col-sm-12 col-form-label mediano">Producto</label>
+				<input type="hidden" id="id-producto" >
+				<div class="col-sm-10">
+					<div class="meta-conten-group mediano">
+						<input type="text" id="producto-nombre" class="form-control js-producto-nc mediano" autocomplete="off"
+														placeholder="Código o descripción">
+						<a href="#" class="mediano btn btn-primary" title="Presiona ALT+P para buscar producto" data-bs-toggle="modal"
+									data-bs-target="#modal-buscar-producto" accesskey="p"> <i
+									class="bi bi-search"></i>
+						</a>
+					</div>
+					<div class="contenedor-lista-producto ">
+						
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 mediano mb-3">
+				<label class="col-form-label">Cantidad</label>
+				<input type="text" class="form-control mediano formato-numero" autocomplete="off" id="cantidad-det-nc">
+			</div>
+			<div class="col-md-3 mediano mb-3">
+				<label class="col-form-label">Precio</label>
+				<div class="col-sm-10">
+					<div class="meta-conten-group mediano">
+						<input type="text" id="precio-det-nc" class="form-control  mediano formato-numero" 
+						       autocomplete="off" >
+						<a href="#" class="mediano btn btn-primary btn-adiciona-item-nc" title="adicionar item"> 
+							<i class="bi bi-plus-circle"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="table-responsive p-3 m-2">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Código</th>
+					<th>Producto</th>
+					<th>Cantidad</th>
+					<th>Precio</th>
+					<th>SubTotal</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody class="item-presupuesto-venta">
+				<th:block th:replace="presupuestoVenta/itemPresupuestoVenta"></th:block>
+			</tbody>
+		</table>
+	</div>
+	<th:block th:replace="clientes/modal.buscar.cliente"></th:block>
+	<th:block th:replace="producto/modal.buscar.producto"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/cliente/modal.buscar.cliente.js?ver=0.0.1}" type="module"></script>
+	<script th:src="@{/js/meta/producto/modal.buscar.producto.js?ver=0.0.1}" type="module"></script>
+	<script th:src="@{/js/meta/presupuestoVenta/presupuesto.venta.js?ver=0.0.1}" type="module"></script>
+	<script th:src="@{/js/meta/presupuestoVenta/item.presupuesto.venta.js?ver=0.0.1}" type="module"></script>
+</th:block>
+</html>

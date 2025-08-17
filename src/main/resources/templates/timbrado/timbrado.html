@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+	<title>Timbrados</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-4 px-4">
+         <div class="row g-4 ">
+             <div class="col-sm-12 col-xl-12">
+                 <div class="bg-light rounded h-100 p-4">
+                 	<form th:action="@{/timbrados}" th:method="POST" th:object="${timbrado}">
+                 		<div class="row">
+                 			<div class="col-md-6">
+                 				<h2 th:if="!${timbrado.id}">Timbrados</h2>
+                 				<h2 th:if="${timbrado.id}">Modificar Timbrado - [[${timbrado.id}]]</h2>
+                 			</div>
+                 			<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+		                			sec:authorize="hasRole('ROLE_VENTAS_TIMBRADOS_GUARDAR')"><i class="fa fa-save"></i>
+                			</button>
+	                		<a th:href="@{/timbrados/buscar}" class="btn  btn-square btn-success m-2 col-md-1">
+	                			<i class="fa fa-search btn-buscar"></i>
+                			</a>
+	                		<a th:href="@{/timbrados}" class="btn btn-square btn-primary m-2 col-md-1">
+	                			<i class="fa fa-desktop btn-nuevo"></i>
+                			</a>
+                			
+                 		</div>
+                 		<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                      		<div th:each="erro: ${#fields.detailedErrors()}">
+                      			<i class="fa fa-exclamation-circle me-2"></i>
+				    			<span th:text="${erro.message}">Mensaje de error</span>
+				    		</div>
+                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+			    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                       		<i class="fa fa-exclamation-circle me-2"></i>
+                       			<span th:text="${mensaje}">Mensaje de exito</span>
+                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+                   		 <input type="hidden" th:field="*{id}">
+                   		 <div class="row">
+	                   		 <div class="col-md-8">
+		                 		<div class="row">
+		                         	<div class="mb-3 col-md-6 col-xs-8">
+		                           		<label for="expedicion" class= "col-md-3 col-form-label">Expedición</label>
+		                           		<div class="col-sm-12"> 
+		                           			<input type="text" id="expedicion" class="form-control col-sm-6" autocomplete="off" 
+		                           					autofocus="autofocus" placeholder="001-001" th:field="*{expedicion}">
+		                            	</div>
+		                            </div>
+		                          	<div class="mb-3 col-md-3">
+		                           		<label for="fechaInicio" class= "col-md-12 col-form-label">Fecha inicio</label>
+		                           		<div class="col-sm-12"> 
+		                           			<input type="text" id="fechaInicio" class="form-control date col-sm-6"  
+		                           					 placeholder="dia/mes/año" th:field="*{fechaInicio}" autocomplete="off">
+		                            	</div>
+		                            </div>
+		                            <div class="mb-3 col-md-3">
+		                           		<label for="fechaFin" class= "col-md-12 col-form-label">Fecha fin</label>
+		                           		<div class="col-sm-12"> 
+		                           			<input type="text" id="fechaFin" class="form-control date col-sm-6"  
+		                           					 placeholder="dia/mes/año" th:field="*{fechaFin}" autocomplete="off">
+		                            	</div>
+		                            </div>
+		                 		</div>
+	                   		 </div>
+	                   		 <div class="col-md-4 ">
+	                   		 	<div class="col-md-12">
+	                   		 		<div class="col-sm-8 col-md-8 col-xl-10">
+		                                <div class="form-check">
+		                                    <input class="form-check-input" type="checkbox" id="gridCheck1"
+		                                    		 th:field="*{activo}">
+		                                    <label class="form-check-label" for="gridCheck1">
+		                                        Activo
+		                                    </label>
+		                                </div>
+		                            </div>
+	                   		 	</div>
+	                   		 	<div class="mb-3 col-md-12">
+	                   		 		<label for="numero" class= "col-md-12 col-form-label">Número de Timbrado</label>
+	                           		<div class="col-sm-12"> 
+	                           			<input type="text" id="numero" class="form-control col-sm-6 money"  
+	                           					autofocus="autofocus" th:field="*{numero}" >
+	                            	</div>
+	                   		 	</div>
+	                   		 	<div class="mb-3 col-md-12">
+	                   		 		<label for="numeracionIni" class= "col-md-12 col-form-label">Numeración Inicial</label>
+	                           		<div class="col-sm-12"> 
+	                           			<input type="text" id="numeracionIni" class="form-control col-sm-6 money"  
+	                           					autofocus="autofocus" th:field="*{numeracionIni}">
+	                            	</div>
+	                   		 	</div>
+	                   		 	<div class="mb-3 col-md-12">
+	                   		 		<label for="numeracionFin" class= "col-md-12 col-form-label">Numeración Final</label>
+	                           		<div class="col-sm-12"> 
+	                           			<input type="text" id="numeracionFin" class="form-control col-sm-6 money"  
+	                           					autofocus="autofocus" th:field="*{numeracionFin}">
+	                            	</div>
+	                   		 	</div>
+	                   		 </div>
+                   		 </div>
+                 	</form>
+                 </div>
+              </div>
+          </div>
+     </div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/botones.js}" ></script>
+	<script th:src="@{/js/meta/timbrado/timbrado.js}" ></script>
+</th:block>
+</html>

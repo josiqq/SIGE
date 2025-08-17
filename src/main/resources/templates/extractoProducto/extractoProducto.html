@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Extracto de producto</title>
+	<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	<link th:href="@{/css/easy-autocomplete.themes.min.css}">
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	
+              
+             <h6 class="mb-4 js-titulo-reporte">Extracto de producto</h6>
+             <form  th:object="${extractoProductoFilter}" class="js-filtros">
+             		<div class="row">
+             	
+             			<div class="mb-3 col-md-4">
+                   		<label for="producto" class="col-sm-12 col-form-label">Producto</label>
+                   		<input type="hidden" id="idProducto" th:field="*{producto}"> 
+                   		<input type="text" id="producto" class="form-control "  
+                   					autofocus="autofocus" placeholder="Buscar por nombre o codigo" 
+                   					th:value="${extractoProductoFilter.producto}?${extractoProductoFilter.producto.nombre}:''">
+                   		</div>
+             	
+             	<div class="mb-3 col-md-2">
+                		<label for="fechaDesde" class="col-sm-12 col-form-label">Fecha Desde</label> 
+						<input type="text" class="form-control  date js-fecha-desde" id="fechaDesde" th:field="*{{fechaDesde}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" >
+            	</div>
+            	<div class="mb-3 col-md-2">
+	            		<label for="fechaHasta" class="col-sm-12 col-form-label">Fecha Hasta</label> 
+						<input type="text" class="form-control date js-fecha-hasta" id="fechaHasta" th:field="*{{fechaHasta}}"
+								autocomplete="off" placeholder="dd/mm/aaaa">
+            	</div>
+            	<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+					<label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
+					<select id="deposito" class="form-control "
+						th:field="*{deposito}">
+						<option value="">seleccionar</option>
+						<option th:each="deposito : ${depositos}"
+							th:text="${deposito.nombre}" th:value="${deposito.id}"></option>
+					</select>
+				</div>
+            	<div class="mb-3 col-md-12 row">
+            		<div class="mb-3 col-md-3">
+            			<button type="submit" class="btn btn-primary">Buscar</button>
+            		</div>
+            		
+            		<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-success js-excel-exportar">
+	            			<i class="fa-solid fa-file-excel"></i>
+	            			Excel
+	            		</button>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary js-imprimir">
+	            			<i class="fa-solid fa-print"></i>
+	            			Imprimir
+	            		</button>
+	            	</div>
+            	</div>
+             </div>
+             </form>
+              
+             <div class="table-responsive js-tabla">
+                 <table class="table" id="tb-extracto-producto">
+                     <thead>
+                         <tr>
+                         <th scope="col">ID</th>
+                         <th scope="col">Registro</th>
+                         <th scope="col">Deposito</th>
+                         <th scope="col">Producto</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col">Observación</th>
+                         <th scope="col" class="lado-derecho ">Entrada</th>
+                         <th scope="col" class="lado-derecho ">Salida</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="extractoProducto : ${extractoProductos}" class="tr-extracto">
+                         <td scope="row" th:text="${extractoProducto.id}"></td>
+                         <td th:text="${extractoProducto.registro}"></td>
+                         <td th:text="${extractoProducto.deposito.nombre}"></td>
+                         <td th:text="${extractoProducto.producto.nombre}"></td>
+                         <td th:text="${#temporals.format(extractoProducto.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${extractoProducto.observacion}"></td>
+                         <td th:text="${extractoProducto.entrada}" class="td-entrada lado-derecho"></td>
+                         <td th:text="${extractoProducto.salida}" class="td-salida lado-derecho"></td>
+                         
+                     </tr>
+                     <tr th:if="${!#lists.isEmpty(extractoProductos)}">
+                     	<td colspan="7" th:text="${totalEntrada}" class="lado-derecho td-total-entrada"></td>
+                     	<td colspan="8" th:text="${totalSalida}" class="lado-derecho td-total-salida"></td>
+                     </tr>
+                     <tr th:if="${!#lists.isEmpty(extractoProductos)}">
+                     	<td colspan="8" th:text="${diferencia}" 
+                     		class="lado-derecho td-saldo"></td>
+                     </tr>
+                     <tr th:if="${#lists.isEmpty(extractoProductos)}">
+						<td colspan="6">No se encontraron datos</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+	<th:block th:replace="hbs/templateAutoCompleteProducto"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/jspdf.debug.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/html2canvas.min.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/total.venta.js}"></script>
+	<script th:src="@{/js/meta/extractoProducto/extracto.producto.js}"></script>
+	<script th:src="@{/js/meta/extractoProducto/extracto.producto.tabla.js}"></script>
+</th:block>
+</html>

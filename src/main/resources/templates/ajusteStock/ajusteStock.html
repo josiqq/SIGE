@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Ajuste de stock</title>
+<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+<link th:href="@{/css/easy-autocomplete.themes.min.css}"
+	rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="noMostrar js-cargando">
+			<div id="spinner"
+				class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+				<div class="spinner-border text-primary"
+					style="width: 3rem; height: 3rem;" role="status">
+					<span class="sr-only">Loading...</span>
+				</div>
+			</div>
+		</div>
+		<div class="row g-4">
+
+			<div class="col-sm-12 col-xl-12 ">
+				<div class="bg-light rounded h-100 p-4">
+
+					<form th:action="@{/ajusteStocks}" th:method="POST"
+						th:object="${ajusteStock}">
+						<div class="row">
+							<h4 class="col-md-3" th:if="!${ajusteStock.id}">Ajuste de stock</h4>
+							<h4 class="col-md-3" th:if="${ajusteStock.id}">Modificar - [[${ajusteStock.id}]]</h4>
+							<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar"
+								sec:authorize="hasRole('ROLE_STOCK_AJUSTE_STOCK_GUARDAR')">
+								<i class="fa fa-save"></i>
+							</button>
+							<a th:href="@{/ajusteStocks/buscar}"
+								class="btn btn-square btn-success m-2"><i
+								class="fa fa-search btn-buscar"></i>
+							</a>
+							 <a th:href="@{/ajusteStocks}"
+								class="btn btn-square btn-primary m-2"><i
+								class="fa fa-desktop btn-nuevo"></i>
+							 </a>
+						</div>
+						<div class="mensaje-emergente">
+						</div>
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<input type="hidden" id="uuid" th:field="*{uuid}"> 
+						<input type="hidden" id="id" th:field="*{id}" class="idStock">
+						<div class="row ">
+							<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+								<label for="deposito" class="col-sm-12 col-form-label">Deposito</label>
+								<select id="deposito" class="form-control js-select-deposito"
+									th:field="*{deposito}">
+									<option value="" class="opt-deposito">seleccionar</option>
+									<option th:each="deposito : ${depositos}"
+										th:text="${deposito.nombre}" th:value="${deposito.id}" class="opt-deposito"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-3 col-md-3">
+	                            <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control date " id="fecha" 
+	                                		placeholder="dia/mes/año" 
+	                                		autocomplete="off" th:field="*{{fecha}}" >
+	                            </div>
+	                        </div>
+	                        
+	                        <div class="mb-3">
+                             	<label for="observacion">Observación</label>
+                               	<textarea type="text" class="form-control js-observacion " th:field="*{observacion}"></textarea>
+                            </div>
+						</div>
+
+
+						<div class="row">
+							<div class=" mb-3  col-md-4">
+								<label for="producto" class="col-sm-12 col-form-label">Producto</label>
+								<div class="col-sm-10">
+									<input type="hidden" id="idProducto" > 
+									<input type="text" class="form-control " id="producto" autocomplete="off"
+										   placeholder="Escribe el nombre o codigo">
+									<div class="lista-auto-complete-producto"></div>
+								</div>
+							</div>
+							<div class=" mb-3 col-md-2">
+								<label for="cantidad-actual" class="col-sm-12 col-form-label">cant actual</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control  js-cantidad-actual " id="cantidad-actual"
+										autocomplete="off"  readonly="readonly">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="sumar" class="col-sm-12 col-form-label">Sumar</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control money js-cant-det " id="sumar"
+										autocomplete="off" >
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="restar" class="col-sm-12 col-form-label">Restar</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control money js-cant-det"id="restar" autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="cantidad" class="col-sm-12 col-form-label">Cantidad</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control money js-cant-det" id="cantidad" autocomplete="off">
+									<button type="button" class="btn btn-primary js-boton-cargar-detalle">
+										<i class=" fa fa-plus"></i>
+									</button>
+								</div>
+							</div>
+
+						</div>
+						<div class="">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">código</th>
+											<th scope="col">Producto</th>
+											<th scope="col">suma</th>
+											<th scope="col">resta</th>
+											<th scope="col">cantidad</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody class="js-item-ajuste-stock">
+										<th:block th:replace="ajusteStock/itemAjusteStock"></th:block> 
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="hbs/templateAutoCompleteProducto"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/ajusteStock/ajuste.stock.js?ver=0.0.1}"  type="module"></script>
+	<script th:src="@{/js/meta/ajusteStock/item.ajuste.stock.js?ver=0.0.1}" type="module"></script>
+</th:block>
+</html>

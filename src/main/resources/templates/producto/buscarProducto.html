@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Buscar Producto</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row">  		 
+                   <a th:href="@{/productos}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-success btn-nuevo">Nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de Productos</h6>
+             <form th:object=${productoFilter} >
+				<div class="row">
+					<div class="mb-3 col-md-6 col-lg-5" >
+                          <input type="text" class="form-control" id="nombreCodigo" 
+                          			autocomplete="off" placeholder="Nombre o código"
+                          			autofocus="autofocus" th:field="*{nombreCodigo}">
+                    </div>
+                    <div class="mb-3 col-md-2 col-lg-2" >
+                          <input type="text" class="form-control" id="limite" 
+                          			autocomplete="off" placeholder="Límite" th:field="*{limite}">
+                    </div>
+                    
+                    <div class=" col-lg-1 mb-4">
+                   		<button type="submit" class="btn btn-primary btn-guardar" >Buscar</button>
+                   	</div>
+				</div>
+			</form>
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                            <th scope="col" >Foto</th>
+                         <th scope="col">Id</th>
+                         <th scope="col">Código</th>
+                         <th scope="col">Nombre</th>
+                         <th scope="col">Marca</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="producto:${productos}">
+                     	<td class="foto-img-td">
+                     		<a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                     	 		data:url="@{/fotos/{nombre}(nombre=${producto.fotoONada})}"
+                     	 		data:objeto="${producto.nombre}"
+                     	 		class="btn-foto-producto">
+                         		<img loading="lazy" th:src="@{/fotos/thumbnail.{nombre}(nombre=${producto.fotoONada})}"  class="foto-img">
+                       		</a>
+                         </td>
+                         <th scope="row" th:text="${producto.id}"></th>
+                          <td th:text="${producto.codigo}"></td>
+                         <td >
+                         	<a th:href="@{/productos/{id}(id=${producto.id})}" 
+                         			th:text="${producto.nombre}" >
+                         	</a> 
+                 		 </td>
+                 		 <td th:text="${producto.marca} ? ${producto.marca.nombre} : 'Sin marca'"></td>
+                         <td sec:authorize="hasRole('ROLE_STOCK_PRODUCTOS_ELIMINAR')">
+                         	<a data:url="@{/productos/{id}(id=${producto.id})}" class="btn-eliminar"
+                         		data:objeto="${producto.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                       	</td>
+                     </tr>
+                 
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+<div th:replace="producto/fotoProducto :: modalfoto"></div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/producto/producto.foto.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/producto/producto.atajo.teclado.js?ver=0.2.1}" type="module"></script>
+</th:block>
+</html>

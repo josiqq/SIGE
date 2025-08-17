@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Buscar Consorcios</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+     <div class="bg-light rounded h-100 p-4">
+     	<div class="row">
+     		<div class="col-xs-12 col-md-5">
+     			<h2 class="m-2">Buscar Consorcios</h2>
+     		</div>
+     		<a th:href="@{/consorcios}" class="btn btn-square btn-primary m-2 col-md-1">
+    			<i class="fa fa-desktop btn-nuevo"></i>
+			</a>
+     	</div>
+     	<form th:action="@{/consorcios/buscar}" th:method="GET" th:object="${consorcio}">
+     		<div class="row">
+     			<div class="col-xs-12 col-md-3 m-2">
+    				<label for="fechaInicio" class="col-form-label">Fecha Inicio</label>
+    				<input type="text" class="form-control date" id="fechaInicio" placeholder="día/mes/año" 
+    					autocomplete="off" th:field="*{fechaInicio}" autofocus="autofocus">
+    			</div>
+    			<div class="col-xs-12 col-md-3 m-2">
+    				<label for="fechaFin" class="col-form-label">Fecha Fin</label>
+    				<input type="text" class="form-control date" id="fechaFin" placeholder="día/mes/año" 
+    					autocomplete="off" th:field="*{fechaFin}">
+    			</div>
+    			<div class="col-12 m-2">
+    				<button type="submit" class="btn btn-primary">Buscar</button>
+    			</div>
+     		</div>
+     	</form>
+     	<div class="table-responsive">
+     		<table class="table">
+     			<thead>
+     				<tr>
+     					<th>Id</th>
+     					<th>Nombre</th>
+     					<th>Fecha Inicio</th>
+     					<th>Fecha Fin</th>
+     					<th>Meses</th>
+     					<th>Importe Mensual</th>
+     					<th></th>
+     					<th></th>
+     					<th></th>
+     				</tr>
+     			</thead>
+     			<tbody>
+     				<tr th:each="consorcio : ${consorcios}">
+     					<td th:text="${consorcio.id}"></td>
+     					<td th:text="${consorcio.nombre}"></td>
+     					<td th:text="${#temporals.format(consorcio.fechaInicio,'dd/MM/yyyy')}"></td>
+     					<td th:text="${#temporals.format(consorcio.fechaFin,'dd/MM/yyyy')}"></td>
+     					<td th:text="${consorcio.meses}"></td>
+     					<td th:text="${#numbers.formatInteger(consorcio.montoMensual,3,'POINT')}" ></td>
+     					<td>
+     						<button type="button" class="btn-det" data-bs-toggle="modal" th:data-bs-target="'#modal-'+${consorcio.id}">
+							  <i class="far fa-file-alt tooltip-test"  title="Ver detalles"></i>
+							</button>
+							<div class="modal fade " th:id="'modal-'+${consorcio.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+							  <div class="modal-dialog">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <h5 class="modal-title" id="staticBackdropLabel" th:text="${consorcio.nombre}"></h5>
+							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							      </div>
+							      <div class="modal-body">
+							        <div class="table-responsive">
+							        	<table class="table">
+							        		<thead>
+							        			<tr>
+							        				<th>Cliente</th>
+							        				<th>Monto</th>
+							        				<th>Meses</th>
+							        			</tr>
+							        		</thead>
+							        		<tbody>
+							        			<tr th:each="item : ${consorcio.items}">
+							        				<td th:text="${item.cliente.nombre}"></td>
+							        				<td th:text="${#numbers.formatInteger(item.monto,3,'POINT')}" ></td>
+							        				<td th:text="${item.meses}"></td>
+							        			</tr>
+							        		</tbody>
+							        	</table>
+							        </div>
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>
+     					</td>
+     					<td>
+     						<a th:href="@{/consorcios/{id}(id=${consorcio.id})}"
+								 class="btn-editar">
+								<i class="fa fa-pencil"></i>
+							</a>
+     					</td>
+     					<td>
+     						<a data:url="@{/consorcios/{id}(id=${consorcio.id})}" class="btn-eliminar"
+                         		data:objeto="${consorcio.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+     					</td>
+     				</tr>
+     				<tr th:if="${#lists.isEmpty(consorcios)}">
+     					<td colspan="8">No se encontaron consorcios</td>
+     				</tr>
+     			</tbody>
+     		</table>
+     	</div>
+     </div>
+</div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/consorcio/consorcio.buscar.js}"></script>
+</th:block>
+</html>

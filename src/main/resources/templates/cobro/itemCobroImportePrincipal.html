@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+     <tr th:each="item, iterStat : ${getItemImportes}"  class="js-tabla-item-importe" data:total="${getTotalImporteImportems}">
+		<td th:text="${item.condicion.nombre}"></td>
+		<td th:text="${item.moneda.nombre}"></td>
+		<td class="importe-item" th:text="${item.valorCotizacion}"></td>
+		<td class="importe-item" th:text="${item.importe}"></td>
+		<td class="importe-item" th:text="${item.importeCobrado}"></td>
+		<td th:text="${item.monedaVuelto}?${item.monedaVuelto.nombre}:'Sin moneda'"></td>
+		<td class="importe-item" th:text="${item.cotizacionVuelto}"></td>
+		<td class="importe-item" th:text="${item.vuelto}"></td>
+		<td th:text="${item.banco}?${item.banco.nombre}:'Sin banco'"></td>
+		<td th:text="${item.boleta}!=''?${item.boleta}:'Sin boleta'"></td>
+		<td>
+			<button type="button" class="btn-item-quitar-importe" data:indice = "${iterStat.count - 1}">
+				<i class="fa fa-times" aria-hidden="true" ></i>	
+			</button>
+		</td>
+     </tr>
+	<tr th:if="${#lists.isEmpty(getItemImportes)}">
+			<td colspan="4">No hay detalles de importe</td>
+	 </tr>
+</html>

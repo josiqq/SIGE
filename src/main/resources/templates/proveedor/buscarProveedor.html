@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Buscar Proveedor</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row">  		 
+                   <a th:href="@{/proveedores}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-buscar btn-success">Nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de Proveedores</h6>
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                            <th scope="col">Id</th>
+                         <th scope="col">Nombre</th>
+                         <th scope="col">Documento</th>
+                         <th scope="col">Estado</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="proveedor:${proveedores}">
+                         <th scope="row" th:text="${proveedor.id}"></th>
+                         <td ><a th:href="@{/proveedores/{id}(id=${proveedor.id})}" th:text="${proveedor.nombre}" ></a> </td>
+                         <td th:text="${proveedor.documento}">Doe</td>
+                         <td th:text="${proveedor.activo}?'Activo':'Desactivado'">jhon@email.com</td>
+                         <td sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_ELIMINAR')">
+                         	<a data:url="@{/proveedores/{id}(id=${proveedor.id})}" class="btn-eliminar"
+                         		data:objeto="${proveedor.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                       	</td>
+                     </tr>
+                 
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+</html>

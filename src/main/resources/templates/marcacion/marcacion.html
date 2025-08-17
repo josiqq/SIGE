@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5" xmlns:data="http://www.thymeleaf.org/extras/data"
+	layout:decorate="~{padron}">
+
+<head>
+	<title>Marcaciones</title>
+	<link th:href="@{/css/meta/deporte/marcacionStyle.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<form th:method="POST" th:action="@{/marcaciones}" th:object=${marcacion}>
+
+		<input type="hidden" class="js-id-marcacion" th:field="*{id}">
+		<input type="hidden" class="js-terminado" th:field="*{terminado}">
+		<input type="hidden" class="js-terminado-game-uno" th:field="*{terminadoGameUno}">
+		<input type="hidden" class="js-terminado-game-dos" th:field="*{terminadoGameDos}">
+		<input type="hidden" class="js-terminado-game-tres" th:field="*{terminadoGameTres}">
+		<div class="row justify-content-around">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+				<div th:each="erro: ${#fields.detailedErrors()}">
+					<i class="fa fa-exclamation-circle me-2"></i>
+					<span th:text="${erro.message}">Mensaje de error</span>
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			<div class="col-md-5 col-lg-4 caja-equipo-a">
+				<div class="col-md-12 marcacion-numero">
+					<input class="js-marcador-a input-marcador" th:field="*{puntoA}" readonly="readonly"></input>
+				</div>
+				<div class="col-md-12 caja-equipo">
+					<select id="instructor" class="form-control js-equipo-a" th:field="*{equipoA}">
+						<option value="">Seleccionar equipo</option>
+						<option th:each="equipo : ${equipos}" th:text="${equipo.nombreCorto}" th:value="${equipo.id}"
+							data:imga="${equipo.foto}"></option>
+					</select>
+				</div>
+				<div class="col-md-12 marcacion-imagen-caja">
+					<img th:if="!${marcacion.id}" src="" alt="" class="col-md-12 img-equipo-a">
+					<img th:if="${marcacion.id}" th:src="@{/fotos/{nombre}(nombre=${marcacion.equipoA.foto})}" alt=""
+						class="col-md-12 img-equipo-a">
+				</div>
+				<div class="row justify-content-around caja-suma-resta">
+					<div class="col-2">
+						<button class="btn btn-success js-sumar-a"  th:if="!${marcacion.terminadoGameTres}">Sumar</button>
+					</div>
+					<div class="col-2">
+						<button type="button" class="btn btn-danger js-restar-a"  th:if="!${marcacion.terminadoGameTres}">Restar</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 caja-btn-comenzar">
+				<button type="submit" class="btn btn-primary" th:if="!${marcacion.id}">Comenzar</button>
+				<button type="submit" class="btn btn-danger js-btn-terminar" th:if="${marcacion.id} and ${marcacion.terminadoGameTres}">Terminar</button>
+				<button type="submit" class="btn btn-danger js-btn-terminarGame1" th:if="!${marcacion.terminadoGameUno} and ${marcacion.id}">Terminar game1</button>
+				<button type="submit" class="btn btn-danger js-btn-terminarGame2" th:if="${marcacion.terminadoGameUno} and !${marcacion.terminadoGameDos}">Terminar game2</button>
+				<button type="submit" class="btn btn-danger js-btn-terminarGame3" th:if="${marcacion.terminadoGameDos} and !${marcacion.terminadoGameTres}">Terminar game3</button>
+			</div>
+			<div class="col-md-5 col-lg-4 caja-equipo-b">
+				<div class="col-12 marcacion-numero">
+					<input class="js-marcador-b input-marcador" readonly="readonly" th:field="*{puntoB}"></input>
+				</div>
+				<div class="col-md-12 caja-equipo">
+					<select id="instructor" class="form-control js-equipo-b" th:field="*{equipoB}">
+						<option value="">Seleccionar equipo</option>
+						<option th:each="equipo : ${equipos}" th:text="${equipo.nombreCorto}" th:value="${equipo.id}">
+						</option>
+					</select>
+				</div>
+				<div class="col-md-12 marcacion-imagen-caja">
+					<img th:if="!${marcacion.id}" src="" alt="" class="col-md-12 img-equipo-b">
+					<img th:if="${marcacion.id}" th:src="@{/fotos/{nombre}(nombre=${marcacion.equipoB.foto})}" alt=""
+						class="col-md-12 img-equipo-b">
+				</div>
+				<div class="row justify-content-around caja-suma-resta">
+					<div class="col-2">
+						<button class="btn btn-success js-sumar-b" th:if="!${marcacion.terminadoGameTres}">Sumar</button>
+					</div>
+					<div class="col-2">
+						<button class="btn btn-danger js-restar-b" th:if="!${marcacion.terminadoGameTres}">Restar</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</form>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/deporte/marcacion.js}"></script>
+</th:block>
+
+</html>

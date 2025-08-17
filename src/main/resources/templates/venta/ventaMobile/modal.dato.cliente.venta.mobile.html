@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<body>
+	<div class="modal fade" id="modal-cliente-venta-mobile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-xl">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Datos de la Venta</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	       		<a th:href="@{/ventaMobiles}" class="btn btn-lg  btn-lg-square  btn-primary btn-nuevo-venta-mobile">
+            			<i class="fa fa-desktop btn-nuevo"></i>
+    			</a>
+        		<a th:href="@{/ventaMobiles/buscar}" class="btn btn-lg  btn-lg-square btn-success  btn-buscar-venta-mobile">
+            			<i class="fa fa-search btn-buscar"></i>
+        		</a>
+        		<button sec:authorize="hasRole('ROLE_VENTAS_VENTAS_MOBILE_GUARDAR')" 
+        			type="submit" class="btn btn-lg btn-primary btn-lg-square btn-guardar-venta-mobile">
+					<i class="fa fa-save"></i>
+				</button>
+            	<div class= "row ">
+            		<input type="hidden" th:field="*{usuario}">
+            		<div class=" row mb-3 col-12">
+                        <label for="cliente" class="col-12 col-form-label">Cliente</label>
+                        <input type="hidden" id="idCliente" th:field="*{cliente}" >
+                        <div class="col-12">
+                            <input type="text"  id="cliente"  
+                            	class="form-control js-cliente col-12" 
+                            	autocomplete="off" placeholder="Escribe el nombre o ruc"
+                            	th:value="${venta.cliente}?${venta.cliente.nombre}:''">
+                        </div>
+                    </div>
+                
+                
+                    <div class=" mb-3 col-sm-12 col-lg-2 col-md-3">
+                        <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+                        <div class="col-sm-10">
+                        	
+                            <input type="text" class="form-control date" id="fecha"  
+                            		autocomplete="off" placeholder="dd/mm/aaaa" th:field="*{{fecha}}">
+                        </div>
+                    </div>
+                    <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+                        <label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
+						<select id="deposito" class="form-control" th:field="*{deposito}">
+							<option value="">seleccionar</option>
+							<option th:each="deposito : ${depositos}" th:text="${deposito.nombre}" 
+								th:value="${deposito.id}" ></option>
+						</select>
+                    </div>
+                    <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+                        <label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
+						<select id="vendedor" class="form-control" th:field="*{vendedor}">
+							<option value="">seleccionar</option>
+							<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
+								th:value="${vendedor.id}" ></option>
+						</select>
+                    </div>
+                    <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+                        <label for="precio" class="col-sm-12 col-form-label">Precio</label>
+						<select id="precio" class="form-control" th:field="*{precio}">
+							<option value="">seleccionar</option>
+							<option th:each="precio : ${precios}" th:text="${precio.nombre}" 
+								th:value="${precio.id}" 
+								data:moneda = "${precio.moneda}?${precio.moneda.id}:0" ></option>
+						</select>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="factura" th:field="*{factura}">
+                            <label class="form-check-label" for="gridCheck1">
+                                Factura
+                            </label>
+                        </div>
+                	</div>
+                    <div class=" mb-3 col-md-3 ">
+						<select id="precio" class="form-control" th:field="*{condicionVenta}">
+							<option value="">seleccionar</option>
+							<option th:each="condicionVenta : ${condicionVentas}" th:text="${condicionVenta.descripcion}" 
+								th:value="${condicionVenta}"></option>
+						</select>
+                    </div>
+                    <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+						<select id="moneda-venta-mb" class="form-control solo-lectura" th:field="*{moneda}">
+							<option value="">Moneda</option>
+							<option th:each="moneda : ${monedas}"
+								th:text="${moneda.nombre}" th:value="${moneda.id}"></option>
+						</select>
+					</div>
+        		</div>
+	      </div>
+	      <div class="modal-footer">
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5">
+
+<div class="modal fade" id="modal-producto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+	th:fragment="modalProducto">
+	<div class="modal-dialog   modal-xl">
+		
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Buscar Producto</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form class="form-modal-buscador-producto col-md-12">
+						<div class="input-group mb-3 col-xs-12 col-xl-6 col-md-6">
+    						<input type="text" class="form-control" id="nombre-producto-modal" placeholder="Nombre o código" autofocus="autofocus" autocomplete="off">
+    						<div class="input-group-append">
+						        <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+						            <i class="fas fa-search"></i>
+						        </button>
+						    </div>
+						</div>
+				</form>
+				<div class = "row">
+					<div class="col-md-6">
+						<div class="responsive-table">
+							<table class="table tabla-producto-buscador scrollable">
+								<thead>
+									<tr>
+										<th>Id</th>
+										<th>Código</th>
+										<th>Nombre</th>
+										<th></th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody class="body-tabla-producto">
+								
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-md-6 contenedor-precio-cantidad">
+						<div class="row">
+							<div class="responsive-table col-md-6">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Lista</th>
+											<th>Precio</th>
+										</tr>
+									</thead>
+									<tbody class="body-tabla-precio">
+									</tbody>
+								</table>
+							</div>
+							<div class="responsive-table col-md-6">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Depósito</th>
+											<th>Cantidad</th>
+										</tr>
+									</thead>
+									<tbody class="body-tabla-deposito">
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+					</div>	
+				</div>
+			</div>
+			<div class="contenedor-foto-producto-modal noMostrar">
+				 
+			</div>
+		</div>
+	</div>
+	<div th:replace="producto/fotoProducto :: modalfoto"></div>
+</div>
+
+</html>

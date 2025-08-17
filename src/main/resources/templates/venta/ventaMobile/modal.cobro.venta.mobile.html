@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<body>
+<div class="modal fade" id="modal-cobro-venta-mobile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cobro a Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<input type="hidden" id="fecha-cuenta">
+      	<div class="row">
+       		<div class="col-md-4">
+       			<h2 class="js-total-gs"></h2>
+       		</div>
+       		<input type="hidden" class="js-saldo-hidden">
+       		<div class="col-md-4">
+       			<h2 class="js-saldo-gs"></h2>
+       		</div>
+       	</div>
+       <div class="">
+       		<div class="row js-total-a-cobrar">
+	       		<div class="col-md-3">
+	       			<span class="span-grande">G$:</span><span class="span-grande">15.000 </span>
+	       		</div>
+	       		<div class="col-md-3">
+	       			<span class="span-grande">R$:</span><span class="span-grande">7,25 </span>
+	       		</div>
+	       		<div class="col-md-3">
+	       			<span class="span-grande">D$:</span><span class="span-grande">1,5 </span>
+	       		</div>
+       		</div>
+       </div>
+       <div class="row mb-2">
+       		<div class="col-md-2">
+                <label for="condicion" class="col-sm-12 col-form-label">Condicion</label>
+				<select id="Condicion" class="form-select">
+					<option value="">seleccionar</option>
+				</select>
+		                            
+       		</div>
+       		<input type="hidden" class="js-decimales-moneda">
+       		<div class="col-md-2">
+       			 <label for="item-cobro-moneda" class="col-sm-12 col-form-label">Moneda</label>
+				<select id="item-cobro-moneda" class="form-select">
+					<option value="">seleccionar</option>
+				</select>
+       		</div>
+       		<input type="hidden" id="valor-cotizacion" value="1">
+       		<input type="hidden" id="valor-cotizacion-vuelto" value ="1">
+       		<input type="hidden" id="hidden-importe">
+       		<div class="col-md-2">
+       			<label for="importe" class="col-sm-12 col-form-label">Importe</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control money" id="importe"  
+                    		autocomplete="off" placeholder="Importe" >
+                </div>
+       		</div>
+       		<div class="col-md-2">
+       			<label for="cobrado" class="col-sm-12 col-form-label">Cobrado</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control money " id="cobrado"  
+                    		autocomplete="off" placeholder="Cobrado" >
+                </div>
+       		</div>
+       		<div class="col-md-2">
+       			 <label for="item-cobro-moneda-vuelto" class="col-sm-12 col-form-label">Moneda Vuelto</label>
+				<select id="item-cobro-moneda-vuelto" class="form-select js-moneda-vueldo">
+					<option value="">seleccionar</option>
+				</select>
+       		</div>
+       		<input type="hidden" class="js-decimales-vuelto">
+       		<input type="hidden" class="js-vuelto-hidden">
+       		<div class="col-md-2">
+       			<label for="vuelto" class="col-sm-12 col-form-label">Vuelto</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control money" id="vuelto"  
+                    		autocomplete="off" placeholder="Vuelto" >
+                </div>
+       		</div>
+       		<div class="col-md-12 mt-1">
+       			<button type="button" class="btn btn-primary btn-agregar-detalle-vm">Agregar Detalle</button>
+       		</div>
+       </div>
+       <div class="accordion accordion-flush" id="accordionFlushExample">
+		  <div class="accordion-item">
+		    <h2 class="accordion-header" id="flush-headingOne">
+		      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+		        Detalle de cobro
+		      </button>
+		    </h2>
+		    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+		      <div class="accordion-body">
+		      	<div class="row item-cobro-importe-vm  ">
+		      		<th:block th:replace="venta/ventaMobile/item.cobro.importe.venta.mobile"></th:block>
+		      	</div>
+		      </div>
+		    </div>
+		  </div>
+	   </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Guardar Cobro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

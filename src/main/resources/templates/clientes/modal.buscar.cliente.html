@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5" xmlns:data="http://www.thymeleaf.org/extras/data">
+<!-- Modal -->
+<div class="modal fade" id="modal-buscar-cliente" tabindex="-1" aria-labelledby="modal-buscar-clienteLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modal-buscar-clienteLabel">Buscar clientes</h5>
+
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class=" col-md-4 p-2">
+					<div class="input-group ">
+					  <input type="text" id="nombre-cliente-modal" 
+					  		class="col-md-12 form-control mediano form-control-sm js-nombreDocumento" 
+					  		placeholder="Nombre o documento" autocomplete="off" autofocus>
+					  <div class="input-group-append">
+					    <button class="btn btn-primary  mediano" 	id="btn-buscar-cliente-modal"  type="button">
+					      <i class="bi bi-search "></i> 
+					    </button>
+					  </div>
+					</div>
+				</div>
+				
+				
+					<div class="contenedor-tabla-buscar-cliente-modal">
+						<table class="table scrollable tabla-gen-cliente">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Nombre</th>
+									<th>documento</th>
+								</tr>
+							</thead>
+							<tbody class="tabla-lista-clientes ">
+									
+							</tbody>
+						</table>
+					</div>
+					<div class="conten-cargando noMostrar">
+						<div class="loadingio-spinner-spinner-ze2vfonbzg"><div class="ldio-7p1h09gd14f">
+								<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+								<div></div><div></div><div></div><div></div></div>
+						</div>
+					</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+</html>

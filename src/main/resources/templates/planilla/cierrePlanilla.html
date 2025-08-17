@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Cierre de planilla</title>
+</head>
+<section layout:fragment="contenido">
+
+	<div class="container-fluid pt-4 px-4 ">
+		<div class="row g-4 ">
+
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<form th:action="@{/planillas/cierre}" th:method="POST"
+						th:object="${planilla}">
+						<div class="row">
+							<div class="col-md-4">
+								<h2 th:if="!${planilla.id}">Cierre de planilla</h2>
+								<h2 th:if="${planilla.id}">Cerrar esta planilla -
+									[[${planilla.id}]]</h2>
+							</div>
+							<button type="submit"
+								class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PLANILLA_GUARDAR')">
+								<i class="fa fa-save"></i>
+							</button>
+							<a th:href="@{/planillas/cierre/buscar}"
+								class="btn  btn-square btn-success m-2 col-md-1"> <i
+								class="fa fa-search btn-buscar"></i>
+							</a> <a th:href="@{/planillas/cierre}"
+								class="btn btn-square btn-primary m-2 col-md-1"> <i
+								class="fa fa-desktop btn-nuevo"></i>
+							</a>  <span class="negrita col-md-3">Usuario alta:
+								[[${planilla.usuario.nombre}]]</span>
+						</div>
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+
+						<input type="hidden" th:field="*{id}"> 
+						<input type="hidden"  id="registro" th:value="${registro}">
+						<input type="hidden" th:field="*{uuid}">
+						<input type="hidden"  id="usuario" th:field="*{usuario}" />
+						<input type = "hidden"  id="cuenta-origen" th:field="*{cuenta}"> 
+						<div class="row">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="mb-3 col-md-2">
+										<label for="fecha" class="col-md-12 col-form-label">Fecha de Apertura</label>
+										<div class="col-sm-12">
+											<input type="text" id="fecha"
+												class="form-control date col-sm-6 js-fecha "
+												placeholder="dia/mes/año" th:field="*{fecha}"
+												autocomplete="off" readonly="readonly">
+										</div>
+									</div>
+									<div class="mb-3 col-md-2">
+										<label for="fecha-cierre" class="col-md-12 col-form-label">Fecha de Cierre</label>
+										<div class="col-sm-12">
+											<input type="text" id="fecha-cierre"
+												class="form-control date col-sm-6 js-fecha "
+												placeholder="dia/mes/año" th:field="*{fechaCierre}"
+												autocomplete="off" readonly="readonly">
+										</div>
+									</div>
+									<div class=" mb-3 col-md-2 cont-cuenta">
+										<label for="planilla" class="col-form-label">Planilla</label> 
+										<select id="planilla" class="form-control js-planilla" >
+											<option value="">seleccionar</option>
+											<option th:each="planilla : ${planillas}"
+												th:text="${planilla.id+' - '+planilla.cuenta.nombre} " 
+												th:value="${planilla.id}"
+												data:cuenta ="${planilla.cuenta.id}"
+												data:fecha ="${planilla.fecha}">
+											</option> 
+										</select>
+									</div>
+									<div class="mb-3 col-md-3">
+										<label for="total" class="col-md-12 col-form-label">Total</label>
+										<div class="col-sm-12">
+											<input type="text" id="total"
+												class="form-control date col-sm-6 js-total-planilla "
+												placeholder="0" th:field="*{total}"
+												autocomplete="off" readonly="readonly">
+										</div>
+									</div>
+									<div class="mb-3 col-md-3">
+										<label for="total-rendido" class="col-md-12 col-form-label">Total Rendido</label>
+										<div class="col-sm-12">
+											<input type="text" id="total-rendido"
+												class="form-control date col-sm-6 js-total-rendido-planilla "
+												placeholder="0" th:field="*{totalRendido}"
+												autocomplete="off" readonly="readonly">
+										</div>
+									</div>
+									<div class="mb-3 col-md-2">
+	                                    <div class="col-md-10">
+	                                        <div class="form-check">
+	                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{cerrado}">
+	                                            <label class="form-check-label" for="gridCheck1">
+	                                                cerrado
+	                                            </label>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="mb-3 col-md-2" >
+	                                    <div class="col-md-10">
+	                                        <div class="form-check">
+	                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{reAbrir}">
+	                                            <label class="form-check-label" for="gridCheck1">
+	                                               Re abrir
+	                                            </label>
+	                                        </div>
+	                                    </div>
+	                                </div>
+								</div>
+							</div>
+
+						</div>
+					</form>
+					<div class="table-responsive">
+						<h6>Cobro según sistema</h6>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Condición</th>
+									<th>Moneda</th>
+									<th>Cobro</th>
+									<th>Apertura</th>
+									<th> In vuelto</th>
+									<th> Eg vuelto</th>
+									<th> Tran cred</th>
+									<th> Tran deb</th>
+									<th>Importe Neto</th>
+									<th>Cotización</th>
+									<th>Moneda Nac</th>
+								</tr>
+							</thead>
+							<tbody class="js-planilla-importes">
+							
+							</tbody>
+						</table>
+					</div>
+					<div class="col-md-12">
+						<h6>Rendición</h6>
+						<div class="row">
+							<div class=" mb-3 col-md-2 ">
+								<label for="condicion" class="col-form-label">Condición</label>
+								<select id="condicion" class="form-control js-condicion">
+									<option value="">seleccionar</option>
+									<option th:each="condicion : ${condiciones}"
+										th:text="${condicion.nombre}" th:value="${condicion.id}"
+										data:comision="${condicion.comision}"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-md-2 cont-moneda">
+								<label for="moneda" class="col-form-label">Moneda</label> <select
+									id="moneda" class="form-control js-moneda">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"
+										data:decimales="${moneda.decimales}"></option>
+								</select>
+							</div>
+
+							<div class="mb-3 col-md-3">
+								<label for="importe" class="col-md-3 col-form-label">Importe</label>
+								<div class="col-sm-12">
+									<input type="text" id="importe"
+										class="form-control  col-sm-6 js-planilla-importe formato-numero"
+										autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-md-3 cont-cuenta">
+									<label for="cuenta-destino" class="col-form-label">Cuenta Destino</label> 
+									<select id="cuenta-destino" class="form-control js-cuenta-destino" >
+										<option value="">seleccionar</option>
+										<option th:each="cuenta : ${cuentas}"
+											th:text="${cuenta.nombre}" th:value="${cuenta.id}"
+											data:moneda-cuenta-destino="${cuenta.moneda}?${cuenta.moneda.id}:''   ">
+										</option>
+									</select>
+							</div>
+
+						</div>
+					</div>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Condición</th>
+									<th>Moneda</th>
+									<th>Importe</th>
+									<th>Cuenta Destino</th>
+								</tr>
+							</thead>
+							<tbody class="js-planilla-rendicion">
+								<th:block th:replace="planilla/itemPlanillaRendicion"></th:block>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<th:block layout:fragment="javascript-extra">
+		<script th:src="@{/js/meta/planilla/planilla.cierre.js?ver=0.2.5}" type="module"></script>
+		<script th:src="@{/js/meta/planilla/planilla.cierre.teclado.js?ver=0.2.5}" type="module"></script>
+		<script th:src="@{/js/meta/planilla/item.planilla.rendicion.js?ver=0.2.5}" type="module"></script>
+</th:block>
+</html>

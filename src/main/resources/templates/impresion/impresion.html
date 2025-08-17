@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Impresión</title>
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4 ">
+		<div class="col-sm-12 col-xl-12 col-md-12">
+			<div class="bg-light rounded h-100 p-4">
+				<button class="btn btn-secondary btn-imprimir-imprimir">Imprimir</button>
+			</div>
+		</div>
+	</div>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/impresion/impresion.js}"></script>
+</th:block>
+</html>

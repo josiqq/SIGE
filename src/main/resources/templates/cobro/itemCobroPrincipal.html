@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	
+	<tr th:each=" item,indice : ${itemCobros}" class="js-total-cobro js-item-cobro-principal" data:total="${totalCobro}">
+		<td th:text="${item.venta}?${item.venta.id}:' '  "></td>
+		<td th:text="${item.fecha}" class="date fecha-cobro"></td>
+		<td>
+			<input type="text" class="form-control  js-item-importe formato-numero" 
+				data:id="${item.venta}?${item.venta.id}:' ' " th:value="${item.importe}">
+		</td>
+		<td>
+			<button type="button" class="btn-item-quitar" 
+							data:indice="${indice.index}">
+				<i class="fa fa-times" aria-hidden="true" ></i>	
+			</button>
+		</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(itemCobros)}">
+		<td colspan="3">Sin documentos agregados</td>
+	</tr>
+</html>

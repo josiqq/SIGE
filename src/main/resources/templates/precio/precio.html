@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Precio</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="noMostrar js-cargando">
+		 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 
+		 	vh-100 top-50 start-50 d-flex align-items-center justify-content-center"> 
+             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"> 
+                 <span class="sr-only">Loading...</span> 
+             </div> 
+         </div>
+		</div> 
+        <div class="row g-4">
+            
+            <div class="col-sm-12 col-xl-12 ">
+                <div class="bg-light rounded h-100 p-4">
+                	
+                
+	                <form th:action="@{/precios}" th:method="POST" th:object="${precio}" 
+	                	>
+	                	<div class="row">
+	                		<h4 class="col-md-3" th:if="!${precio.id}">Precios</h4>
+	                		<h4 class="col-md-3" th:if="${precio.id}">Modificar - [[${precio.id}]]</h4>
+	                		<button type="submit" class="btn btn-square btn-primary m-2" 
+	                			sec:authorize="hasRole('ROLE_VENTAS_PRECIOS_GUARDAR')"><i class="fa fa-save"></i></button>
+	                		<a th:href="@{/precios/buscar}" class="btn btn-square btn-success m-2"
+	                			><i class="fa fa-search"></i></a>
+	                		<a th:href="@{/precios}" class="btn btn-square btn-primary m-2"><i class="fa fa-desktop"></i></a>
+	                		<button type="button" class="btn btn-square btn-secondary m-2 js-cargar-producto"><i class="fa fa-plus" ></i></button>
+	                	</div>
+	                	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                      		<div th:each="erro: ${#fields.detailedErrors()}">
+                      			<i class="fa fa-exclamation-circle me-2"></i>
+				    			<span th:text="${erro.message}">Mensaje de error</span>
+				    		</div>
+                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+			    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                       		<i class="fa fa-exclamation-circle me-2"></i>
+                       			<span th:text="${mensaje}">Mensaje de exito</span>
+                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+	                	<input type= "hidden" id="uuid" th:field="*{uuid}">
+	                	<input type="hidden" th:field="*{id}" class="idPrecio">
+	                	<div class= "row ">
+	                		<div class=" mb-3 col-sm-12 col-xl-4 col-md-4">
+	                            <label for="nombre" class="col-sm-12 col-form-label">Nombre</label>
+	                            <div class="col-sm-10">
+	                                <input type="text"  id="nombre"  
+	                                	class="form-control js-nombre" 
+	                                	autocomplete="off" placeholder="Nombre de precio" th:field="*{nombre}">
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+	                        	<label for="nombre" class="col-sm-12 col-form-label">Moneda</label>
+								<select id="moneda-venta" class="form-control" th:field="*{moneda}">
+									<option value="">Seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"></option>
+								</select>
+							</div>
+	                      </div>
+	                        
+	                	
+	                	<div class="row">
+	                		<div class=" mb-3 col-sm-12 col-xl-6 col-md-6">
+	                            <label for="producto" class="col-sm-12 col-form-label">Producto</label>
+	                            <div class="col-sm-10">
+	                            	<input type="hidden" id = "idProducto">
+	                                <input type="text" class="form-control " id="producto"  
+	                                	 placeholder="Escribe el nombre o codigo" >
+	                            </div>
+	                        </div>
+	                       	<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+	                            <label for="costo" class="col-sm-12 col-form-label">Costo</label>
+	                            <div class="col-sm-12">
+	                                <input type="text" class="form-control money " id="costo"  
+	                                	autocomplete="off" readonly>
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+	                            <label for="precio" class="col-sm-12 col-form-label">Precio</label>
+	                            <div class="col-sm-12">
+	                            	 
+	                                <input type="text" class="form-control  formato-numero" id="precio"  
+	                                	autocomplete="off">
+	                                <button type="button" class="btn btn-primary js-boton-cargar-detalle">
+	                                <i class=" fa fa-plus"></i></butto>
+	                               
+	                            </div>
+	                        </div>
+	                        
+	                	</div>
+	                	<div class="">
+	                		<div class="table-responsive">
+				                 <table class="table">
+				                     <thead>
+				                         <tr>
+				                         <th scope="col" >Foto</th>
+				                         <th scope="col">Código</th>
+				                         <th scope="col">Producto</th>
+				                         <th scope="col">Costo</th>				                         
+				                         <th scope="col">Precio</th>
+				                         <th scope="col"></th>
+				                         </tr>
+				                     </thead>
+				                    <tbody class="js-item-precio">
+        		                    </tbody>
+				                 </table>
+             				</div>
+	                	</div>
+	                </form>
+                </div>
+            </div>                                                         
+        </div>
+    </div>
+    <th:block th:replace="hbs/templateAutoCompleteProducto"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/precio/precio.teclado.js}"></script>
+	<script th:src="@{/js/meta/precio/autoComplete.producto.precio.js}" type="module"></script>
+	<script th:src="@{/js/meta/precio/precio.js}"  type="module"></script>
+</th:block>
+</html>

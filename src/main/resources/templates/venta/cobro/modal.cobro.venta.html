@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	
+<body>
+<!-- Modal -->
+<div class="modal fade" id="modal-cobro-venta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen  modal-dialog-scrollable">
+    <div class="modal-content">
+    <input type="hidden" id="condicion-hidden">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cobrar Venta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       	<div class="contenedor-importe">
+       		<div class="row">
+	       		<div class="conten-importe-principal-c-v col-6">
+	       			<h1 class="sigla-importe-principal-c-v"></h1><h1 class="valor-importe-principal-c-v"></h1>
+	       		</div>
+	       		<div class="conten-saldo-principal-c-v col-6">
+	       			<h1 class="sigla-saldo-principal-c-v">Saldo G$: </h1><h1 class="valor-saldo-principal-c-v"></h1>
+	       		</div>
+       		</div>
+       		<div class="row conten-importe-cotizado-cv">
+       		</div>
+       	</div>
+       	<div class="table-responsive">
+       		<table class="table">
+       			<thead>
+       				<tr>
+       					<th>Venta</th>
+       					<th>Fecha</th>
+       					<th>Importe</th>
+       				</tr>
+       			</thead>
+       			<tbody class="content-cuenta-cv">
+       			</tbody>
+       		</table>
+       	</div>
+       	<div class=" m-2 row conten-condi-moneda-cv">
+       		<div class="col-md-3 col-lg-2 m-2">
+       			 <label for="condicion" class="form-label">Condición</label>
+	       		<select class="condicion-cv form-select">
+	       			<option>Condición</option>
+	       		</select>
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2 cont-moneda-cv">
+       			<label for="moneda" class="form-label">Moneda</label>
+	       		<select class="form-select moneda-cv">
+	       			<option>Moneda</option>
+	       		</select>
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2 cont-cotizacion-cv">
+       			<label for="cotizacion-cv" class="form-label ">Cotización</label>
+       			<input type="text" id="cotizacion-cv" class="form-control money " readonly="readonly">
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2">
+       			<label for="importe-cv" class="form-label ">Importe</label>
+       			<input type="text" id="importe-cv" class="form-control money">
+       			<input type="hidden" id="importems">
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2">
+       			<label for="cobrado-cv" class="form-label">Cobrado</label>
+       			<input type="text" id="cobrado-cv" class="form-control money">
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2 cont-boleta-cv noMostrar">
+       			<label for="boleta-cv" class="form-label">Nro. boleta</label>
+       			<input type="text" id="boleta-cv" class="form-control ">
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2 cont-moneda-vuelto-cv">
+       			<label for="moneda-vuelto" class="form-label">Moneda Vuelto</label>
+	       		<select class="form-select moneda-vuelto-cv">
+	       			<option>Moneda Vuelto</option>
+	       		</select>
+	       	</div>
+	       	<div class="col-md-3 col-lg-2 m-2 cont-cotizacion-vuelto-cv">
+       			<label for="cotizacion-vuelto-cv" class="form-label ">Cotización vuelto</label>
+       			<input type="text" id="cotizacion-vuelto-cv" class="form-control money" readonly="readonly">
+       		</div>
+	       	<div class="col-md-3 col-lg-2 m-2 cont-vuelto-cv">
+	       		<label for="vuelto-cv" class="form-label">Vuelto</label>
+	       		<input type="hidden" id="vuelto-md-sys">
+       			<input type="text" id="vuelto-cv" class="form-control money" readonly="readonly">
+       		</div>
+       		<div class="col-md-3 col-lg-2 m-2 cont-banco noMostrar">
+       			 <label for="banco" class="form-label">Banco</label>
+	       		<select class="banco-cv form-select">
+	       			<option>Seleccionar</option>
+	       		</select>
+       		</div>
+<!--        		<div class="col-md-3 m-2"> -->
+<!--        			<label class="form-label"></label> -->
+<!--        			<button class="btn-agregar-det-cv btn btn-success">Agregar detalle</button> -->
+<!--        		</div> -->
+       		</div>
+       		<div class="col-12">
+       			<table class="table">
+       				<thead>
+       					<tr>
+       						<th>Condición</th>
+       						<th>Moneda</th>
+       						<th>Cotización</th>
+       						<th>Importe</th>
+       						<th>Cobrado</th>
+       						<th>Moneda Vuelto</th>
+       						<th>Cotizacion Vuelto</th>
+       						<th>Vuelto</th>
+       						<th></th>
+       					</tr>
+       				</thead>
+       				<tbody class="item-cobro-importe-cv">
+       					<th:block th:replace="venta/cobro/item.cobro.importe.venta"></th:block>
+       				</tbody>
+       			</table>
+       		</div>
+       	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary btn-grabar-cv">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

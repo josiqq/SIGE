@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Consorcios</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-12 ">
+                <div class="bg-light rounded h-100 p-4">
+                	<form th:action="@{/consorcios}" th:method="POST" th:object="${consorcio}">
+                		<div class="row">
+                			<div class="col-xs-12 col-md-3">
+                				<h3 class="m-2">Consorcios</h3>
+                			</div>
+	                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+	                			sec:authorize="hasRole('ROLE_FICHAS_CONSORCIOS_GUARDAR')"><i class="fa fa-save"></i>
+	            			</button>
+	                		<a th:href="@{/consorcios/buscar}" class="btn  btn-square btn-success m-2 col-md-1">
+	                			<i class="fa fa-search btn-buscar"></i>
+                			</a>
+	                		<a th:href="@{/consorcios}" class="btn btn-square btn-primary m-2 col-md-1">
+	                			<i class="fa fa-desktop btn-nuevo"></i>
+                			</a>
+                			<div class="col-md-3">
+                				<a th:href="@{/consorcios/cobrar}" class="btn btn-primary m-2">Cobrar consorcio</a>
+                			</div>
+                		</div>
+                		<th:block th:replace="mensajes/mensaje"></th:block>
+                		<div class="row">
+                			<input type="hidden" id="id" th:field="*{id}">
+                			<input type ="hidden" id="uuid" th:field="*{uuid}">
+                			<div class="col-xs-12 col-md-4 m-2">
+                				<label for ="nombre" class="col-form-label">Nombre</label>
+                				<input type="text" class="form-control" id="nombre" placeholder="Nombre" 
+                					autocomplete="off" th:field="*{nombre}" autofocus="autofocus">
+                			</div>
+                			<div class="col-xs-12 col-md-3 m-2">
+                				<label for="fechaInicio" class="col-form-label">Fecha Inicio</label>
+                				<input type="text" class="form-control date" id="fechaInicio" placeholder="día/mes/año" 
+                					autocomplete="off" th:field="*{fechaInicio}">
+                			</div>
+                			<div class="col-xs-12 col-md-3 m-2">
+                				<label for="fechaFin" class="col-form-label">Fecha Fin</label>
+                				<input type="text" class="form-control date" id="fechaFin" placeholder="día/mes/año" 
+                					autocomplete="off" th:field="*{fechaFin}">
+                			</div>
+                			<div class="col-xs-12 col-md-4 m-2">
+                				<label for ="montoMensual" class="col-form-label">Monto Mensual</label>
+                				<input type="text" class="form-control money" id="montoMensual" placeholder="Monto mensual" 
+                					autocomplete="off" th:field="*{montoMensual}" >
+                			</div>
+                			<div class="col-xs-12 col-md-2 m-2">
+                				<label for ="meses" class="col-form-label">Meses</label>
+                				<input type="text" class="form-control money" id="meses" placeholder="Meses" 
+                					autocomplete="off" th:field="*{meses}" readonly="readonly" >
+                			</div>
+                			<div class="col-xs-12 col-md-6 m-2">
+                				<label for="cliente" class="col-form-label">Cliente</label>
+            					<input type="hidden" id="idCliente">
+            					<div class="meta-conten-group">
+                					<input type="text" id="cliente" class="form-control js-cliente" placeholder="Nombre o documento" 
+                						autocomplete="off" >
+                					<a href="#" class="a-icono-agrandado js-adicionar-cliente-consorcio" title="Adicionar al detalle">
+                                		<i class="bi bi-plus-circle-fill"></i>
+                                	</a>
+                                </div>
+                			</div>
+                		</div>
+                		<div class="table-responsive">
+                			<table class="table">
+                				<thead>
+                					<tr>
+                						<th>Cliente</th>
+                						<th>Monto</th>
+                						<th>Meses</th>
+                						<th></th>
+                					</tr>
+                				</thead>
+                				<tbody class="js-item-consorcio">
+                					<th:block th:replace="consorcio/itemConsorcio"></th:block>
+                				</tbody>
+                			</table>
+                		</div>
+                	</form>
+                </div>
+            </div>
+        </div>
+	</div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/cliente/buscador.generico.cliente.js}"></script>
+	<script th:src="@{/js/meta/consorcio/consorcio.js}"></script>
+	<script th:src="@{/js/meta/consorcio/item.consorcio.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar Ajuste de Stock</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	 <div class="row">  		 
+                   <a th:href="@{/ajusteStocks}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-nuevo btn-success">nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h4 class="mb-4">Listado de ajustes de stock</h4>
+            <form  th:object="${ajusteStockFilter}">
+             	<div class="row">
+             		<div class=" row mb-3 col-md-4">
+                   		<label for="registro" class="col-form-label">Registro</label>
+                   		<div class="col-md-12"> 
+                   			<input type="text" id="registro" class="form-control"  
+                   					autofocus="autofocus" placeholder="Registro " autocomplete="off"
+                   					th:field="*{id}">
+                   		</div>
+                    </div>
+             	
+	             	<div class="mb-3 col-md-3">
+	                		<label for="fechaDesde" class="col-form-label">fecha desde</label>
+	                		<div class="col-md-12"> 
+								<input type="text" class="form-control date" id="fechaDesde" th:field="*{fechaDesde}"
+								placeholder="dia/mes/año" autocomplete="off">
+							</div>	
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+		            		<label for="fechaHasta" class="col-form-label">fecha hasta</label>
+		            		<div class="col-md-12"> 
+								<input type="text" class="form-control date" id="fechaHasta" th:field="*{fechaHasta}"
+								placeholder="dia/mes/año" autocomplete="off">
+							</div>
+	            	</div>
+            		<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+						<label for="nombrePrecio" class="col-sm-12 col-form-label">Deposito</label>
+						<select id="nombrePrecio" class="form-control js-select-deposito"
+							th:field="*{deposito}">
+							<option value="">seleccionar</option>
+							<option th:each="deposito : ${depositos}"
+								th:text="${deposito.nombre}" th:value="${deposito.id}"></option>
+						</select>
+					</div>
+      				
+            	
+	            	<div class="mb-3 col-md-12">
+	            		<button type="submit" class="btn btn-primary">Buscar</button>
+	            	</div>
+            	 </div>
+         	</form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">Id</th>
+                         <th scope="col">Depósito</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="ajusteStock:${ajusteStocks}" class="linea"  >
+                         <td scope="row" th:text="${ajusteStock.id}" ></td>
+                         <td th:text="${ajusteStock.deposito}? ${ajusteStock.deposito.nombre} : 'Sin Depósito'"></td>
+                         <td th:text="${#temporals.format(ajusteStock.fecha,'dd/MM/yyyy')}"></td>
+                         <td sec:authorize="hasRole('ROLE_STOCK_AJUSTE_STOCK_MODIFICAR')">
+								<a th:href="@{/ajusteStocks/{id}(id=${ajusteStock.id})}"
+									 class="btn-editar">
+									<i class="fa fa-pencil"></i>
+								</a>
+							</td>
+                         <td sec:authorize="hasRole('ROLE_STOCK_AJUSTE_STOCK_ELIMINAR')">
+                         	<a data:url="@{/ajusteStocks/{id}(id=${ajusteStock.id})}" class="btn-eliminar"
+                         		data:objeto="${ajusteStock.id}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                         </td>
+                     </tr>
+                      
+                     <tr th:if="${#lists.isEmpty(ajusteStocks)}">
+						<td colspan="6">Ne se encontraron ajustes</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/ajusteStock/buscarAjusteStock.js}"></script>
+</th:block>
+</html>

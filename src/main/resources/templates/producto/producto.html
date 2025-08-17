@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Productos</title>
+<link th:href="@{/css/meta/upload/css/uikit.min.css}" rel="stylesheet">
+<link th:href="@{/css/meta/upload/upload.min.css}" rel="stylesheet">
+<link th:href="@{/css/meta/upload/componente.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+
+	<div class="container-fluid pt-4 px-4">
+		<div class="row g-4 ">
+
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<form th:action="@{/productos}" th:method="POST"
+						th:object="${producto}"
+						sec:authorize="hasRole('ROLE_STOCK_PRODUCTOS_GUARDAR')"
+						id="form-producto">
+						<div class="row">
+							<div class="col-md-4">
+								<h2 th:if="!${producto.id}">Cargar Producto</h2>
+								<h2 th:if="${producto.id}">Modificar Producto -
+									[[${producto.codigo}]]</h2>
+							</div>
+							<button type="submit"
+								class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+								sec:authorize="hasRole('ROLE_STOCK_PRODUCTOS_GUARDAR')">
+								<i class="fa fa-save"></i>
+							</button>
+							<a th:href="@{/productos/buscar}"
+								class="btn  btn-square btn-success m-2 col-md-1"> <i
+								class="fa fa-search btn-buscar"></i>
+							</a> <a th:href="@{/productos}"
+								class="btn btn-square btn-primary m-2 col-md-1"> <i
+								class="fa fa-desktop btn-nuevo"></i>
+							</a> <span class="negrita col-md-3">Usuario alta:
+								[[${producto.usuario.nombre}]]</span>
+						</div>
+
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<input type="hidden" th:field="*{id}" id="id"> <input
+							type="hidden" th:field="*{uuid}" id="uuid"> <input
+							type="hidden" id="usuario" th:field="*{usuario}">
+						<div class="row">
+							<div class="mb-3 col-md-5">
+								<label for="codigo" class="col-sm-2 col-form-label">Código</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control" id="codigo"
+										autofocus="autofocus" autocomplete="off" th:field="*{codigo}"
+										data:id="${producto.id}">
+								</div>
+							</div>
+							<div class="mb-3 col-md-5">
+								<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control" id="nombre"
+										th:field="*{nombre}" autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-md-2">
+								<label for="marca" class="col-sm-2 col-form-label">Marca</label>
+								<select id="marca" class="form-control " th:field="*{marca}">
+									<option value="">seleccionar</option>
+									<option th:each="marca : ${marcas}" th:text="${marca.nombre}"
+										th:value="${marca.id}"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2">
+								<label for="gravado" class="col-sm-2 col-form-label">Gravado</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control" id="gravado"
+										th:field="*{gravado}" autocomplete="off">
+								</div>
+							</div>
+							<div class="mb-3 col-md-2">
+								<label for="porcGravado" class="col-sm-12 col-form-label">%
+									gravado</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control" id="porcGravado"
+										th:field="*{porcGravado}" autocomplete="off">
+								</div>
+							</div>
+							<div class="mb-3 col-md-2">
+								<label for="costo" class="col-sm-12 col-form-label">Costo</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control js-costo "  id="costo"
+										th:field="*{costo}" autocomplete="off" readonly>
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-2 col-xl-2">
+								<div class="col-sm-12 col-md-12 col-xl-12">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="estado"
+											th:field="*{activo}"> <label
+											class="form-check-label " for="gridCheck1"> Activo </label>
+									</div>
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-2 col-xl-2">
+
+								<div class="col-sm-12 col-md-12 col-xl-12">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="servicio"
+											th:field="*{servicio}"> <label
+											class="form-check-label " for="gridCheck1"> Servicio
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-2 col-xl-2">
+
+								<div class="col-sm-12 col-md-12 col-xl-12">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="pesable"
+											th:field="*{pesable}"> <label
+											class="form-check-label " for="gridCheck1"> Pesable </label>
+									</div>
+								</div>
+							</div>
+							<fieldset class="mb-3 col-md-3">
+								<legend class="col-form-label col-sm-12">Costo calculo</legend>
+								<div class=" row col-sm-12">
+									<div class="form-check " th:each="calculo :${costoCalculos}">
+										<input class="form-check-input js-radio-costo-calculo"
+											type="radio" name="gridRadios" id="gridRadios1"
+											th:value="${calculo}" checked th:field="*{costoCalculo}">
+										<label class="form-check-label" for="gridRadios1"
+											th:text="${calculo.descripcion}"> First radio </label>
+									</div>
+								</div>
+							</fieldset>
+							<div class="mb-3 col-md-2">
+								<label for="comision" class="col-sm-2 col-form-label">Comisión</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control  money-decimal"
+										id="comision" th:field="*{comision}" autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+								<label for="moneda" class="col-sm-12 col-form-label">Moneda</label>
+								<select id="moneda" class="form-control" th:field="*{moneda}">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2">
+								<label for="stock-minimo" class="col-sm-12 col-form-label">Stock Mínimo</label>
+								<div class="col-sm-12">
+									<input type="text" class="form-control  formato-numero"
+										id="stock-minimo" th:field="*{stockMinimo}" autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-2 col-xl-2">
+
+								<div class="col-sm-12 col-md-12 col-xl-12">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="conLote"
+											th:field="*{conLote}"> <label
+											class="form-check-label " for="gridCheck1"> Con lote
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<!-- inicio codigo alternativo -->
+								<div class="accordion accordion-flush col-md-4 "
+									id="accordionFlushExample">
+									<div class="accordion-item">
+										<h2 class="accordion-header" id="flush-headingOne">
+											<button class="accordion-button collapsed" type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#flush-collapseOne" aria-expanded="false"
+												aria-controls="flush-collapseOne">Agregar Códigos
+												Alternativos</button>
+										</h2>
+										<div id="flush-collapseOne"
+											class="accordion-collapse collapse"
+											aria-labelledby="flush-headingOne"
+											data-bs-parent="#accordionFlushExample">
+											<div class="accordion-body">
+
+												<div class="mb-3 col-md-12">
+													<label for="codigoAlternativo"
+														class="col-sm-12 col-form-label">Código Alternativo</label>
+													<div class=" input-group col-sm-12">
+														<input type="text" class="form-control"
+															id="codigoAlternativo" autocomplete="off">
+														<button
+															class="btn btn-outline-secondary js-adicionar-codigo-alternativo"
+															type="button" id="botonAgregar">
+															<i class="fas fa-plus"></i>
+														</button>
+													</div>
+												</div>
+
+												<div class="table-responsive">
+													<table class="table">
+														<thead>
+															<tr>
+																<th></th>
+																<th></th>
+															</tr>
+														</thead>
+														<tbody class="item-producto-codigo">
+															<th:block th:replace="producto/itemProductoCodigo"></th:block>
+														</tbody>
+													</table>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- fin de codigo alternativo -->
+
+
+
+
+							</div>
+							<div class="col-md-12">
+								<div class="mb-3 col-md-6">
+									<input type="hidden" th:field="*{foto}" id="foto"
+										class="in-foto"> <input type="hidden"
+										th:field="*{contentType}" id="contentType"
+										class="in-contentType"> <input type="hidden"
+										th:field="*{nuevaFoto}" class="in-nueva">
+									<div class="col-sm-12 col-md-12 col-xl-12 ">
+										<div class="form-group">
+											<label class="control-label">Foto</label>
+											<div class="js-container-foto">
+												<div id="upload-drop" class="bw-upload ">
+													<i class="glyphicon  glyphicon-cloud-upload"></i> <span>Arrastre
+														la foto aquí o </span> <a class="bw-upload-form-file">seleccione
+														<input id="upload-select" type="file"
+														accept=".jpg,.jpeg,.png" />
+													</a>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:replace="hbs/foto"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/js/uikit.min.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/upload/handlebars.min.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/upload/componente.js?ver=0.2.1}"
+		type="module"></script>
+	<script th:src="@{/js/meta/producto/producto.foto.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/producto/producto.js?ver=0.2.4}"
+		type="module"></script>
+	<script
+		th:src="@{/js/meta/producto/producto.atajo.teclado.js?ver=0.2.1}"
+		type="module"></script>
+	<script th:src="@{/js/meta/producto/item.producto.js?ver=0.2.1}"></script>
+</th:block>
+
+</html>

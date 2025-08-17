@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>buscar Cobro</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	 <div class="row">  		 
+                   <a th:href="@{/cobros}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-nuevo btn-success">nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de cobros</h6>
+            <form  th:object="${cobroFilter}">
+             	<div class="row">
+             		<div class=" row mb-3 col-md-4">
+                   		<label for="registro" class= "col-md-3 col-form-label">Registro</label> 
+                   		<div class="col-sm-12"> 
+                   			<input type="text" id="registr" class="form-control"  
+                   					autofocus="autofocus" placeholder="Registro de venta" autocomplete="off"
+                   					th:field="*{id}">
+                   		</div>
+                    </div>
+             	
+	             	<div class="mb-3 col-md-3">
+	                		<label for="fechaDesde" class= "col-md-6 col-form-label">Fecha desde</label> 
+	                		<div class="col-sm-12"> 
+								<input type="text" class="form-control date" id="fechaDesde" th:field="*{{fechaDesde}}"
+									placeholder="DD/MM/AAAA" autocomplete="off">
+							</div>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<label for="fechaHasta" class= "col-md-6 col-form-label">fecha hasta</label> 
+	            		<div class="col-sm-12"> 
+							<input type="text" class="form-control date" id="fechaHasta" th:field="*{{fechaHasta}}"
+								placeholder="DD/MM/AAAA" autocomplete="off">
+						</div> 
+	            	</div>
+            		<div class=" row mb-3 col-md-4">
+                   		<label for="limite" class= "col-md-3 col-form-label">Límite</label> 
+                   		<div class="col-sm-12"> 
+                   			<input type="text" id="limite" class="form-control"  
+                   					autofocus="autofocus" placeholder="Límite"
+                   					th:field="*{limite}">
+                   		</div>
+                    	
+            		</div>
+            	
+	            	<div class="mb-3 col-md-12">
+            			<button type="submit" class="btn btn-primary">Buscar</butto>
+	            	</div>
+             	</div>
+         	</form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">id</th>
+                         <th scope="col">Cliente</th>
+                         <th scope="col">fecha</th>
+                         <th scope="col">Total</th>
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="cobro:${cobros}" class="linea"  >
+                         <td scope="row" th:text="${cobro.id}" ></td>
+                         <td th:text="${cobro.cliente.nombre}"></td>
+                         <td th:text="${#temporals.format(cobro.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${cobro.total}" class="js-total-buscar-cobro"></td>
+                           <td >
+								<a href="#" data:id="${cobro.id}" 
+									 class="btn-imprimir">
+									<i class="fa fa-print" title="Imprimir"></i>
+								</a>
+							</td>
+                         <td sec:authorize="hasRole('ROLE_FICHAS_CONSORCIOS_MODIFICAR')">
+								<a th:href="@{/cobros/{id}(id=${cobro.id})}"
+									 class="btn-editar">
+									<i class="fa fa-pencil"></i>
+								</a>
+							</td>
+                         <td sec:authorize="hasRole('ROLE_FICHAS_CONSORCIOS_ELIMINAR')">
+                         	<a data:url="@{/cobros/{id}(id=${cobro.id})}" class="btn-eliminar"
+                         		data:objeto="${cobro.cliente.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                         </td>
+                     </tr>
+                      
+                     <tr th:if="${#lists.isEmpty(cobros)}">
+						<td colspan="6">No se encontraron cobros</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/cobro/buscar.cobro.js}"></script>
+	<script th:src="@{/js/meta/cobro/impresion.cobro.js}" type="module"></script>
+</th:block>
+</html>

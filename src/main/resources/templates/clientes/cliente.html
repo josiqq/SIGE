@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Clientes</title>
+<link th:href="@{/css/meta/upload/css/uikit.min.css}" rel="stylesheet">
+<link th:href="@{/css/meta/upload/upload.min.css}" rel="stylesheet">
+<link th:href="@{/css/meta/upload/componente.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4 ">
+		<div class="col-sm-12 col-xl-12 col-md-12">
+			<div class="bg-light rounded h-100 p-4">
+				<div class="row">
+					<a th:href="@{/clientes/buscar}" class="col-md-3 mb-6">
+						<button type="button" class="btn btn-buscar btn-success">Buscar
+						</button>
+					</a>
+				</div>
+
+				<h3 class="mb-4 col-md-12" th:if="!${cliente.id}"
+					sec:authorize="hasRole('ROLE_VENTAS_CLIENTES_GUARDAR')">Cargar
+					Nuevo cliente</h3>
+				<h3 class="mb-4 col-md-12" th:if="${cliente.id}"
+					sec:authorize="hasRole('ROLE_VENTAS_CLIENTES_GUARDAR')">Modificar
+					cliente - [[${cliente.nombre}]]</h3>
+
+
+				<form th:action="@{/clientes}" th:method="POST"
+					th:object="${cliente}"
+					sec:authorize="hasRole('ROLE_VENTAS_CLIENTES_GUARDAR')">
+
+					<div class="row">
+						<div class="col-sm-8 col-md-8 col-xl-8">
+							<div class="row">
+								<div class="alert alert-danger alert-dismissible fade show"
+									role="alert" th:if="${#fields.hasAnyErrors()}">
+									<div th:each="erro: ${#fields.detailedErrors()}">
+										<i class="fa fa-exclamation-circle me-2"></i> <span
+											th:text="${erro.message}">Mensaje de error</span>
+									</div>
+									<button type="button" class="btn-close" data-bs-dismiss="alert"
+										aria-label="Close"></button>
+								</div>
+								<div class="alert alert-primary alert-dismissible fade show"
+									role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+									<i class="fa fa-exclamation-circle me-2"></i> <span
+										th:text="${mensaje}">Mensaje de exito</span>
+									<button type="button" class="btn-close" data-bs-dismiss="alert"
+										aria-label="Close"></button>
+								</div>
+								<input type="hidden" th:field="*{id}">
+								<div class=" mb-3 col-sm-12 col-xl-12 col-md-12">
+									<label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" id="nombre"
+											th:field="*{nombre}" autofocus="autofocus" autocomplete="off">
+									</div>
+								</div>
+								<div class="mb-3 col-sm-6 col-md-6 col-xl-4 ">
+									<label for="fecha" class="col-form-label">Fecha de
+										ingreso</label> <input type="text" class="form-control js-fecha"
+										id="fecha" th:field="*{{fechaIngreso}}" autocomplete="off"
+										placeholder="dd/mm/aaaa" data-provide="datepicker"
+										data-date-format="dd/mm/yyyy" data-date-orientation="bottom"
+										data-date-language="es" data-date-today-highlight="true"
+										data-date-autoclose="true">
+								</div>
+								<div class="mb-3 col-sm-6 col-md-4 ">
+									<label for="inputPassword3" class="col-form-label">Documento</label>
+									<div class="col-md-12 col-sm-12">
+										<input type="text" class="form-control" id="inputPassword3"
+											th:field="*{documento}" autocomplete="off">
+									</div>
+								</div>
+								<div class="mb-3 col-sm-6 col-md-4 ">
+									<label for="telefono" class="col-form-label">Telefono</label>
+									<div class="col-md-12 col-sm-12">
+										<input type="text" class="form-control" id="telefono"
+											th:field="*{telefono}" autocomplete="off">
+									</div>
+								</div>
+								<div class="mb-3 col-md-4 col-sm-6">
+									<label for="tarifa" class="col-form-label">Tarifa</label>
+									<div class="col-md-12 col-sm-12">
+										<input type="text" class="form-control js-tarifa" id="tarifa"
+											th:field="*{tarifa}" autocomplete="off">
+									</div>
+								</div>
+								<div class="mb-3 col-md-4 col-sm-6">
+									<label for="saldo" class="col-form-label">Saldo</label>
+									<div class="col-md-12 col-sm-12">
+										<input type="text" class="form-control js-saldo" id="tarifa"
+											th:field="*{saldo}" autocomplete="off" readonly="true">
+									</div>
+								</div>
+
+								<div class="mb-3 col-sm-6 col-md-6 col-xl-4">
+									<label for="fecha" class="col-form-label">Fecha de
+										último pago</label> <input type="text" class="form-control js-fecha"
+										id="fecha" th:field="*{{fechaUltimoPago}}" autocomplete="off"
+										data-provide="datepicker" data-date-format="dd/mm/yyyy"
+										data-date-orientation="bottom" data-date-language="es"
+										data-date-today-highlight="true" data-date-autoclose="true"
+										readonly="true">
+								</div>
+								<div class=" mb-3 col-sm-12 col-md-3 col-lg-3">
+									<label for="precio" class="col-sm-12 col-form-label">Precio</label>
+									<select id="precio" class="form-control" th:field="*{precio}">
+										<option value="">seleccionar</option>
+										<option th:each="precio : ${precios}"
+											th:text="${precio.nombre}" th:value="${precio.id}"></option>
+									</select>
+								</div>
+								<div class="row mb-3 col-sm-6 col-md-3 col-xl-3">
+									<legend class="col-form-label col-sm-12 col-md-4 col-xl-12 pt-0">Estado</legend>
+									<div class="col-sm-12 col-md-12 col-xl-12">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												id="gridCheck1" th:field="*{activo}"> <label
+												class="form-check-label" for="gridCheck1"> Activo </label>
+										</div>
+									</div>
+								</div>
+								<div  class="col-md-12 row">
+								<div class=" col-xs-4 col-sm-3 col-md-3 col-xl-6 mb-3">
+									<button type="submit"
+										class="btn btn-primary js-guardar-cliente">Guardar</button>
+								</div>
+								<div class=" col-xs-4 col-sm-3 col-md-3 mb-3">
+									<a th:href="@{/clientes}"><button type="button"
+											class="btn btn-primary ">Nuevo</button></a>
+								</div>
+								</div>
+								
+							</div>
+						</div>
+						<div class="col-sm-4 col-md-4 col-xl-4">
+							<input type="hidden" th:field="*{foto}" class="in-foto">
+							<input type="hidden" th:field="*{contentType}"
+								class="in-contentType"> <input type="hidden"
+								th:field="*{nuevaFoto}" class="in-nueva">
+							<div class="col-sm-12 col-md-12 col-xl-12 ">
+								<div class="form-group">
+									<label class="control-label">Foto</label>
+									<div class="js-container-foto">
+										<div id="upload-drop" class="bw-upload ">
+											<i class="glyphicon  glyphicon-cloud-upload"></i> <span>Arrastre
+												la foto aqui o </span> <a class="bw-upload-form-file">seleccione
+												<input id="upload-select" type="file"
+												accept=".jpg,.jpeg,.png" />
+											</a>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+	<th:block th:replace="hbs/foto"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/js/uikit.min.js}"></script>
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/meta/upload/componente.js}" type="module"></script>
+	<script th:src="@{/js/meta/cliente/cliente.js}"></script>
+</th:block>
+</html>

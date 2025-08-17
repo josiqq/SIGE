@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	 <title>Venta mobile</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-3">
+         <div class="bg-light rounded h-100 ">
+         <form th:action="@{/ventaMobiles}" th:method="POST" th:object="${venta}">
+			<div role="tabpanel">
+		        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+		            <button class="nav-link active" id="nav-home-tab" 
+		                data-bs-toggle="tab" data-bs-target="#nav-home" type="button" 
+		                role="tab" aria-controls="nav-home" aria-selected="true">Productos
+		            </button>
+		            <button class="nav-link" id="nav-profile-tab" 
+		                data-bs-toggle="tab" data-bs-target="#nav-profile" 
+		                type="button" role="tab" aria-controls="nav-profile" 
+		                aria-selected="false">Items
+		            </button>
+		            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" 
+		                data-bs-target="#nav-contact" type="button" role="tab" 
+		                aria-controls="nav-contact" aria-selected="false">Datos de Venta
+		            </button>
+		        </div>
+		        
+		        	<input type="hidden" th:field="*{id}">
+		        	<input type="hidden" id="uuid" th:field="*{uuid}">	
+			        <div class="tab-content" id="nav-tabContent">
+			            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+			                <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+	                      		<div th:each="erro: ${#fields.detailedErrors()}">
+	                      			<i class="fa fa-exclamation-circle me-2"></i>
+					    			<span th:text="${erro.message}">Mensaje de error</span>
+					    		</div>
+	                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   			 </div>
+				    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+	                       		<i class="fa fa-exclamation-circle me-2"></i>
+	                       			<span th:text="${mensaje}">Mensaje de exito</span>
+	                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	                   		 </div>
+			                <div class="container mt-4">
+			                    <div class="input-group">
+			                      <input type="text" class="form-control" id="nobreCodigo" placeholder="Buscar por nombre o codigo" aria-label="Buscar">
+			                      <button class="btn btn-outline-secondary btn-buscar-producto" type="button">
+			                        <i class="bi bi-search"></i> 
+			                      </button>
+			                    </div>
+		                    </div>
+			                  <div class="contenedor row pt-3" id="contenedor"></div>
+			                  <!--<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>-->
+			            </div>
+			            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+			            	<div class="contenedor-total-venta-mobile col-xs-12 col-md-12">
+			            		<span class="">G$:</span><span class="total-venta-mobile money " th:text="${venta.total}"> 0</span>
+			            	</div>
+			            	<div class="row  contenedor-item-venta-mobile">
+			            		<th:block th:replace="venta/ventaMobile/itemVentaMobile"></th:block>
+		            		</div>
+		            	</div>
+		            	<div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+		            		<a th:href="@{/ventaMobiles}" class="btn btn-lg  btn-lg-square  btn-primary btn-nuevo-venta-mobile">
+		                			<i class="fa fa-desktop btn-nuevo"></i>
+                			</a>
+		            		<a th:href="@{/ventaMobiles/buscar}" class="btn btn-lg  btn-lg-square btn-success  btn-buscar-venta-mobile">
+		                			<i class="fa fa-search btn-buscar"></i>
+	                		</a>
+		            		<button type="submit" class="btn btn-lg btn-primary btn-lg-square btn-guardar-venta-mobile">
+								<i class="fa fa-save"></i>
+							</button>
+			            	<div class= "row ">
+		                		<div class=" row mb-3 col-12">
+		                            <label for="cliente" class="col-12 col-form-label">Cliente</label>
+		                            <input type="hidden" id="idCliente" th:field="*{cliente}" >
+		                            <div class="col-12">
+		                                <input type="text"  id="cliente"  
+		                                	class="form-control js-cliente col-12" 
+		                                	autocomplete="off" placeholder="Escribe el nombre o ruc"
+		                                	th:value="${venta.cliente}?${venta.cliente.nombre}:''">
+		                            </div>
+		                        </div>
+	                        
+	                        
+		                        <div class=" mb-3 col-sm-12 col-lg-2 col-md-3">
+		                            <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+		                            <div class="col-sm-10">
+		                            	
+		                                <input type="text" class="form-control date" id="fecha"  
+		                                		autocomplete="off" placeholder="dd/mm/aaaa" th:field="*{{fecha}}">
+		                            </div>
+		                        </div>
+		                        <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+	                                <label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
+									<select id="deposito" class="form-control" th:field="*{deposito}">
+										<option value="">seleccionar</option>
+										<option th:each="deposito : ${depositos}" th:text="${deposito.nombre}" 
+											th:value="${deposito.id}" ></option>
+									</select>
+	                            </div>
+	                            <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+	                                <label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
+									<select id="vendedor" class="form-control" th:field="*{vendedor}">
+										<option value="">seleccionar</option>
+										<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
+											th:value="${vendedor.id}" ></option>
+									</select>
+	                            </div>
+	                            <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+	                                <label for="precio" class="col-sm-12 col-form-label">Precio</label>
+									<select id="precio" class="form-control" th:field="*{precio}">
+										<option value="">seleccionar</option>
+										<option th:each="precio : ${precios}" th:text="${precio.nombre}" 
+											th:value="${precio.id}" ></option>
+									</select>
+	                            </div>
+	                            <div class="col-md-2">
+	                                <div class="form-check">
+	                                    <input class="form-check-input" type="checkbox" id="factura" th:field="*{factura}">
+	                                    <label class="form-check-label" for="gridCheck1">
+	                                        Factura
+	                                    </label>
+	                                </div>
+                            	</div>
+	                            <div class=" mb-3 col-md-3 ">
+									<select id="precio" class="form-control" th:field="*{condicionVenta}">
+										<option value="">seleccionar</option>
+										<option th:each="condicionVenta : ${condicionVentas}" th:text="${condicionVenta.descripcion}" 
+											th:value="${condicionVenta}"></option>
+									</select>
+	                            </div>
+	                		</div>
+		            	</div>
+			        </div>
+			        
+		        
+    		</div>
+    		</form>
+         </div>
+     </div>
+     <div class="conten-agregar-cantidad">
+     	<div class="agregar-antidad-box">
+     		<div class="conten-nombre-producto-cantidad m-1">
+     			<span class="nombre-producto-cantidad">cerveza kaiser reviro con especias</span>
+     		</div>
+     		<div class="conten-cantidad-agregar m-1">
+     			<input type="text" class="form-control money js-cantidad-agregar">
+     		</div>
+     		<div class="conten-btn-agregar-box m-1">
+     			<button type="button" class="btn btn-primary btn-agregar-cantidad-box">Agregar</button>
+     			<button type="button" class="btn btn-danger btn-cancelar-cantidad-box">Cancelar</button>
+     		</div>
+     	</div>
+     </div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/cliente/buscador.generico.cliente.js}"></script>	
+	<script th:src="@{/js/meta/venta/ventaMobile/deslizamiento.tab.mobile.js}"></script>	
+	<script th:src="@{/js/meta/venta/ventaMobile/venta.mobile.js}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/item.venta.mobile.js}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/lista.producto.venta.mobile.js}"></script>
+</th:block>
+</html>

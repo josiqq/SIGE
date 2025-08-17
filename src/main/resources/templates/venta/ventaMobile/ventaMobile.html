@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	 <title>Venta Mobile</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-3">
+         <div class="bg-light rounded h-100 p-1">
+         	<form th:action="@{/ventaMobiles}" th:method="POST" th:object="${venta}">
+         		<input type="hidden" th:field="*{id}">
+	        	<input type="hidden" id="uuid" th:field="*{uuid}">
+	        	<input type="hidden" id="moneda" th:value="${venta.moneda}?${venta.moneda.id}:''">
+	        	<input type="hidden" id="condicion" th:value="${venta.condicion}?${venta.condicion.id}:''">
+	        	<input type="hidden" id="idRetorno" th:value="${id_retorno}">
+	        	<th:block th:replace="fragmentos/mensaje.exito.error"></th:block>
+        	 <nav class="navbar navbar-expand-lg navbar-light bg-light">
+		 		 <div class="container-fluid">
+		    		<div class="container mt-2">
+	                    <div class="input-group">
+	                      <input type="text" class="form-control" id="nobreCodigo" placeholder="Buscar por nombre o codigo" aria-label="Buscar">
+	                      <button class="btn btn-outline-secondary btn-buscar-producto" type="button">
+	                        <i class="bi bi-search"></i> 
+	                      </button>
+	                    </div>
+                    </div>
+                     <div class="mt-2 contenedor-datos-cliente-venta-mobile" data-bs-toggle="modal" data-bs-target="#modal-cliente-venta-mobile">
+                    	<a href="#">
+                    		<i class="bi bi-receipt-cutoff" style="font-size: 2rem;"></i>
+                    	</a>
+                    </div>
+                    <div class="mt-2 conten-item-venta-mobile" data-bs-toggle="modal" data-bs-target="#modal-item-venta-mobile">
+                    	<a href="#">
+                    		<div class="position-relative d-inline-block">
+								<span class="position-absolute top-0 start-100 translate-middle 
+									badge rounded-pill bg-danger total-lineas-mobile" th:text="${lineas}">0</span>
+								</span>
+								<i class="bi bi-bag-fill" style="font-size: 2rem;"></i>
+							</div>
+                    	</a>
+                    </div>
+		  		 </div>
+			</nav>
+			<div class="contenedor row pt-3" id="contenedor"></div>
+			<th:block th:replace="venta/ventaMobile/modal.dato.cliente.venta.mobile"></th:block>
+			<th:block th:replace="venta/ventaMobile/modal.item.venta.mobile"></th:block>
+         	</form>
+    	</div>
+	</div>
+	<th:block th:replace="venta/ventaMobile/modal.cobro.venta.mobile"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/cliente/buscador.generico.cliente.js?ver=0.2.1}"></script>	
+	<script th:src="@{/js/meta/venta/ventaMobile/deslizamiento.tab.mobile.js?ver=0.2.1}"></script>	
+	<script th:src="@{/js/meta/venta/ventaMobile/venta.mobile.js?ver=0.2.2}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/item.venta.mobile.js?ver=0.2.2}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/lista.producto.venta.mobile.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/cobro.venta.mobile.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/buscador.condiciones.moneda.js?ver=0.2.1}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/item.cobro.importe.venta.mobile.js?ver=0.2.1}"></script>
+</th:block>
+</html>

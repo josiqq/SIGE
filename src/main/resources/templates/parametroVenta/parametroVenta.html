@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title> Parametro de ventas</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-4 px-4">
+		 <div class="row g-4">
+		 	<div class="col-sm-12 col-xl-12">
+                <div class="bg-light rounded h-100 p-4">
+                    <form th:object="${parametroVenta}" th:method="POST" th:action="@{/parametroVentas}">
+                    	<div class="row">
+	                		<div class="col-md-12">
+                				<h2>Parámetros de ventas</h2>
+		                		<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+		                			sec:authorize="hasRole('ROLE_COMPRAS_COMPRAS_GUARDAR')" title="Guardar">
+	                				<i class="fa fa-save"></i>
+	                			</button>
+                				<span class="negrita">Usuario alta:</span> <span>[[${parametroVenta.usuario.nombre}]]</span>
+	                		</div>
+                		 </div>
+				    	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                      		<div th:each="erro: ${#fields.detailedErrors()}">
+                      			<i class="fa fa-exclamation-circle me-2"></i>
+				    			<span th:text="${erro.message}">Mensaje de error</span>
+				    		</div>
+                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+			    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                       		<i class="fa fa-exclamation-circle me-2"></i>
+                       			<span th:text="${mensaje}">Mensaje de exito</span>
+                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+                    	<input type="hidden" id="id" th:field="*{id}">
+                    	<input type="hidden" id="usuario" th:field="*{usuario}">
+                    	<div class ="row">
+                        	<div class=" mb-3 col-sm-12 col-xl-4 col-md-4">
+	                            <label for="cliente" class="col-sm-12 col-form-label">Cliente</label>
+	                            <input type="hidden" id="idCliente" th:field="*{cliente}">
+	                            <div class="col-sm-10">
+	                                <input type="text"  id="cliente"  
+	                                	class="form-control js-cliente" 
+	                                	autocomplete="off" placeholder="Escribe el nombre o ruc" 
+	                                	th:value="${parametroVenta.cliente}?${parametroVenta.cliente.nombre}:''">
+	                            </div>
+	                        </div>
+                        	<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+                                <label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
+								<select id="deposito" class="form-control" th:field="*{deposito}">
+									<option value="">seleccionar</option>
+									<option th:each="deposito : ${depositos}" th:text="${deposito.nombre}" 
+										th:value="${deposito.id}" ></option>
+								</select>
+                            </div>
+                        	<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
+                                <label for="precio" class="col-sm-12 col-form-label">Precio</label>
+								<select id="precio" class="form-control" th:field="*{precio}">
+									<option value="">seleccionar</option>
+									<option th:each="precio : ${precios}" th:text="${precio.nombre}" 
+										th:value="${precio.id}" ></option>
+								</select>
+                            </div>
+                             <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+                                <label for="moneda" class="col-sm-12 col-form-label">Moneda</label>
+								<select id="moneda" class="form-control" th:field="*{moneda}">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}" 
+										th:value="${moneda.id}" ></option>
+								</select>
+                            </div>
+		                     <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+                                <label for="condicion" class="col-sm-12 col-form-label">Condición</label>
+								<select id="condicion" class="form-control" th:field="*{condicion}">
+									<option value="">seleccionar</option>
+									<option th:each="condicion : ${condiciones}" th:text="${condicion.nombre}" 
+										th:value="${condicion.id}" ></option>
+								</select>
+                            </div>
+                  			<div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="factura" th:field="*{cobroVenta}"
+                                    		 >
+                                    <label class="form-check-label" for="gridCheck1">
+                                        Cobro en venta?
+                                    </label>
+                                </div>
+                            </div>
+<!--                             <div class="col-md-3"> -->
+<!--                                 <div class="form-check"> -->
+<!--                                     <input class="form-check-input" type="checkbox" id="factura" th:field="*{cobroVentaMobile}" -->
+<!--                                     		 > -->
+<!--                                     <label class="form-check-label" for="gridCheck1"> -->
+<!--                                         Cobro en venta mobile? -->
+<!--                                     </label> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                              <div class="col-md-3"> -->
+<!--                                 <div class="form-check"> -->
+<!--                                     <input class="form-check-input" type="checkbox" id="factura" th:field="*{ticketSiete}" -->
+<!--                                     		 > -->
+<!--                                     <label class="form-check-label" for="gridCheck1"> -->
+<!--                                         Ticket de siete centimetros? -->
+<!--                                     </label> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             <div class="col-md-3"> -->
+<!--                                 <div class="form-check"> -->
+<!--                                     <input class="form-check-input" type="checkbox" id="factura" th:field="*{ticketCinco}"> -->
+<!--                                     <label class="form-check-label" for="gridCheck1"> -->
+<!--                                         Ticket de cinco centimetros? -->
+<!--                                     </label> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="factura" th:field="*{ticketGenerico}">
+                                    <label class="form-check-label" for="gridCheck1">
+                                        Ticket es genérico?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+	 </div>
+</div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/parametroVenta/auto.complete.cliente.parametro.venta.js}"></script>
+	<script th:src="@{/js/meta/parametroVenta/parametro.venta.js}"></script>
+</th:block>
+</html>

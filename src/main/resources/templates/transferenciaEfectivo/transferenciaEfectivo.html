@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5" layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<head>
+	<title>Transferencia de efectivo</title>
+</head>
+<section layout:fragment="contenido">
+
+	<div class="container-fluid pt-4 px-4">
+		<div class="row g-4">
+
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<div class="row">
+						<a th:href="@{/transferenciaEfectivos/buscar}" class="col-md-3 mb-6">
+							<button type="button" class="btn btn-buscar btn-success">Buscar
+							</button>
+						</a>
+					</div>
+					<br>
+					<h6 class="mb-4 col-md-6" th:if="!${transferenciaEfectivo.id}"
+						sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
+						Cargar Transferencia Efectivo</h6>
+					<h6 class="mb-4 col-md-6" th:if="${transferenciaEfectivo.id}"
+						sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
+						Modificar Transferencia Efectivo - [[${transferenciaEfectivo.id}]]</h6>
+					<form th:action="@{/transferenciaEfectivos}" th:method="POST" th:object="${transferenciaEfectivo}"
+						sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO_GUARDAR')">
+						<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<span th:text="${erro.message}">Mensaje de error</span>
+							</div>
+						</div>
+						<div class="alert alert-success" th:if="${!#strings.isEmpty(mensaje)}">
+							<span th:text="${mensaje}">Mensaje de exito</span>
+						</div>
+						<input type="hidden" th:field="*{id}" id="id">
+						<div>
+
+							<div class="row">
+								<div class="mb-3 col-md-4">
+									<label for="fecha" class="col-form-label">Fecha</label> <input type="text"
+										class="form-control js-fecha" id="fecha" th:field="*{{fecha}}"
+										placeholder="dd/mm/aaaa">
+								</div>
+
+
+							</div>
+							<div class="row">
+
+								<div class=" mb-3 col-md-2 ">
+									<label for="condicion" class="col-form-label">Condición</label>
+									<select id="condicion" class="form-control js-condicion" th:field="*{condicion}">
+										<option value="">seleccionar</option>
+										<option th:each="condicion : ${condiciones}" th:text="${condicion.nombre}"
+											th:value="${condicion.id}"></option>
+									</select>
+								</div>
+								<div class=" mb-3 col-md-4">
+									<label for="cuentaOrigen" class="col-form-label">Cuenta Origen</label> <select
+										id="cuentaOrigen" class="form-control js-cuentaOrigen"
+										th:field="*{cuentaOrigen}">
+										<option value="">seleccionar</option>
+										<option th:each="cuenta : ${cuentas}"
+											th:text="${cuenta.nombre}+' ('+${#numbers.formatDecimal(cuenta.saldo,1,'POINT',2,'COMMA')}+')'"
+											th:value="${cuenta.id}"
+											data:moneda="${cuenta.moneda}?${cuenta.moneda.id}:0"
+											data:cobranza="${cuenta.cajaCobranza}"></option>
+									</select>
+								</div>
+								<div class=" mb-3 col-md-4">
+									<label for="cuentaDestino" class="col-form-label">Cuenta Destino</label> <select
+										id="cuentaDestino" class="form-control js-cuentaDestino"
+										th:field="*{cuentaDestino}">
+										<option value="">seleccionar</option>
+										<option th:each="cuenta : ${cuentas}"
+											th:text="${cuenta.nombre}+' ('+${#numbers.formatDecimal(cuenta.saldo,1,'POINT',2,'COMMA')}+')'"
+											th:value="${cuenta.id}"
+											data:moneda="${cuenta.moneda}?${cuenta.moneda.id}:0"
+											data:cobranza="${cuenta.cajaCobranza}"></option>
+									</select>
+								</div>
+								<div class="mb-3 col-md-4">
+									<label for="importe" class="col-form-label">Importe</label> <input type="text"
+										class="form-control js-importe formato-numero " id="importe"
+										th:field="*{importe}" autocomplete="off">
+								</div>
+								<div class=" mb-3 col-md-3 ">
+									<label for="moneda" class="col-form-label">Moneda Origen</label>
+									<select id="moneda" class="form-control js-moneda" th:field="*{moneda}">
+										<option value="">seleccionar</option>
+										<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}"
+											th:value="${moneda.id}" data:decimales="${moneda.decimales}"></option>
+									</select>
+								</div>
+								<div class=" mb-3 col-md-3 ">
+									<label for="moneda-destino" class="col-form-label">Moneda Destino</label>
+									<select id="moneda-destino" class="form-control js-moneda" th:field="*{monedaDestino}">
+										<option value="">seleccionar</option>
+										<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}"
+											th:value="${moneda.id}" data:decimales="${moneda.decimales}"></option>
+									</select>
+								</div>
+
+							</div>
+							<div class="mb-3">
+								<label for="observacion">Observación</label>
+								<textarea type="text" class="form-control js-observacion " id="observacion"
+									th:field="*{observacion}"></textarea>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary js-btn-guardar">Guardar</button>
+						<a th:href="@{/transferenciaEfectivos}"><button type="button"
+								class="btn btn-primary">Nuevo</button></a>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/transferenciaEfectivo/transferencia.efectivo.js}" type="module"></script>
+	<script th:src="@{/js/meta/transferenciaEfectivo/transferencia.efectivo.teclado.js}" type="module"></script>
+</th:block>
+
+</html>

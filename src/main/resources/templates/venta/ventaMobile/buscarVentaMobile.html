@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	 <title>Venta Mobile</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-3">
+         <div class="bg-light rounded h-100 ">
+         	<form th:action="@{/ventaMobiles/buscar}" th:method="GET" th:object="${ventaMobileFilter}">
+         		<div class="conten-buscador-venta-mobile">
+         			<div class="col-12 p-2 box-cliente-buscador-mobile">
+         				<input type="hidden" id="idCliente" th:field="*{cliente}">
+         				<input type="text" placeholder="cliente" class="form-control js-cliente"
+         					th:value="${ventaMobileFilter.cliente} ? ${ventaMobileFilter.cliente.nombre}: ''">
+         			</div>
+         			<div class=" row col-12 p-2">
+         				<div class="col-6">
+         					<input type="text" placeholder="dia/mes/año" 
+         						class="form-control date fecha-desde-buscador-venta-mobile" th:field="*{fechaDesde}">
+         				</div>
+         				<div class="col-6 box-fecha-buscador">
+         					<input type="text" placeholder="dia/mes/año" 
+         						class="form-control date fecha-hasta-buscador-venta-mobile" th:field="*{fechaHasta}">
+         				</div>
+         			</div>
+         			<div class="col-12 p-2">
+     					<input type="text" class="form-control id-buscador-venta-mobile" th:field="*{id}" placeholder="Registro" autocomplete="off">
+     				</div>
+         			<div class="col-12 m-2">
+         				<button type="submit" class="btn btn-primary">Buscar</button>
+         			</div>
+         		</div>
+         	</form>
+         	<div class="row p-2">
+         		<div class="col-md-4  col-xs-12" th:each="venta : ${ventas}">
+         			<div class="conte-busqueda-venta-mobile p-2 ">
+         			<div class="col-12 box-cliente-busqueda-venta-mobile">
+         				<span th:text="${venta.cliente.nombre}" class="cliente-busqueda-venta-mobile"></span>
+         			</div>
+         			<div class="col-12 box-registro-busqueda-venta-mobile">
+         				<span>Registro: </span><span th:text="${venta.id}"></span>
+         			</div>
+         			<div class="row col-12 box-fecha-total-busqueda-venta-mobile">
+         				<div class="col-6 fecha-busqueda-venta-mobile">
+         					<span th:text="${#temporals.format(venta.fecha,'dd/MM/yyyy')}"></span>
+         				</div>
+         				<div class="col-6 total-busqueda-venta-mobile">
+         					<span th:text="${#numbers.formatInteger(venta.total,3,'POINT')}"></span>
+         				</div>
+         			</div>
+         			<div class="row col-12 box-modificar-eliminar-busqueda-venta-mobile">
+         				<div sec:authorize="hasRole('ROLE_VENTAS_VENTAS_MOBILE_MODIFICAR')"
+         					 class="col-4" title="Modificar">
+         					<a th:href="@{/ventaMobiles/{id} (id=${venta.id})}"><i class="fa fa-pencil"></i></a>
+         				</div>
+         				<button type="button" class=" col-4 btn-det btn-detalle-venta" data:id="${venta.id}" data-bs-toggle="modal" data-bs-target="#itemVentaModal">
+							  <i class="far fa-file-alt tooltip-test"  title="Ver detalles"></i>
+						</button>
+         				<div sec:authorize="hasRole('ROLE_VENTAS_VENTAS_MOBILE_ELIMINAR')" 
+         						class="col-4 eliminar-busqueda-venta-mobile" title="Eliminar">
+         					<a  data:url="@{/ventaMobiles/{id}(id=${venta.id})}" class="btn-eliminar"
+                         		data:objeto="${venta.cliente.nombre}"><i class="fa fa-trash"></i></a>
+         				</div>
+         			</div>
+         		</div>
+         		</div>
+         	</div>
+         </div>
+    </div>
+    <th:block th:replace="venta/modal.item.venta"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/cliente/buscador.generico.cliente.js}"></script>
+	<script th:src="@{/js/meta/venta/ventaMobile/buscador.venta.mobile.js}"></script>
+	<script th:src="@{/js/meta/venta/item.venta.buscar.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar condiciones</title>
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+         	 <div class="row">  		 
+                   <a th:href="@{/condiciones}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-buscar btn-success">nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h2 class="mb-4">Listado de condiciones</h2>
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">id</th>
+                         <th scope="col">Nombre</th>
+                         
+                         <th scope="col"></th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="condicion:${condiciones}">
+                         <th scope="row" th:text="${condicion.id}"></th>
+                         <td ><a th:href="@{/condiciones/{id}(id=${condicion.id})}" th:text="${condicion.nombre}" ></a> </td>
+                         
+                         <td sec:authorize="hasRole('ROLE_VENTAS_VENTAS_MODIFICAR')">
+							<a th:href="@{/condiciones/{id}(id=${condicion.id})}"
+								 class="btn-editar">
+								<i class="fa fa-pencil" title="Modificar"></i>
+							</a>
+						 </td>
+                         <td sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_ELIMINAR')">
+                         	<a data:url="@{/condiciones/{id}(id=${condicion.id})}" class="btn-eliminar" title="Eliminar"
+                         		data:objeto="${condicion.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                       	</td>
+                     </tr>
+                 	 <tr th:if="${#lists.isEmpty(condiciones)}">
+						<td colspan="6">Ne se encontraron registros</td>
+					</tr>
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+</html>

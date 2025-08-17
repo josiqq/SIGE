@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Ventas por Producto</title>
+ <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4 contenedor-reporte">
+         <div class="bg-light rounded h-100 p-4 ">
+        	 
+             <h3 class="mb-4 js-titulo-reporte">Ventas por Producto</h3>
+            <form  th:object="${ventaFilter}" class="js-filtros">
+             	<div class="row">
+             		<div class=" row mb-3 col-md-4">
+           				<label for="producto" class="col-form-label">Producto</label>
+           				<input type="hidden" id="idProducto" th:field="*{producto}"> 
+           				<input type="text" id="producto" class="form-control "  
+           					autofocus="autofocus" placeholder="Buscar por nombre o codigo" 
+           					th:value="${ventaFilter.producto}?${ventaFilter.producto.nombre}:''">
+             		</div>
+             	
+	             	<div class="mb-3 col-md-3">
+	                		<label for="fechaDesde" class="col-form-label">Fecha Desde</label>
+	                		<div class="col-md-12"> 
+								<input type="text" class="form-control date" id="fechaDesde" th:field="*{{fechaDesde}}"
+								placeholder="DD/MM/AAAA" autocomplete="off">
+	                		</div>	
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+		            		<label for="fechaHasta" class="col-form-label">Fecha Hasta</label>
+		            		<div class="col-md-12"> 
+								<input type="text" class="form-control date" id="fechaHasta" th:field="*{{fechaHasta}}"
+								placeholder="DD/MM/AAAA" autocomplete="off">
+							</div>
+	            	</div>
+            	
+            	
+            	
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary btn-buscar">
+	            			<i class="fa-solid fa-magnifying-glass"></i>
+	            			Buscar
+	            		</button>
+	            	</div>
+	            	
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-success js-excel-exportar">
+	            			<i class="fa-solid fa-file-excel"></i>
+	            			Excel
+	            		</button>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary js-imprimir">
+	            			<i class="fa-solid fa-print"></i>
+	            			Imprimir
+	            		</button>
+	            	</div>
+            	 </div>
+         	</form>
+             
+             <div class="table-responsive js-tabla">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                         <th scope="col">Código</th>
+                         <th scope="col">Producto</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col" class="lado-derecho">Cantidad</th>
+                         <th scope="col" class="lado-derecho">Costo</th>
+                         <th scope="col" class="lado-derecho">Total</th>
+                         <th scope="col" class="lado-derecho">Utilidad</th>
+                         </tr>
+                     </thead>
+                     <tbody class="js-venta-producto-body">
+	                     
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+<th:block th:replace="hbs/templateAutoCompleteProducto"></th:block>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/producto/buscador.generico.producto.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/jspdf.debug.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/html2canvas.min.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/total.venta.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/venta.producto.js}"></script>
+</th:block>
+</html>

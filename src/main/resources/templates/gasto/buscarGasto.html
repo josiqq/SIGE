@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>buscar</title>
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="bg-light rounded h-100 p-4">
+			<div class="row">
+				<a th:href="@{/gastos}" class="col-md-3 mb-6">
+					<button type="button" class="btn btn-success">nuevo</button>
+				</a>
+			</div>
+			<br>
+			<h6 class="mb-4">Listado de gastos</h6>
+			<h6 class="mb-4">
+				total: <span class="js-total-importe-buscar">[[${totalImporte}]]</span>
+			</h6>
+
+			<form th:object="${gastoFilter}">
+				<div class="row">
+
+					<div class="row mb-3 col-md-4">
+						<label for="proveedor" class="col-form-label">Proveedor</label> <input type="hidden"
+							id="idProveedor" th:field="*{proveedor}"> <input
+							type="text" id="proveedor" class="form-control js-proveedor"
+							autofocus="autofocus" placeholder="Buscar por nombre o documento">
+					</div>
+
+					<div class="mb-3 col-md-2">
+						<label for="fechaDesde" class="col-form-label">Fecha desde</label> <input type="text"
+							class="form-control js-fecha" id="fechaDesde"
+							th:field="*{{fechaDesde}}" autocomplete="off"
+							placeholder="dd/mm/aaaa" data-provide="datepicker"
+							data-date-format="dd/mm/yyyy" data-date-orientation="bottom"
+							data-date-language="es" data-date-today-highlight="true"
+							data-date-autoclose="true">
+					</div>
+					<div class="mb-3 col-md-2">
+						<label for="fechaHasta" class="col-form-label">fecha hasta</label> <input type="text"
+							class="form-control js-fecha" id="fechaHasta"
+							th:field="*{{fechaHasta}}" autocomplete="off"
+							placeholder="dd/mm/aaaa" data-provide="datepicker"
+							data-date-format="dd/mm/yyyy" data-date-orientation="bottom"
+							data-date-language="es" data-date-today-highlight="true"
+							data-date-autoclose="true">
+					</div>
+					<div class=" mb-3 col-md-2 ">
+						<label for="moneda-gasto" class="col-form-label">Moneda</label> <select
+							id="moneda-gasto" class="form-control js-moneda-gasto"
+							th:field="*{moneda}">
+							<option value="">seleccionar</option>
+							<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}"
+								th:value="${moneda.id}" data:decimales="${moneda.decimales}">
+							</option>
+						</select>
+					</div>
+					<div class="mb-3 col-md-12">
+						<button type="submit" class="btn btn-primary">Buscar</button>
+					</div>
+				</div>
+			</form>
+
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">id</th>
+							<th scope="col">Proveedor</th>
+							<th scope="col">Cuenta</th>
+							<th scope="col">Moneda</th>
+							<th scope="col">fecha</th>
+							<th scope="col">Importe</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr th:each="gasto:${gastos}" class="lista-gasto">
+							<th scope="row" th:text="${gasto.id}"></th>
+							<td><a th:href="@{/gastos/{id}(id=${gasto.id})}"
+								th:text="${gasto.proveedor.nombre}"></a></td>
+							<td th:text="${gasto.cuenta.nombre}"></td>
+							<td
+								th:text="${gasto.moneda}?${gasto.moneda.nombre}: 'Sin moneda'"></td>
+							<td th:text="${#temporals.format(gasto.fecha,'dd/MM/yyyy')}"></td>
+							<td th:text="${gasto.importe}" class="js-lista-gasto-importe"></td>
+							<td sec:authorize="hasRole('ROLE_FINANCIERO_GASTOS_ELIMINAR')">
+								<a data:url="@{/gastos/{id}(id=${gasto.id})}"
+								class="btn-eliminar" data:objeto="${gasto.proveedor.nombre}">
+									<i class="fa fa-trash"></i>
+							</a>
+							</td>
+						</tr>
+						<tr th:if="${#lists.isEmpty(gastos)}">
+							<td colspan="6">Ne se encontró gastos</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/gasto/auto-complete-proveedor.js}"></script>
+	<script th:src="@{/js/meta/gasto/gasto.service.js}"></script>
+</th:block>
+</html>

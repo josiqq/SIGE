@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Auditoria</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-4 px-4 contenedor-reporte">
+		 <div class="bg-light rounded h-100 p-4 ">
+		 <h6 class="js-titulo-reporte">Auditoria</h6>
+		 <!-- aqui debe iniciar el form -->
+		 <form th:object="${auditoriaFilter}" class="js-filtros">
+		 	<div class="row col-md-12 mb-2">
+		 		<div class="col-md-3">
+		 			<label class="control-label col-md-12 mediano">Tabla</label>
+		 			<select class="form-control mediano"  th:field="*{tabla}">
+			 			<option value="">seleccionar</option>
+			 			<option th:each="tabla : ${tablas}"
+			 					th:text="${tabla.descripcion}" th:value="${tabla}"></option>
+		 			</select>
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label col-md-12 mediano">Tipo</label>
+		 			<select class="form-control mediano"  th:field="*{tipo}">
+			 			<option value="">seleccionar</option>
+			 			<option th:each="tipo : ${tipos}"
+			 					th:text="${tipo.descripcion}" th:value="${tipo}"></option>
+		 			</select>
+		 		</div>
+		 		<div class="col-md-3">
+		 			<label class="control-label col-md-12 mediano">Usuario</label>
+		 			<select class="form-control mediano"  th:field="*{usuario}">
+		 			<option value="">seleccionar</option>
+		 			<option th:each="usuario : ${usuarios}"
+		 					th:text="${usuario.nombre}" th:value="${usuario.id}"></option>
+		 			</select>
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Fecha desde</label>
+		 			<input type="text" class="form-control mediano date" placeholder="dd/mm/yyyy" th:field="*{fechaDesde}"
+		 				autocomplete="off">
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Fecha Hasta</label>
+		 			<input type="text" class="form-control mediano date" placeholder="dd/mm/yyyy" th:field="*{fechaHasta}" 
+		 				autocomplete="off">
+		 		</div>
+		 	</div>
+		 	<div class="row col-md-12">
+		 		<div class="mb-3 col-md-3">
+	            		<button type="submit" class="btn btn-primary mediano">
+	            			<i class="fa-solid fa-magnifying-glass"></i>
+	            			Buscar
+	            		</button>
+	            	</div>
+	            	
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-success js-excel-exportar mediano">
+	            			<i class="fa-solid fa-file-excel"></i>
+	            			Excel
+	            		</button>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary js-imprimir mediano">
+	            			<i class="fa-solid fa-print"></i>
+	            			Imprimir
+	            		</button>
+	            	</div>
+		 	</div>
+		 	</form>
+		 	<!-- final del formulario -->
+		 	<div class="table-responsive js-tabla">
+		 		<table class="table mediano">
+		 			<thead>
+		 				<tr>
+		 					<th>Id</th>
+		 					<th>Código</th>
+		 					<th>Fecha</th>
+		 					<th>Hora</th>
+		 					<th>Producto</th>
+		 					<th>Registro</th>
+		 					<th>Tabla</th>
+		 					<th>Precio</th>
+		 					<th>Tipo</th>
+		 					<th>Usuario</th>
+		 				</tr>
+		 			</thead>
+		 			<tbody>
+		 				<tr th:each="audi : ${auditorias}">
+		 					<td th:text="${audi.id}"></td>
+		 					<td th:text="${audi.codigo}"></td>
+		 					<td th:text="${audi.fecha}"></td>
+		 					<td th:text="${audi.hora}"></td>
+		 					<td th:text="${audi.producto}"></td>
+		 					<td th:text="${audi.registro}"></td>
+		 					<td th:text="${audi.tabla}"></td>
+		 					<td th:text="${audi.precio}"></td>
+		 					<td th:text="${audi.tipo}"></td>
+		 					<td th:text="${audi.usuario}"></td>
+		 				</tr>
+		 			</tbody>
+		 		</table>
+		 	</div>
+		 </div>
+	</div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/reporte/venta/jspdf.debug.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/html2canvas.min.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/reporte/exportacion.impresion.js}"></script>
+	<script th:src="@{/js/meta/auditoria/auditoria.js}"></script>
+</th:block>
+</html>

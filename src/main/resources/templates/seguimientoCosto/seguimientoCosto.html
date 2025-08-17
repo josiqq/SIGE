@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Seguimiento de Costo</title>
+	<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	<link th:href="@{/css/easy-autocomplete.themes.min.css}">
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+      <div class="bg-light rounded h-100 p-4">
+           <h6 class="mb-4">Seguimiento de Costo</h6>
+             <form  th:object="${seguimientoCostoFilter}">
+             		<div class="row">
+             	
+             			<div class=" row mb-3 col-md-4">
+                   		<label for="producto">Producto</label>
+                   		<input type="hidden" id="idProducto" th:field="*{producto}"> 
+                   		<input type="text" id="producto" class="form-control "  
+                   					autofocus="autofocus" placeholder="Buscar por nombre o codigo" 
+                   					th:value="${seguimientoCostoFilter.producto}?${seguimientoCostoFilter.producto.nombre}:''">
+                   		</div>
+             	
+             	<div class="mb-3 col-md-2">
+                		<label for="fechaDesde">Fecha Desde</label> 
+						<input type="text" class="form-control  date js-fecha-desde" id="fechaDesde" th:field="*{{fechaDesde}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" >
+            	</div>
+            	<div class="mb-3 col-md-2">
+	            		<label for="fechaHasta">Fecha Hasta</label> 
+						<input type="text" class="form-control date js-fecha-hasta" id="fechaHasta" th:field="*{{fechaHasta}}"
+								autocomplete="off" placeholder="dd/mm/aaaa">
+            	</div>
+            	
+            	<div class="mb-3 col-md-12">
+            		<button type="submit" class="btn btn-primary">Buscar</button>
+            	</div>
+             </div>
+             </form>
+             
+              
+             <div class="contenido-tabla table-responsive">
+                 <table class="table table-bordered" id="tb-seguimiento-costo">
+                     <thead>
+                         <tr>
+                         <th>ID</th>
+                         <th>Registro</th>
+                         <th>Producto</th>
+                         <th>Observacion</th>
+                         <th>Fecha</th>
+                         <th>Cantidad Actual</th>
+                         <th>Costo Actual</th>
+                         <th>Cantidad Comprada</th>
+                         <th>Precio de Compra</th>
+                         <th>Sumatoria Costo Actual</th>
+                         <th>Sumatoria Costo Compra</th>
+                         <th>Costo Total</th>
+                         <th>Cantidad Total</th>
+                         <th>Costo Calculo</th>
+                         
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="seguimientoCosto : ${seguimientoCostos}" class="tabla-seguimiento-costo">
+                         <td th:text="${seguimientoCosto.id}"></td>
+                         <td th:text="${seguimientoCosto.registro}"></td>
+                         <td th:text="${seguimientoCosto.producto.nombre}"></td>
+                         <td th:text="${seguimientoCosto.observacion}"></td>
+                         <td th:text="${#temporals.format(seguimientoCosto.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${seguimientoCosto.cantidadActual}" class="cantidad-actual"></td>
+                         <td th:text="${seguimientoCosto.costoActual}" class="costo-actual"></td>
+                         <td th:text="${seguimientoCosto.cantidadCompra}" class="cantidad-compra"></td>
+                         <td th:text="${seguimientoCosto.precioCompra}" class="precio-compra"></td>
+                         <td th:text="${seguimientoCosto.sumatoriaActual}" class="sumatoria-actual"></td>
+                         <td th:text="${seguimientoCosto.sumatoriaCompra}" class="sumatoria-compra"></td>
+                         <td th:text="${seguimientoCosto.costoTotal}" class="costo-total"></td>
+                         <td th:text="${seguimientoCosto.cantidadTotal}" class="cantidad-total"></td>
+                         <td th:text="${seguimientoCosto.costoCalculo}" class="costo-calculo"></td>
+                         
+                     </tr>
+                     <tr th:if="${#lists.isEmpty(seguimientoCostos)}">
+						<td colspan="6">No se encontraron datos</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+	<th:block th:replace="hbs/templateAutoCompleteProducto"></th:block>
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/seguimientoCosto/seguimiento.costo.js}"></script>
+	<script th:src="@{/js/meta/seguimientoCosto/seguimiento.costo.tabla.js}"></script>
+</th:block>
+</html>

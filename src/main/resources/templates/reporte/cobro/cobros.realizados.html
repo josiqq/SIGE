@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Cobros Realizados</title>
+</head>
+<section layout:fragment="contenido" >
+	<div class="container-fluid pt-4 px-4 contenedor-reporte">
+		 <div class="bg-light rounded h-100 p-4 ">
+		 <h6 class="js-titulo-reporte">Cobros Realizados</h6>
+		 <!-- aqui debe iniciar el form -->
+		 <div class="js-filtros">
+		 	<div class="row col-md-12 mb-2">
+		 		<div class="col-md-3">
+		 			<label class="control-label col-md-12 mediano">Registro</label>
+		 			<input type="text"  class = "form-control mediano"  id="registro" placeholder="cobro" autocomplete="off" >
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Fecha Desde</label>
+		 			<input type="text" class="form-control mediano date" placeholder="dd/mm/yyyy" 
+		 				autocomplete="off" id="fechaDesde">
+		 		</div>
+		 		<div class="col-md-2">
+		 			<label class="control-label mediano">Fecha Hasta</label>
+		 			<input type="text" class="form-control mediano date" placeholder="dd/mm/yyyy"  
+		 				autocomplete="off" id="fechaHasta">
+		 		</div>
+		 	</div>
+		 	<div class="row col-md-12">
+		 		<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary mediano btn-buscar">
+	            			<i class="fa-solid fa-magnifying-glass"></i>
+	            			Buscar
+	            		</button>
+	            	</div>
+	            	
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-success js-excel-exportar mediano">
+	            			<i class="fa-solid fa-file-excel"></i>
+	            			Excel
+	            		</button>
+	            	</div>
+	            	<div class="mb-3 col-md-3">
+	            		<button type="button" class="btn btn-primary js-imprimir mediano">
+	            			<i class="fa-solid fa-print"></i>
+	            			Imprimir
+	            		</button>
+	            	</div>
+		 	</div>
+		 	</div>
+		 	<!-- final del formulario -->
+		 	<div class="table-responsive js-tabla">
+		 		<table class="table mediano tabla-general">
+		 			<thead class="head-tabla-cobros">
+		 				
+		 			</thead>
+		 			<tbody class="body-tabla-cobros">
+		 				
+		 			</tbody>
+		 		</table>
+		 	</div>
+		 </div>
+	</div>
+</section>
+<th:block  layout:fragment="javascript-extra">
+	
+	<script th:src="@{/js/meta/reporte/venta/jspdf.debug.js}"></script>
+	<script th:src="@{/js/meta/reporte/venta/html2canvas.min.js}"></script>
+	<script th:src="@{/js/jquery.table2excel.js}"></script>
+	<script th:src="@{/js/meta/reporte/exportacion.impresion.js}"></script>
+	<script th:src="@{/js/meta/reporte/cobro/reporte.cobros.realizados.js}" type="module"></script>
+</th:block>
+</html>

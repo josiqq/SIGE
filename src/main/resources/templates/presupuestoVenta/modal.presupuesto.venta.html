@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5" xmlns:data="http://www.thymeleaf.org/extras/data">
+<!-- Modal -->
+<div class="modal fade" id="modal-lista-presupuesto-venta" tabindex="-1" aria-labelledby="modal-lista-presupuesto-ventaLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modal-lista-presupuesto-ventaLabel">Listado de Presupuestos</h5>
+
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-3">
+						<label  class="control-label mediano">Fecha Desde</label>
+						<input type="text" class="form-control mediano date" id="fecha-desde-presu" placeholder="dd/mm/aaaa"
+							autocomplete="off">
+					</div>
+					<div class="col-md-3">
+						<label  class="control-label mediano">Fecha Hasta</label>
+						<input type="text" class="form-control mediano date" id="fecha-hasta-presu" placeholder="dd/mm/aaaa"
+							autocomplete="off">
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6">
+						<div class="col-md-12">
+							<label for="vendedor" class="control-label mediano">Vendedor</label>
+						</div>	
+						<div class="row col-md-12">
+							<div class="col-md-6 mb-2">
+								<select id="vendedor-presu" class="form-control mediano">
+									<option value="">seleccionar</option>
+									<option th:each="vendedor : ${vendedores}"
+										th:text="${vendedor.nombre}"  th:value="${vendedor.id}"
+										data:supervisor=${vendedor.supervisor}></option>
+								</select>
+							</div>
+							<div class="col-md-6">
+								<button class="btn btn-primary btn-modal-buscar-pres mediano" type="button" >Buscar</button>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+				<div class="table-responsive tabla-lista-presu">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Fecha</th>
+								<th>Moneda</th>
+								<th>Cliente</th>
+								<th>Total</th>
+							</tr>
+						</thead>
+						<tbody class="tbody-lista-presu">
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="conten-cargando noMostrar">
+					<div class="loadingio-spinner-spinner-ze2vfonbzg"><div class="ldio-7p1h09gd14f">
+							<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+							<div></div><div></div><div></div><div></div></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+</html>

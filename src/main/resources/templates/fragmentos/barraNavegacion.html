@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5">
+
+<div class="container-xxl position-relative bg-white d-flex p-0 contenedor-general-reviro ">
+	<div th:fragment="barraNavegacion" id="barraNavegacion">
+
+		<!-- Spinner Start -->
+		<div id="spinner"
+			class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+			<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+				<span class="sr-only">Cargando...</span>
+			</div>
+		</div>
+		<!-- Spinner End -->
+
+		<div class="sidebar pe-4 pb-3">
+			<nav class="navbar bg-light navbar-light">
+				<a th:href="@{/}" class="navbar-brand mx-4 mb-3">
+				<!--<h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>SIGE</h3> -->
+					<img alt="" th:src="@{/img/Logosinfondo.png}" width="200" height="200">
+				</a>
+
+				<div class="d-flex align-items-center ms-4 mb-4">
+					<div class="ms-3">
+						<h6 class="mb-0">Usuario:</h6>
+					</div>
+					<div class="ms-3">
+						<h6 class="mb-0" th:text="${#authentication.name}"></h6>
+						<input type="hidden"  id="js-id-vendedor-usuario-principal"  
+								th:value="${#authentication.principal.usuario.vendedor}?${#authentication.principal.usuario.vendedor.id}:''">
+					</div>
+				</div>
+
+				<div class="navbar-nav w-100">
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_CONFIGURACION')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+								class="fa fa-gear me-2"></i>Configuración</a>
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/parametros/1}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CONFIGURACION_PARAMETRO')">Parámetros</a>
+							<a th:href="@{/parametroVentas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CONFIGURACION_PARAMETRO_VENTA')">Parámetros de venta</a>
+							<a th:href="@{/parametroCompras}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CONFIGURACION_PARAMETRO_COMPRA')">Parámetros de Compra</a>
+								<a th:href="@{/licencias/actualizar}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CONFIGURACION_ACTUALIZAR_LICENCIA')">Actualizar Licencia</a>
+						</div>
+					</div>
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_CREDENCIALES')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+								class="fa fa-users me-2"></i>Credenciales</a>
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/usuarios}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CREDENCIALES_USUARIOS')">Usuarios</a>
+							<a th:href="@{/grupos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CREDENCIALES_GRUPOS')">Grupos</a>
+							<a th:href="@{/usuarios/buscar/{nombre}(nombre = ${#authentication.name})}"
+								class="dropdown-item"
+								sec:authorize="hasRole('ROLE_CREDENCIALES_CAMBIAR_PASSWORD')">Cambiar contraseña</a>
+						</div>
+					</div>
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_FICHAS')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+								class="fa fa-laptop me-2"></i>Fichas</a>
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/stock}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FICHAS_RECALCULAR_STOCK')">Recalcular stock</a>
+							<a th:href="@{/instructores}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FICHAS_INSTRUCTORES')">Instructores</a>
+							<a th:href="@{/clasegrupales}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FICHAS_CLASES_GRUPALES')">Clases grupales</a>
+							<a th:href="@{/agendas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FICHAS_AGENDAR_CITAS')">Agendar Citas</a>
+							<a th:href="@{/consorcios}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FICHAS_CONSORCIOS')">Consorcios</a>
+							<a th:href="@{/movimiento-vendedor/recalcular/movimiento}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FICHAS_RECALCULAR_MOVIMIETO_VENDEDOR')">
+								Recalcular movimiento vendedor</a>
+						</div>
+					</div>
+					
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_STOCK')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+								class="fa fa-cubes me-2"></i>Stock</a>
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/productos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_PRODUCTOS')">Productos</a>
+							<a th:href="@{/ajusteStocks}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_AJUSTE_STOCK')">Ajuste de stock</a>
+							<a th:href="@{/marcas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_MARCAS')">Marcas</a>
+							<a th:href="@{/depositos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_DEPOSITOS')">Depositos</a>
+							<a th:href="@{/productos/listaProductos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_LISTA_PRODUCTO')">Lista de productos</a>
+							<a th:href="@{/transferencia-stock}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_TRANSFERENCIA_STOCK')">Transferencia de stock</a>
+							<a th:href="@{/ajuste-lote}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_STOCK_AJUSTE_LOTE')">Ajuste de lotes</a>
+						</div>
+					</div>
+
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_FINANCIERO')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+							<i class="fa fa-university me-2"></i>Financiero</a>
+
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/condiciones}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_CAJEROS')">Condiciones</a>
+								<a th:href="@{/bancos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_BANCOS')">Bancos</a>
+							<a th:href="@{/cajeros}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_CAJEROS')">Cajeros</a>
+							<a th:href="@{/cuentas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS')">Cuentas</a>
+							<a th:href="@{/membresias}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_MEMBRESIAS')">Membresías</a>
+							<a th:href="@{/cobroServicios}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_COBRO_SERVICIOS')">Cobrar Servicios</a>
+							<a th:href="@{/gastos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_GASTOS')">Gastos</a>
+							<a th:href="@{/pagoInstructores}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PAGO_INSTRUCTOR')">Pagos a Instructores</a>
+							<a th:href="@{/pagoVendedores}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PAGO_VENDEDORES')">Pagos a Vendedores</a>
+							<a th:href="@{/transferenciaEfectivos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_TRANSFERENCIA_EFECTIVO')">Transferencia de
+								efectivo</a>
+							<a th:href="@{/anticipoClientes}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_ANTICIPO_CLIENTE')">Anticipo de clientes</a>
+							<a th:href="@{/cobros}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_COBRO_CLIENTE')">Cobros a clientes</a>
+							<a th:href="@{/pagos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PAGO_PROVEEDOR')">Pago a proveedores</a>
+							<a th:href="@{/monedas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_MONEDAS')">Monedas</a>
+							<a th:href="@{/cotizaciones}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_COTIZACION')">Cotizaciones</a>
+							<a th:href="@{/planillas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PLANILLA')">Apertura de planilla</a>
+								<a th:href="@{/planillas/cierre}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_FINANCIERO_PLANILLA')">Cierre de planilla</a>
+							
+						</div>
+					</div>
+
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_VENTAS')">
+						
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+							<i class="fa fa-credit-card-alt  me-2"></i>Ventas
+						</a>
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/ventas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_VENTAS')">Ventas</a>
+							<a th:href="@{/ventaMobiles}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_VENTAS_MOBILE')">Ventas mobile</a>
+							<a th:href="@{/timbrados}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_TIMBRADOS')">Timbrados</a>
+							<a th:href="@{/clientes}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_CLIENTES')">Clientes</a>
+							<a th:href="@{/vendedores}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_VENDEDORES')">Vendedores</a>
+							<a th:href="@{/precios}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_PRECIOS')">Precios</a>
+							<a th:href="@{/ajustePrecios}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_VENTAS_AJUSTE_PRECIO')">Ajuste de precio</a>
+							<a th:href="@{/ventas/notaCreditoVentas}" class="dropdown-item"
+							sec:authorize="hasRole('ROLE_VENTAS_NOTA_CREDITO')">Nota de crédito</a>
+							<a th:href="@{/presupuestoVentas}" class="dropdown-item"
+							sec:authorize="hasRole('ROLE_VENTAS_PRESUPUESTO_VENTAS')">Presupuesto de ventas</a>
+						</div>
+						
+					</div>
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_COMPRAS')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+							<i class="fa fa-credit-card-alt  me-2"></i>Compras</a>
+
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/proveedores}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES')">Proveedores</a>
+							<a th:href="@{/compras}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_COMPRAS_COMPRAS')">Compras</a>
+							<a th:href="@{/presupuestoCompras}" class="dropdown-item"
+							sec:authorize="hasRole('ROLE_COMPRAS_PRESUPUESTO_COMPRAS')">Presupuesto de compras</a>
+						</div>
+					</div>
+					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_REPORTES')">
+						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+							<i class="far fa-file-alt me-2"></i>Reportes</a>
+						<div class="dropdown-menu bg-transparent border-0">
+							<a th:href="@{/moras}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_MORA_CLIENTES')">Mora de Clientes</a>
+							<a th:href="@{/movInstructores}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_EXTRACTO_INSTRUCTOR')">Extracto de
+								Instructores</a>
+							<a th:href="@{/extractoProducto}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_EXTRACTO_PRODUCTO')">Extracto de Producto</a>
+							<a th:href="@{/seguimientoCostos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_SEGUIMIENTO_COSTO')">Seguimiento de costos</a>
+							<a th:href="@{/ventas/totalesVentas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_TOTALES_VENTAS')">Totales de ventas</a>
+							<a th:href="@{/reporteVenta/ventaPorProductos}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_VENTAS_POR_PRODUCTO')">Venta por productos</a>
+							<a th:href="@{/reporteStock/inventario}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_INVENTARIO')">Inventario</a>
+							<a th:href="@{/reporteStock/stockValorizado}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_STOCK_VALORIZADO')">Stock valorizado</a>
+							<a th:href="@{/reportePrecio/preciosMobile}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_VENTAS_POR_PRODUCTO')">Lista de precios Mobile</a>
+							<a th:href="@{/reporte/cuentas/cuentasPorCobrar}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_CUENTAS_POR_COBRAR')">Cuentas por cobrar</a>
+							<a th:href="@{/reportes/cuentasPorPagar/cuentas}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_CUENTAS_POR_PAGAR')">Cuentas por pagar</a>
+							<a th:href="@{/reporteCobro/arqueoCaja}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_ARQUEO_CAJA')">Arqueo de caja</a>
+							<a th:href="@{/reporteVenta/venta/vendedor/comision}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_VENTA_POR_VENDEDOR_COMISION')">
+								Venta por vendedor comisión</a>
+							<a th:href="@{/reportePrecio/buscar}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_LISTADO_AJUSTE_PRECIO')">
+								Listado de ajustes de precios</a>
+							<a th:href="@{/auditorias}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_AUDITORIA')">Auditoria</a>
+							<a th:href="@{/reporteCobro/cobros-realizados}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_COBROS_REALIZADOS')">
+								Cobros realizados</a>
+							<a th:href="@{/movimiento-vendedor/extracto}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_EXTRACTO_VENDEDORES')">
+								Extracto de vendedores</a>
+							<a th:href="@{/lotes/buscar}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_MOVIMIENTO_LOTE')">
+								Movimiento de lotes</a>
+							<a th:href="@{/lotes/listado}" class="dropdown-item"
+								sec:authorize="hasRole('ROLE_REPORTES_LISTADO_LOTE')">
+								Listado de lotes</a>
+						</div>
+					</div>
+					
+					<div class="p-4">
+						<span> version: 2025.08.15-RELEASE</span>
+					</div>
+					
+<!-- 					<div class="nav-item dropdown" sec:authorize="hasRole('ROLE_DEPORTES')"> -->
+<!-- 						<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i -->
+<!-- 								class="fa fa-users me-2"></i>Deportes</a> -->
+<!-- 						<div class="dropdown-menu bg-transparent border-0"> -->
+<!-- 							<a th:href="@{/equipos}" class="dropdown-item" -->
+<!-- 								sec:authorize="hasRole('ROLE_DEPORTES_EQUIPOS')">Equipos</a> -->
+<!-- 							<a th:href="@{/marcaciones}" class="dropdown-item" -->
+<!-- 								sec:authorize="hasRole('ROLE_DEPORTES_MARCACIONES')">Marcaciones</a> -->
+<!-- 							<a th:href="@{/exhibirMarcaciones}" class="dropdown-item" -->
+<!-- 								sec:authorize="hasRole('ROLE_DEPORTES_EXHIBIR_MARCACIONES')">Exhibir marcaciones</a> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+				</div>
+			</nav>
+		</div>
+
+
+		<!-- Content Start -->
+		<div class="content">
+			<!-- Navbar Start -->
+			<nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+				<a th:href="@{/}" class="navbar-brand d-flex d-lg-none me-4">
+					<h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+				</a>
+				<a href="#" class="sidebar-toggler flex-shrink-0">
+					<i class="fa fa-bars"></i>
+				</a>
+
+				<div class="navbar-nav align-items-center ms-auto">
+					<span class="js-empresa"></span>
+					<input type="hidden" class="js-titulo-hidden">
+				</div>
+				<div class="navbar-nav align-items-center ms-auto" sec:authorize="hasRole('ROLE_STOCK_LISTA_PRODUCTO')">
+					<a data-bs-toggle="modal" data-bs-target="#modal-producto" href="#" class="js-buscar-producto-btn">
+						 <i class="fa fa-box-open"  ></i>
+					</a>
+				</div>
+				<div class="nav-item dropdown  ms-auto">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        	<span class="icono-contenedor">
+                            	<i class="fa fa-bell me-lg-2 icono-campana"></i>
+                            </span>
+                            <span class="d-none d-lg-inline-flex">Notificaciones</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0 js-lista-notificaciones">
+                           
+                            
+                        </div>
+                    </div>
+				<div class="navbar-nav align-items-center ms-auto">
+					<a th:href="@{/logout}" class="btn btn-danger">
+
+						<i class="fa fa-sign-in"></i>
+					</a>
+				</div>
+				
+			</nav>
+			<section class="contenido" layout:fragment="contenido">
+				
+			</section>
+		</div>
+	</div>
+	
+		
+	
+</div>
+
+
+</html>

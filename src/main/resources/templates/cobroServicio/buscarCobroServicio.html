@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>buscar</title>
+	<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+    <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+<div class="container-fluid pt-4 px-4">
+         <div class="bg-light rounded h-100 p-4">
+        	 <div class="row">  		 
+                   <a th:href="@{/cobroServicios}" class="col-md-3 mb-6">
+	                    <button type="button" class="btn btn-success">nuevo</button>
+                    </a>
+              </div>
+              <br>
+             <h6 class="mb-4">Listado de Cobros de servicios</h6>
+             <h6 class="mb-4">total: <span class="money-entero" >[[${total}]]</span></h6>
+             
+             <form  th:object="${cobroServicioFilter}">
+             <div class="row">
+             	
+             	<div class=" row mb-3 col-md-4">
+                   		<label for="cliente">Cliente</label>
+                   		<input type="hidden" id="idCliente" th:field="*{cliente}"> 
+                   		<input type="text" id="cliente" class="form-control js-cliente"  
+                   					autofocus="autofocus" placeholder="Buscar por nombre o documento" 
+                   					th:value="${cobroServicioFilter.cliente}?${cobroServicioFilter.cliente.nombre}:''">
+                   </div>
+             	
+             	<div class="mb-3 col-md-2">
+                		<label for="fechaDesde">Fecha desde</label> 
+						<input type="text" class="form-control  date js-fecha-desde" id="fechaDesde" th:field="*{{fechaDesde}}"
+								autocomplete="off" placeholder="dd/mm/aaaa" >
+            	</div>
+            	<div class="mb-3 col-md-2">
+	            		<label for="fechaHasta">fecha hasta</label> 
+						<input type="text" class="form-control date js-fecha-hasta" id="fechaHasta" th:field="*{{fechaHasta}}"
+								autocomplete="off" placeholder="dd/mm/aaaa">
+            	</div>
+            	<div class=" mb-3 col-md-3">
+                                <label for="cuenta">Vendedores</label>
+								<select id="cuenta" class="form-control js-cuenta" th:field="*{vendedor}">
+									<option value="">seleccionar</option>
+									<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
+										th:value="${vendedor.id}" ></option>
+								</select>
+                            </div>
+            	
+            	
+            	<div class="mb-3 col-md-12">
+            		<button type="submit" class="btn btn-primary">Buscar</button>
+            	</div>
+             </div>
+             </form>
+             
+             <div class="table-responsive">
+                 <table class="table">
+                     <thead>
+                         <tr>
+                            <th scope="col">id</th>
+                         <th scope="col">Cliente</th>
+                         <th scope="col">Cuenta</th>
+                         <th scope="col">Vendedor</th>
+                         <th scope="col">Observación</th>
+                         <th scope="col">fecha</th>
+                         <th scope="col">Importe</th>
+                         <th scope="col"></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         
+                     <tr th:each="cobroServicio:${cobroServicios}">
+                         <th scope="row" th:text="${cobroServicio.id}"></th>
+                         <td ><a th:href="@{/cobroServicios/{id}(id=${cobroServicio.id})}" th:text="${cobroServicio.cliente.nombre}" ></a> </td>
+                         <td th:text="${cobroServicio.cuenta.nombre}"></td>
+                         <td th:text="${cobroServicio.vendedor}==null ? 'Sin vendedor': ${cobroServicio.vendedor.nombre}"></td>
+                         <td th:text="${cobroServicio.observacion}"></td>
+                         <td th:text="${#temporals.format(cobroServicio.fecha,'dd/MM/yyyy')}"></td>
+                         <td th:text="${#numbers.formatInteger(cobroServicio.importe,3,'POINT')}" class="js-entero"></td>
+                         <td sec:authorize="hasRole('ROLE_FINANCIERO_COBRO_SERVICIO_ELIMINAR')">
+                         	<a data:url="@{/cobroServicios/{id}(id=${cobroServicio.id})}" class="btn-eliminar"
+                         		data:objeto="${cobroServicio.cliente.nombre}" >
+	                         	<i class="fa fa-trash"></i>
+                        	</a>
+                         </td>
+                     </tr>
+                     <tr th:if="${#lists.isEmpty(cobroServicios)}">
+						<td colspan="6">Ne se encontraron cobros</td>
+					</tr>
+                 		
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+
+
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/cobroServicio/auto.complete.cobro.servicio.js}"></script>
+	<script th:src="@{/js/meta/cobroServicio/cobro.servicio.js}"></script>
+</th:block>
+</html>

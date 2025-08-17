@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+	<body>
+		<div class="modal fade" id="modal-cargar-proveedor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Cargar nuevo Proveedor</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		       	<form th:action="@{/provedores}" th:method="POST">
+					<div class="alert alert-danger alert-dismissible fade noMostrar box-ms-error-modal-proveedor" role="alert" >
+                    	<div class="ms-error-modal-proveedor" >
+                     			
+			    		</div>
+                 	</div>
+					<div class="row">
+	            		<div class="col-sm-12 col-md-12 col-xl-12">
+	            			<div class="row">
+		            					                   		
+		                   		<div class=" mb-3 col-sm-12 col-xl-12 col-md-12">
+		                            <label for="nombre-proveedor-modal" class="col-sm-2 col-form-label">Nombre</label>
+		                            <div class="col-sm-10">
+		                                <input type="text" class="form-control" id="nombre-proveedor-modal"  autofocus="autofocus"
+		                                autocomplete="off">
+		                            </div>
+		                        </div>
+		                       
+		                    	<div class="mb-3 col-sm-6 col-md-4 ">
+		                            <label for="documento-proveedor-modal" class="col-form-label">Documento</label>
+		                            <div class="col-md-12 col-sm-12">
+		                                <input type="text" class="form-control" id="documento-proveedor-modal"  autocomplete="off">
+		                            </div>
+		                        </div>
+		                        
+	            			</div>
+	            		</div>
+	            		
+					</div>
+            </form>
+		      </div>
+		      <div class="modal-footer">
+		      <button type="button" class="btn btn-primary btn-guardar-modal-proveedor" >Guardar</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+		        
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</body>
+</html>

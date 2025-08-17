@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+
+<title>Gastos</title>
+<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+<link th:href="@{/css/easy-autocomplete.themes.min.css}"
+	rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+
+	<div class="container-fluid pt-4 px-4">
+		<div class="row g-4">
+
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<div class="row">
+						<a th:href="@{/gastos/buscar}" class="col-md-3 mb-6">
+							<button type="button" class="btn btn-buscar btn-success">Buscar
+							</button>
+						</a>
+					</div>
+					<br>
+					<h6 class="mb-4 col-md-6" th:if="!${gasto.id}"
+						sec:authorize="hasRole('ROLE_FINANCIERO_GASTOS_GUARDAR')">Cargar
+						Nuevo Gasto</h6>
+					<h6 class="mb-4 col-md-6" th:if="${gasto.id}"
+						sec:authorize="hasRole('ROLE_FINANCIERO_GASTOS_GUARDAR')">Modificar
+						gasto al Proveedor - [[${gasto.proveedor.nombre}]]</h6>
+					<form th:action="@{/gastos}" th:method="POST" th:object="${gasto}"
+						sec:authorize="hasRole('ROLE_FINANCIERO_GASTOS_GUARDAR')">
+						<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<span th:text="${erro.message}">Mensaje de error</span>
+							</div>
+						</div>
+						<div class="alert alert-success"
+							th:if="${!#strings.isEmpty(mensaje)}">
+							<span th:text="${mensaje}">Mensaje de exito</span>
+						</div>
+
+						<input type="hidden" th:field="*{id}" id="id">
+
+						<div class="row mb-3">
+							<label for="proveedor">Proveedor</label> <input type="hidden"
+								id="idProveedor" th:field="*{proveedor}"> <input
+								type="text" id="proveedor" class="form-control js-proveedor"
+								autofocus="autofocus"
+								placeholder="Buscar por nombre o documento"
+								th:value=" ${gasto.id}?${gasto.proveedor.nombre}:''">
+						</div>
+						<div class="row">
+							<div class="mb-3 col-md-3">
+								<label for="factura" class="col-form-label">Nro. de
+									factura</label> <input type="text" class="form-control js-factura "
+									th:field="*{factura}" autocomplete="off">
+							</div>
+
+							<div class="mb-3 col-md-3">
+								<label for="fecha " class="col-form-label">Fecha</label> <input
+									type="text" class="form-control js-fecha" id="fecha"
+									th:field="*{{fecha}}" autocomplete="off"
+									placeholder="dd/mm/aaaa" data-provide="datepicker"
+									data-date-format="dd/mm/yyyy" data-date-orientation="bottom"
+									data-date-language="es" data-date-today-highlight="true"
+									data-date-autoclose="true">
+							</div>
+							<div class=" mb-3 col-md-3 ">
+								<label for="moneda-gasto" class="col-form-label">Moneda</label>
+								<select id="moneda-gasto" class="form-control js-moneda-gasto"
+									th:field="*{moneda}">
+									<option value="">seleccionar</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"
+										data:decimales="${moneda.decimales}"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-md-2 ">
+								<label for="condicion" class="col-form-label">Condicion</label>
+								<select id="condicion" class="form-control js-condicion" th:field="*{condicion}">
+									<option value="">seleccionar</option>
+									<option th:each="condicion : ${condiciones}"
+										th:text="${condicion.nombre}" th:value="${condicion.id}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="row">
+							<div class="mb-3 col-sm-5">
+								<label for="cuenta">Cuenta</label> <select id="cuenta"
+									class="form-control js-cuenta" th:field="*{cuenta}">
+									<option value="">seleccionar</option>
+									<option th:each="cuenta : ${cuentas}"
+										th:text="${cuenta.nombre}" th:value="${cuenta.id}"
+										data:moneda="${cuenta.moneda}?${cuenta.moneda.id}:0"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-sm-5">
+								<label for="importe">Importe</label> <input type="text"
+									class="form-control js-importe  formato-numero" id="importe"
+									th:field="*{importe}">
+							</div>
+						</div>
+						<div class=" mb-3">
+							<label for="observacion">Observación</label>
+							<textarea type="text" class="form-control js-observacion "
+								th:field="*{observacion}"></textarea>
+						</div>
+
+						<button type="submit" class="btn btn-primary js-btn-guardar">Guardar</button>
+						<a th:href="@{/gastos}"><button type="button"
+								class="btn btn-primary">Nuevo</button></a>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/gasto/auto-complete-proveedor.js}"></script>
+	<script th:src="@{/js/meta/gasto/gasto.js}" type="module"></script>
+</th:block>
+</html>

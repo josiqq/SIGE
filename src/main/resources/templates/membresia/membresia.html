@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	
+	<title>Membresías</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-light rounded h-100 p-4">
+                        	<div class="row">
+                            	<a th:href="@{/membresias/buscar}" class="col-md-3 mb-6">
+                            		<button type="button" class="btn btn-buscar btn-success">Buscar
+                            	</button></a>
+                        	</div>
+                        	<br>
+                            <h6 class="mb-4 col-md-6" th:if="!${membresia.id}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_MEMBRESIAS_GUARDAR')">Cargar Membresia</h6>
+                            <h6 class="mb-4 col-md-6" th:if="${membresia.id}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_MEMBRESIAS_GUARDAR')">Modificar membresia al cliente - [[${membresia.cliente.nombre}]]</h6>
+                            <form th:action="@{/membresias}" th:method="POST" th:object="${membresia}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_MEMBRESIAS_GUARDAR')">
+                            	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                              		<div th:each="erro: ${#fields.detailedErrors()}">
+                              			<i class="fa fa-exclamation-circle me-2"></i>
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+                                	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                           		 </div>
+					    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                               		<i class="fa fa-exclamation-circle me-2"></i>
+                               			<span th:text="${mensaje}">Mensaje de exito</span>
+                               		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                           		 </div>
+                            	<input type="hidden" th:field="*{id}" id="id">
+                            	<div>
+                            		<div class="row">
+		                            	<div class="row mb-3 col-md-6">
+		                               		<label for="cliente">Cliente</label>
+		                               		<input type="hidden" id="idCliente" th:field="*{cliente}"> 
+		                               		<input type="text" id="cliente" class="form-control js-cliente"  
+		                               					autofocus="autofocus" placeholder="Buscar por nombre o documento" 
+		                               					 th:value=" ${membresia.id}?${membresia.cliente.nombre}:''">
+		                               	</div>
+		                               	
+		                            </div>
+		                           
+                            		<div class ="row">
+		                            	<div class="mb-3 col-md-4">
+		                            		<label for="fecha">Fecha de pago</label> 
+											<input type="text" class="form-control js-fecha" id="fecha" th:field="*{{fecha}}"
+													autocomplete="off" placeholder="dd/mm/aaaa" 
+													data-provide="datepicker" data-date-format="dd/mm/yyyy"
+													 data-date-orientation="bottom" data-date-language="es"
+													  data-date-today-highlight="true" data-date-autoclose="true" >
+		                            	</div>
+		                            	 <div class="mb-3 col-md-4">
+		                            		<label for="fechaEstimado">Fecha de vencimiento</label> 
+											<input type="text" class="form-control js-fechaEstimado" id="fechaEstimado" th:field="*{{fechaEstimado}}"
+													autocomplete="off" placeholder="dd/mm/aaaa" 
+													data-provide="datepicker" data-date-format="dd/mm/yyyy"
+													 data-date-orientation="bottom" data-date-language="es"
+													  data-date-today-highlight="true" data-date-autoclose="true" >
+	                            		</div>
+                            	
+		                                <div class=" mb-3 col-md-4">
+		                                    <label for="cuenta">Cuenta</label>
+											<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
+												<option value="">seleccionar</option>
+												<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
+													th:value="${cuenta.id}" ></option>
+											</select>
+		                                </div>
+		                             </div>
+		                             <div class="row">
+		                               	<div class="mb-3 col-md-4">
+		                               		<label for="importe">Importe</label>
+		                               		<input type="text" class="form-control js-importe js-entero" th:field="*{importe}">
+		                               	</div>
+		                               	<div class=" mb-3 col-md-4">
+		                                    <label for="instructor">Instructor</label>
+											<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
+												<option value="">seleccionar</option>
+												<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
+													th:value="${instructor.id}" ></option>
+											</select>
+		                                </div>
+		                              </div>
+	                                <div class="mb-3">
+	                               		<label for="observacion">Observación</label>
+	                               		<textarea type="text" class="form-control js-observacion " th:field="*{observacion}"></textarea>
+	                               	</div>
+                               	</div>
+                                <button type="submit" class="btn btn-primary js-btn-guardar">Guardar</button>
+                                <a th:href="@{/membresias}"><button type="button" class="btn btn-primary">Nuevo</button></a>
+                            </form>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/membresia/auto-complete-cliente.js}"></script>
+	<script th:src="@{/js/meta/membresia/membresia.js}"></script>
+</th:block>
+</html>

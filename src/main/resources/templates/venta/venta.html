@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+<title>Ventas</title>
+<link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+<link th:href="@{/css/easy-autocomplete.themes.min.css}"
+	rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+
+		<div class="row g-4">
+
+			<div class="col-sm-12 col-xl-12 ">
+				<div class="bg-light rounded h-100 p-4">
+
+
+					<form th:action="@{/ventas}" th:method="POST" th:object="${venta}">
+						<div class="col-md-12">
+							<h2 th:if="!${venta.id}">Ventas</h2>
+							<h2 th:if="${venta.id}">Modificar Venta - [[${venta.id}]]</h2>
+							<div class=" row">
+								<button type="submit"
+									class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+									title="Guardar"
+									sec:authorize="hasRole('ROLE_VENTAS_VENTAS_GUARDAR')">
+									<i class="fa fa-save"></i>
+								</button>
+								<a th:href="@{/ventas/buscar}"
+									class="btn  btn-square btn-success m-2 col-md-1" title="Buscar">
+									<i class="fa fa-search btn-buscar"></i>
+								</a> <a th:href="@{/ventas}"
+									class="btn btn-square btn-primary m-2 col-md-1"
+									title="Nueva venta"> <i class="fa fa-desktop btn-nuevo"></i>
+								</a> <span class="negrita col-md-2">Usuario alta:</span> <span
+									class="col-md-2"> [[${venta.usuario.nombre}]]</span>
+								<h3 class="col-md-2">Total:</h3>
+								<h3 th:text="${venta.total}"
+									class="total-cabecera col-md-2 "></h3>
+							</div>
+
+						</div>
+						<div class="mensaje-emergente"></div>
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<input type="hidden" id="uuid" th:field="*{uuid}"> <input
+							type="hidden" id="usuario" th:field="*{usuario}" /> <input
+							type="hidden" id="cuenta-usuario"
+							th:value="${venta.usuario.cuenta}?${venta.usuario.cuenta.id}: ''" />
+						<input type="hidden" id="cuenta-identificador"
+							th:value="${venta.usuario.cuenta}?${venta.usuario.cuenta.identificador}: ''" />
+						<input type="hidden" id="usuario-cajero-nombre"
+							th:value="${venta.usuario.cajero}?${venta.usuario.cajero.nombre}:''">
+						<input type="hidden" id="usuario-id-cajero"
+							th:value="${venta.usuario.cajero}?${venta.usuario.cajero.id}:''">
+						<input type="hidden" id="registro" th:value="${registro}">
+						<input type="hidden" id="monedaCuenta" th:value="${venta.usuario.cuenta}?${venta.usuario.cuenta.moneda.id}: ''">
+						<input type="hidden" id="factura-retorno"
+							th:value="${facturaRetorno}"> <input type="hidden"
+							id="condicion-venta" th:value="${condicionVenta}"> <input
+							type="hidden" class="idVenta" th:field="*{id}">
+						<input type="hidden" th:value="${venta.condicion}?${venta.condicion.id}:''" id="condicion-cobro">
+						<input type="hidden" id="idPlanilla">
+						<div class="row contenedor-datos-venta">
+							<div class=" row mb-3 col-sm-12 col-lg-4 col-md-4">
+								<label for="cliente" class="col-sm-12 col-form-label">Cliente</label>
+								<input type="hidden" id="idCliente" th:field="*{cliente}">
+								<div class="col-sm-10">
+									<div class="meta-conten-group">
+										<input type="text" id="cliente"
+											class="form-control js-cliente" autocomplete="off"
+											placeholder="Escribe el nombre o ruc"
+											th:value="${venta.cliente}?${venta.cliente.nombre}:''">
+										<a href="#" class="a-icono-agrandado"
+											title="Adicionar nuevo cliente" data-bs-toggle="modal"
+											data-bs-target="#modal-cargar-cliente" accesskey="a"> <i
+											class="bi bi-plus-circle-fill"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+
+
+							<div class=" mb-3 col-sm-12 col-lg-2 col-md-3">
+								<label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+								<div class="col-sm-10">
+
+									<input type="text" class="form-control date" id="fecha"
+										autocomplete="off" placeholder="dd/mm/aaaa"
+										th:field="*{{fecha}}">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+								<label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
+								<select id="deposito" class="form-control solo-lectura"
+									th:field="*{deposito}">
+									<option value="">seleccionar</option>
+									<option th:each="deposito : ${depositos}"
+										th:text="${deposito.nombre}" th:value="${deposito.id}"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+								<label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
+								<select id="vendedor" class="form-control "
+									th:field="*{vendedor}">
+									<option value="">seleccionar</option>
+									<option th:each="vendedor : ${vendedores}"
+										th:text="${vendedor.nombre}"  th:value="${vendedor.id}"
+										data:supervisor=${vendedor.supervisor}></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+								<label for="precio" class="col-sm-12 col-form-label">Precio</label>
+								<select id="precio" class="form-control " th:field="*{precio}"  >
+									<option value="">seleccionar</option>
+									<option th:each="precio : ${precios}"
+										th:text="${precio.nombre}" th:value="${precio.id}"
+										data:moneda="${precio.moneda.id}"
+										></option>
+								</select>
+							</div>
+
+						</div>
+						<div class="row contenedor-datos-venta">
+							<div class="col-md-2">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" id="factura"
+										th:field="*{factura}">
+									<label class="form-check-label" for="gridCheck1">
+										Factura </label>
+								</div>
+							</div>
+							<div class=" mb-3 col-md-2 ">
+								<select id="condicion" class="form-control"
+									th:field="*{condicionVenta}">
+									<option value="">seleccionar</option>
+									<option th:each="condicionVenta : ${condicionVentas}"
+										th:text="${condicionVenta.descripcion}"
+										th:value="${condicionVenta}"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2 ">
+								<button  class="btn btn-primary mediano" type="button"  data-bs-toggle="modal" 
+										data-bs-target="#modal-solicitud-notificacion">Autorización</button>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+								<select id="moneda-venta" class="form-control solo-lectura" th:field="*{moneda}">
+									<option value="">Moneda</option>
+									<option th:each="moneda : ${monedas}"
+										th:text="${moneda.nombre}" th:value="${moneda.id}"></option>
+								</select>
+							</div>
+							<div class=" mb-3 col-sm-12 col-md-3 col-lg-3"
+								sec:authorize="hasRole('ROLE_CONSORCIO_VENTA')">
+								<select id="consorcio" class="form-control js-consorcio"
+									th:field="*{consorcio}">
+									<option value="">Seleccionar Consorcio</option>
+									<option th:each="consorcio : ${consorcios}"
+										th:text="${consorcio.nombre}" th:value="${consorcio.id}2"></option>
+								</select>
+							</div>
+							<div class="mb-3 col-md-2 ">
+								<button  class="btn btn-primary mediano" type="button"  data-bs-toggle="modal" 
+										data-bs-target="#modal-lista-presupuesto-venta">Presupuesto</button>
+							</div>
+						</div>
+						<div class="row">
+							<div class=" mb-3 col-sm-12 col-xl-6 col-md-6">
+								<label for="producto" class="col-sm-12 col-form-label">Producto<span class="js-precio-minimo-producto"></span></label>
+								<div class="col-sm-10">
+									<input type="hidden" id="idProducto"  data:lote data:minimo data:toti> <input
+										type="text" class="form-control " id="producto"
+										placeholder="Escribe el nombre o codigo" autocomplete="off">
+
+								</div>
+								<div class="v-list-auto-complete-prod col-sm-10"
+									id="scrollable-container"></div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="cantidad" class="col-sm-12 col-form-label">Cantidad</label>
+								<div class="col-sm-10">
+									<input type="text"
+										class="form-control js-cabtidad-venta-producto formato-numero"
+										id="cantidad-producto" autocomplete="off">
+								</div>
+							</div>
+							<div class=" mb-3 col-sm-12 col-xl-2 col-md-2">
+								<label for="precio" class="col-sm-12 col-form-label">Precio</label>
+								<div class="col-sm-12 input-group">
+									<input type="hidden" class="precio-lista-producto">
+									<input type="hidden" class="item-autorizado-venta">
+									<input type="text" class="form-control formato-numero " id="precio-producto" autocomplete="off">
+									<button type="button" class="btn btn-primary js-boton-cargar-detalle ">
+										<i class=" fa fa-plus"></i>
+									</button>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">Foto</th>
+											<th scope="col">código</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Cantidad</th>
+											<th scope="col">Precio</th>
+											<th scope="col">Total</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody class="js-item-venta">
+										<th:block th:replace="venta/itemVenta"></th:block>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</form>
+					<!--agregar cobro aqui
+					<th:block th:replace="cobro/cobroVenta"></th:block>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:replace="clientes/modal.carga.rapida.cliente"></th:block>
+	<th:block th:replace="venta/cobro/modal.cobro.venta"></th:block>
+	<th:block th:replace="notificacion/modal.solicitud.notificacion"></th:block>
+	<th:block th:replace="cotizacion/modal.cotizacion.bloqueo"></th:block>
+	<th:block th:replace="presupuestoVenta/modal.presupuesto.venta"></th:block>
+	<th:block th:replace="lote/modal.lista.lote"></th:block>
+	<th:block th:replace="lote/modal.lote.existente"></th:block>
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/cotizacion/cotizacion.service.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/numero.en.letras.js?ver=0.2.4}" ></script>
+	<script th:src="@{/js/meta/upload/handlebars.min.js?ver=0.2.4}" ></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js?ver=0.2.4}" ></script>
+	<script th:src="@{/js/meta/venta/auto.complete.cliente.venta.js?ver=0.2.5}" type="module"></script>
+	<script th:src="@{/js/meta/venta/venta.factura.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/venta/nota.comun.venta.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/impresion/impresion.venta.termica.cinco.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/venta/venta.impresion.js?ver=0.4.1}"  type="module"></script>
+	<script th:src="@{/js/meta/venta/venta.js?ver=0.4.4}" type="module"></script>
+	<script th:src="@{/js/meta/venta/consulta.producto.codigo.venta.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/venta/auto.complete.producto.venta.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/venta/venta.teclado.js?ver=0.2.4}"  type="module"></script>
+	<script th:src="@{/js/meta/venta/venta.cargar.cliente.modal.js?ver=0.2.4}" type="module"></script>
+	<script th:src="@{/js/meta/venta/cobro/condiciones.monedas.cobro.venta.js?ver=0.2.1}" type="module"></script>
+	<script th:src="@{/js/meta/venta/cobro/venta.cobro.js?ver=0.4.8}" type="module"></script>
+	<script th:src="@{/js/meta/venta/cobro/modal.cobro.js?ver=0.4.8}" type="module"></script>
+	<script th:src="@{/js/meta/venta/cobro/item.cobro.importe.venta.js?ver=0.4.8}" type="module"></script>	
+	<script th:src="@{/js/meta/venta/modal.presupuesto.venta.manipular.js?ver=0.4.8}" type="module"></script>	
+</th:block>
+</html>

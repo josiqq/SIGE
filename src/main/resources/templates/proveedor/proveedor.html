@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}">
+<head>
+<title>Proveedores</title>
+</head>
+<section layout:fragment="contenido" >
+	
+	<div class="container-fluid pt-4 px-4">
+                <div class="row g-4 ">
+                    
+                    <div class="col-sm-12 col-xl-12">
+                        <div class="bg-light rounded h-100 p-4">
+                        	<div class="row" >
+                            	<a th:href="@{/proveedores/buscar}" class="col-md-3 mb-6">
+                            		<button type="button" class="btn btn-buscar btn-success">Buscar
+                            	</button></a>
+                        	</div>
+                        	<br>
+                            <h3 class="mb-4 col-md-6" th:if="!${proveedor.id}" 
+                            	sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_GUARDAR')" >Cargar Nuevo Proveedor</h3>
+                            <h3 class="mb-4 col-md-6" th:if="${proveedor.id}"
+                            	sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_GUARDAR')">Modificar Proveedor - [[${proveedor.nombre}]]</h3>
+                            <form th:action="@{/proveedores}" th:method="POST" th:object="${proveedor}"
+                            	sec:authorize="hasRole('ROLE_COMPRAS_PROVEEDORES_GUARDAR')">
+                            	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}" >
+						    		<div th:each="erro: ${#fields.detailedErrors()}">
+						    			<span th:text="${erro.message}">Mensaje de error</span>
+						    		</div>
+						    	</div>
+						    	<div class="alert alert-success" th:if="${!#strings.isEmpty(mensaje)}">
+						    		<span th:text="${mensaje}">Mensaje de exito</span>
+						    	</div>
+                            	<input type="hidden" th:field="*{id}">
+                            	<div class="row">
+	                                <div class="mb-3 col-md-5">
+	                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Nombre</label>
+	                                    <div class="col-sm-12">
+	                                        <input type="text" class="form-control" id="inputEmail3" th:field="*{nombre}" autofocus="autofocus">
+	                                    </div>
+	                                </div>
+	                                <div class="mb-3 col-md-5">
+	                                    <label for="documento" class="col-sm-2 col-form-label">Documento</label>
+	                                    <div class="col-sm-12">
+	                                        <input type="text" class="form-control" id="documento" th:field="*{documento}">
+	                                    </div>
+	                                </div>
+                            	</div>
+                                <div class="mb-3">
+                                    <legend class="col-form-label col-sm-2 pt-0">Estado</legend>
+                                    <div class="col-sm-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{activo}">
+                                            <label class="form-check-label" for="gridCheck1">
+                                                Activo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <a th:href="@{/proveedores}"><button type="button" class="btn btn-primary">Nuevo</button></a>
+                            </form>
+                        </div>
+                    </div>                                                         
+                </div>
+            </div>
+	
+
+</section>
+
+</html>

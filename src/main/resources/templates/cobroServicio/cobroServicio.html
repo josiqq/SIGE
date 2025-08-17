@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec = " http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+<head>
+	<title>Cobrar Servicio</title>
+	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
+	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
+</head>
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		
+        <div class="row g-4">
+            
+            <div class="col-sm-12 col-xl-12 ">
+                <div class="bg-light rounded h-100 p-4 agenda-form">
+                	
+	                <form th:action="@{/cobroServicios}" th:method="POST" th:object="${cobroServicio}">
+	                	<h4 class="col-md-6" th:if="!${cobroServicio.id}">Cobrar Servicio</h4>
+	                	<h4 class="col-md-6" th:if="${cobroServicio.id}">Modificar - [[${cobroServicio.id}]]</h4>
+	                	<div class="row barra-botones-registro">
+	                		
+	                		<button type="submit" title="Guardar" 
+	                			class="btn btn-square btn-primary m-2 btn-guardar" 
+	                			sec:authorize="hasRole('ROLE_FINANCIERO_COBRO_SERVICIOS_GUARDAR')">
+	                			<i class="fa fa-save"></i>
+                			</button>
+	                		<a th:href="@{/cobroServicios/buscar}" title="Buscar" class="btn btn-square btn-success m-2">
+	                			<i class="fa fa-search"></i>
+                			</a>
+	                		<a th:href="@{/cobroServicios}" title="Refrescar" class="btn btn-square btn-primary m-2 btn-nuevo">
+	                			<i class="fa fa-desktop"></i>
+                			</a>
+	                		
+	                	</div>
+	                	<div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${#fields.hasAnyErrors()}">
+                      		<div th:each="erro: ${#fields.detailedErrors()}">
+                      			<i class="fa fa-exclamation-circle me-2"></i>
+				    			<span th:text="${erro.message}">Mensaje de error</span>
+				    		</div>
+                        	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+			    		<div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+                       		<i class="fa fa-exclamation-circle me-2"></i>
+                       			<span th:text="${mensaje}" class="mensaje-exito">Mensaje de exito</span>
+                       		 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                   		 </div>
+	                	
+	                	<input type="hidden" th:field="*{id}" id="id" class="id-cobro-servicio">
+	                	
+	                	<div class= "row contenedor-formulario">
+	                		<div class="row mb-3 col-md-6 ">
+                           		<label for="cliente">Cliente</label>
+                           		<input type="hidden" id="idCliente" th:field="*{cliente}"> 
+                           		<input type="text" id="cliente" class="form-control js-cliente"  
+                           					autofocus="autofocus" placeholder="Buscar por nombre o documento" 
+                           					 th:value=" ${cobroServicio.id}?${cobroServicio.cliente.nombre}:''">
+                           	</div>
+                           	<div class=" mb-3 col-sm-12 col-xl-3 col-md-3">
+	                            <label for="fecha" class="col-sm-12 col-form-label">Fecha</label>
+	                            <div class="col-sm-10">
+	                                <input type="text" class="form-control date js-fecha" id="fecha"  
+	                                		autocomplete="off" th:field="*{{fecha}}" >
+	                            </div>
+	                        </div>
+	                        <div class=" mb-3 col-md-4">
+                                <label for="cuenta">Cuenta</label>
+								<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
+									<option value="">seleccionar</option>
+									<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
+										th:value="${cuenta.id}" ></option>
+								</select>
+                            </div>
+                            <div class=" mb-3 col-md-4">
+                                <label for="cuenta">Vendedores</label>
+								<select id="vendedor" class="form-control js-vendedor" th:field="*{vendedor}">
+									<option value="">seleccionar</option>
+									<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
+										th:value="${vendedor.id}" ></option>
+								</select>
+                            </div>
+                            <div class="mb-3 col-md-4 noMostrar caja-saldo">
+                           		<label for="saldo">Saldo</label>
+                           		<input type="text" class="form-control js-saldo money" 
+                           			th:field="*{saldo}" readonly="readonly">
+                           	</div>
+                           	<div class="mb-3 col-md-4 noMostrar caja-valor">
+                           		<label for="valor">Valor a cobrar</label>
+                           		<input type="text" class="form-control js-valor money-entero " th:field="*{valor}" >
+                           	</div>
+                            <div class="mb-3 col-md-4">
+                           		<label for="importe">Importe</label>
+                           		<input type="text" class="form-control js-importe money-entero money" th:field="*{importe}">
+                           	</div>
+                           	 <div class="mb-3">
+                           		<label for="observacion">Observación</label>
+                           		<textarea type="text" class="form-control js-observacion " 
+                           			th:field="*{observacion}"></textarea>
+                           	</div>
+	                    </div>
+	                       
+	                </form>
+                </div>
+            </div>                                                         
+        </div>
+    </div>
+    
+</section>
+<th:block  layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/upload/handlebars.min.js}"></script>
+	<script th:src="@{/js/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/js/meta/cobroServicio/auto.complete.cobro.servicio.js}"></script>
+	<script th:src="@{/js/meta/cobroServicio/cobro.servicio.js}"></script>
+</th:block>
+</html>

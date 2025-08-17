@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<div class="modal fade" id="modal-solicitud-notificacion" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+	<div class="modal-dialog modal-dialog-scrollable modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Solicitar Autorización</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3 col-md-12">
+					<span class="mensaje-de-error-solicitud-autorizacion"></span>
+					<div class=" mb-3 col-sm-12 col-md-3 col-lg-12">
+								<label for="vendedor-supervidor" class="col-sm-12 col-form-label">Vendedor</label>
+								<select id="vendedor-supervisor" class="form-control">
+									<option value="">seleccionar</option>
+									<option th:each="vendedor : ${vendedoresSupervisor}"
+										th:text="${vendedor.nombre}" th:value="${vendedor.id}"></option>
+								</select>
+							</div>
+				</div>
+				<div class="conten-cargando noMostrar">
+					<div class="loadingio-spinner-spinner-ze2vfonbzg"><div class="ldio-7p1h09gd14f">
+							<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+							<div></div><div></div><div></div><div></div></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-silicitar-autorizacion-venta">Solicitar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

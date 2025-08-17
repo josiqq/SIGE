@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
+	layout:decorate="~{padron}"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
+
+<section layout:fragment="contenido">
+	<div class="container-fluid pt-4 px-4">
+		<div class="row g-4">
+			<div class="col-sm-12 col-xl-12">
+				<div class="bg-light rounded h-100 p-4">
+					<div class="row"></div>
+					<form th:object="${parametro}" th:method="POST"
+						th:action="@{/parametros}">
+
+						<div class="alert alert-danger alert-dismissible fade show"
+							role="alert" th:if="${#fields.hasAnyErrors()}">
+							<div th:each="erro: ${#fields.detailedErrors()}">
+								<i class="fa fa-exclamation-circle me-2"></i> <span
+									th:text="${erro.message}">Mensaje de error</span>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<div class="alert alert-primary alert-dismissible fade show"
+							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span
+								th:text="${mensaje}">Mensaje de exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert"
+								aria-label="Close"></button>
+						</div>
+						<input type="hidden" id="id" th:field="*{id}">
+						<div class="row">
+							<div class="mb-3 col-lg-3">
+								<label for="empresa" class="form-label">Empresa</label> <input
+									type="text" class="form-control" id="empresa"
+									autocomplete="off" autofocus="autofocus" th:field="*{empresa}">
+
+							</div>
+							<div class="mb-3 col-lg-3">
+								<label for="ruc" class="form-label">Ruc</label> <input
+									type="text" class="form-control" id="ruc" autocomplete="off"
+									th:field="*{ruc}">
+
+							</div>
+
+
+							<div class="mb-3 col-lg-3">
+								<label for="telefono" class="form-label">Teléfono</label> <input
+									type="text" class="form-control" id="telefono"
+									autocomplete="off" th:field="*{telefono}">
+
+							</div>
+							<div class="mb-3 col-lg-2">
+								<label for="horaDesde" class="form-label">Hora desde</label> <input
+									type="text" class="form-control time" id="horaDesde"
+									autocomplete="off" th:field="*{horaDesde}" placeholder="HH:mm">
+
+							</div>
+							<div class="mb-3 col-lg-2">
+								<label for="horaHasta" class="form-label">Hora hasta</label> <input
+									type="text" class="form-control time" id="horaHasta"
+									autocomplete="off" th:field="*{horaHasta}" placeholder="HH:mm">
+
+							</div>
+							<div class="mb-3 col-lg-2">
+								<label for="interHora" class="form-label">Intervalo</label> <input
+									type="text" class="form-control time" id="interHora"
+									autocomplete="off" th:field="*{interHora}" placeholder="HH:mm">
+
+							</div>
+							<div class="row">
+								<div class="mb-3 col-md-2">
+									<div class="col-md-10">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												id="gridCheck1" th:field="*{mostrarFondo}"
+												title="Al activar se mostrará el fondo de pantalla con el logo de la empresa luego de 10 
+	                                            minutos de inactividad">
+											<label class="form-check-label" for="gridCheck1">
+												Mostrar fondo </label>
+										</div>
+									</div>
+								</div>
+								<div class="mb-3 col-md-2">
+									<div class="col-md-10">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												id="gridCheck1" th:field="*{mostrarHora}"
+												title="Al activar mostrará hopra en el protector de pantalla">
+											<label class="form-check-label" for="gridCheck1">
+												Mostrar hora </label>
+										</div>
+									</div>
+								</div>
+								<div class="mb-3 col-md-2">
+									<div class="col-md-10">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												id="gridCheck1" th:field="*{cotizacionAutomatica}"
+												title="Al activar la cotizacion del dia buscará el ultimo cargado y eso cargará en la fecha de hoy">
+											<label class="form-check-label" for="gridCheck1">
+												Cotizacion automatica? </label>
+										</div>
+									</div>
+								</div>
+								<div class="mb-3 col-md-2">
+									<div class="col-md-10">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+												id="gridCheck1" th:field="*{abrePlanilla}"
+												title="Al activar, se debe abrir planilla de forma obligatoria y cerrar cada día">
+											<label class="form-check-label" for="gridCheck1">
+												Abrir planilla </label>
+										</div>
+									</div>
+								</div>
+								<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
+									<select id="moneda" class="form-control" th:field="*{moneda}">
+										<option value="">Moneda</option>
+										<option th:each="moneda : ${monedas}"
+											th:text="${moneda.nombre}" th:value="${moneda.id}"></option>
+									</select>
+								</div>
+								<div class="mb-3">
+									<label for="observacion">Actividad</label>
+									<textarea type="text" class="form-control js-observacion "
+										th:field="*{actividad}"></textarea>
+								</div>
+							</div>
+							<div class="row"
+								sec:authorize="hasRole('ROLE_CONFIGURACION_PARAMETRO_GUARDAR')">
+								<div class=" col-s col-lg-1 mb-4">
+									<button type="submit" class="btn btn-primary btn-guardar"
+										title="Presiona F5">Guardar</button>
+								</div>
+
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/js/meta/parametro/parametro.js}"></script>
+</th:block>
+
+</html>
