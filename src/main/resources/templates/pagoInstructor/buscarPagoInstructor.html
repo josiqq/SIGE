@@ -6,19 +6,19 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>buscar Pago</title>
+<title>Buscar Pago</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
          <div class="bg-light rounded h-100 p-4">
         	 <div class="row">  		 
                    <a th:href="@{/pagoInstructores}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-success">nuevo</button>
+	                    <button type="button" class="btn btn-success">Nuevo</button>
                     </a>
               </div>
               <br>
-             <h6 class="mb-4">Listado de pagos a instructores</h6>
-             <h6 class="mb-4">total: <span>[[${#numbers.formatInteger(totalImporte,3,'POINT')}]]</span></h6>
+             <h6 class="mb-4">Listado de Pagos a Instructores</h6>
+             <h6 class="mb-4">Total: <span>[[${#numbers.formatInteger(totalImporte,3,'POINT')}]]</span></h6>
              
              <form  th:object="${pagoInstructorFilter}">
              <div class="row">
@@ -26,14 +26,14 @@
              		<div class=" mb-3 col-md-4">
                         <label for="instructor">Instructor</label>
 						<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
 								th:value="${instructor.id}" ></option>
 						</select>
                     </div>
              	
              	<div class="mb-3 col-md-3">
-                		<label for="fechaDesde">Fecha desde</label> 
+                		<label for="fechaDesde">Fecha Desde</label> 
 						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaIni}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" 
 								data-provide="datepicker" data-date-format="dd/mm/yyyy"
@@ -41,7 +41,7 @@
 								  data-date-today-highlight="true" data-date-autoclose="true" >
             	</div>
             	<div class="mb-3 col-md-3">
-	            		<label for="fechaHasta">fecha hasta</label> 
+	            		<label for="fechaHasta">Fecha Hasta</label> 
 						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaFin}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" 
 								data-provide="datepicker" data-date-format="dd/mm/yyyy"
@@ -61,11 +61,11 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
+                         <th scope="col">Registro</th>
                          <th scope="col">Instructor</th>
                          <th scope="col">Cuenta</th>
                          <th scope="col">Observación</th>
-                         <th scope="col">fecha</th>
+                         <th scope="col">Fecha</th>
                          <th scope="col">Importe</th>
                          <th scope="col"></th>
                          </tr>
@@ -87,7 +87,7 @@
                          </td>
                      </tr>
                      <tr th:if="${#lists.isEmpty(pagoInstructores)}">
-						<td colspan="6">Ne se encontro Pagos</td>
+						<td colspan="6">No se encontraron Pagos</td>
 					</tr>
                  		
                      </tbody>

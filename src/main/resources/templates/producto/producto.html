@@ -80,7 +80,7 @@
 							<div class=" mb-3 col-md-2">
 								<label for="marca" class="col-sm-2 col-form-label">Marca</label>
 								<select id="marca" class="form-control " th:field="*{marca}">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="marca : ${marcas}" th:text="${marca.nombre}"
 										th:value="${marca.id}"></option>
 								</select>

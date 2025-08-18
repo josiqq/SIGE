@@ -5,19 +5,19 @@
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 
 <head>
-	<title>buscar Pago</title>
+	<title>Buscar Pago</title>
 </head>
 <section layout:fragment="contenido">
 	<div class="container-fluid pt-4 px-4">
 		<div class="bg-light rounded h-100 p-4">
 			<div class="row" sec:authorize="hasRole('ROLE_FINANCIERO_PAGO_VENDEDORES_GUARDAR')">
 				<a th:href="@{/pagoVendedores}" class="col-md-3 mb-6">
-					<button type="button" class="btn btn-success">nuevo</button>
+					<button type="button" class="btn btn-success">Nuevo</button>
 				</a>
 			</div>
 			<br>
 			<h6 class="mb-4">Listado de pagos a vendedores</h6>
-			<h6 class="mb-4">total: <span>[[${#numbers.formatInteger(total,3,'POINT')}]]</span></h6>
+			<h6 class="mb-4">Total: <span>[[${#numbers.formatInteger(total,3,'POINT')}]]</span></h6>
 
 			<form th:object="${pagoVendedorFilter}">
 				<div class="row">
@@ -33,21 +33,21 @@
 					<div class=" mb-3 col-md-4">
 						<label for="cuenta">Cuenta</label>
 						<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" th:value="${cuenta.id}">
 							</option>
 						</select>
 					</div>
 
 					<div class="mb-3 col-md-3">
-						<label for="fechaDesde">Fecha desde</label>
+						<label for="fechaDesde">Fecha Desde</label>
 						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaDesde}}"
 							autocomplete="off" placeholder="dd/mm/aaaa" data-provide="datepicker"
 							data-date-format="dd/mm/yyyy" data-date-orientation="bottom" data-date-language="es"
 							data-date-today-highlight="true" data-date-autoclose="true">
 					</div>
 					<div class="mb-3 col-md-3">
-						<label for="fechaHasta">fecha hasta</label>
+						<label for="fechaHasta">Fecha Hasta</label>
 						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaHasta}}"
 							autocomplete="off" placeholder="dd/mm/aaaa" data-provide="datepicker"
 							data-date-format="dd/mm/yyyy" data-date-orientation="bottom" data-date-language="es"
@@ -66,11 +66,11 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th scope="col">id</th>
+							<th scope="col">Registro</th>
 							<th scope="col">Vendedor</th>
 							<th scope="col">Cuenta</th>
 							<th scope="col">Observación</th>
-							<th scope="col">fecha</th>
+							<th scope="col">Fecha</th>
 							<th scope="col">Importe</th>
 							<th scope="col"></th>
 						</tr>

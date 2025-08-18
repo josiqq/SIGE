@@ -17,7 +17,7 @@
 			</div>
 			<br>
 			<h6 class="mb-4">Lista de Transferencia Efectivo</h6>
-			<h6 class="mb-4">total: <span>[[${#numbers.formatInteger(totalImporte,3,'POINT')}]]</span></h6>
+			<h6 class="mb-4">Total: <span>[[${#numbers.formatInteger(totalImporte,3,'POINT')}]]</span></h6>
 
 			<form th:object="${transferenciaEfectivoFilter}">
 				<div class="row">
@@ -25,7 +25,7 @@
 					<div class=" mb-3 col-md-2">
 						<label for="cuentaOrigen">Cuenta Origen</label>
 						<select id="cuentaOrigen" class="form-control js-cuenta" th:field="*{cuentaOrigen}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" th:value="${cuenta.id}">
 							</option>
 						</select>
@@ -33,21 +33,21 @@
 					<div class=" mb-3 col-md-2">
 						<label for="cuentaDestino">Cuenta Destino</label>
 						<select id="cuentaDestino" class="form-control js-cuenta" th:field="*{cuentaDestino}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" th:value="${cuenta.id}">
 							</option>
 						</select>
 					</div>
 
 					<div class="mb-3 col-md-2">
-						<label for="fechaDesde">Fecha desde</label>
+						<label for="fechaDesde">Fecha Desde</label>
 						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaDesde}}"
 							autocomplete="off" placeholder="dd/mm/aaaa" data-provide="datepicker"
 							data-date-format="dd/mm/yyyy" data-date-orientation="bottom" data-date-language="es"
 							data-date-today-highlight="true" data-date-autoclose="true">
 					</div>
 					<div class="mb-3 col-md-2">
-						<label for="fechaHasta">fecha hasta</label>
+						<label for="fechaHasta">Fecha Hasta</label>
 						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaHasta}}"
 							autocomplete="off" placeholder="dd/mm/aaaa" data-provide="datepicker"
 							data-date-format="dd/mm/yyyy" data-date-orientation="bottom" data-date-language="es"

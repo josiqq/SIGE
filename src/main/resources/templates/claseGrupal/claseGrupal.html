@@ -70,7 +70,7 @@
 	                        <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
                                 <label for="instructor" class="col-sm-12 col-form-label">Instructor</label>
 								<select id="instructor" class="form-control" th:field="*{instructor}">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
 										th:value="${instructor.id}" ></option>
 								</select>

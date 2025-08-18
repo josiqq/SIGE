@@ -19,8 +19,8 @@
 						th:object="${planilla}">
 						<div class="row">
 							<div class="col-md-4">
-								<h2 th:if="!${planilla.id}">Cierre de planilla</h2>
-								<h2 th:if="${planilla.id}">Cerrar esta planilla -
+								<h2 th:if="!${planilla.id}">Cierre de Planilla</h2>
+								<h2 th:if="${planilla.id}">Cerrar esta Planilla -
 									[[${planilla.id}]]</h2>
 							</div>
 							<button type="submit"
@@ -83,7 +83,7 @@
 									<div class=" mb-3 col-md-2 cont-cuenta">
 										<label for="planilla" class="col-form-label">Planilla</label> 
 										<select id="planilla" class="form-control js-planilla" >
-											<option value="">seleccionar</option>
+											<option value="">Seleccionar</option>
 											<option th:each="planilla : ${planillas}"
 												th:text="${planilla.id+' - '+planilla.cuenta.nombre} " 
 												th:value="${planilla.id}"
@@ -115,7 +115,7 @@
 	                                        <div class="form-check">
 	                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{cerrado}">
 	                                            <label class="form-check-label" for="gridCheck1">
-	                                                cerrado
+	                                                Cerrado
 	                                            </label>
 	                                        </div>
 	                                    </div>
@@ -125,7 +125,7 @@
 	                                        <div class="form-check">
 	                                            <input class="form-check-input" type="checkbox" id="gridCheck1" th:field="*{reAbrir}">
 	                                            <label class="form-check-label" for="gridCheck1">
-	                                               Re abrir
+	                                               Re Abrir
 	                                            </label>
 	                                        </div>
 	                                    </div>
@@ -164,7 +164,7 @@
 							<div class=" mb-3 col-md-2 ">
 								<label for="condicion" class="col-form-label">Condición</label>
 								<select id="condicion" class="form-control js-condicion">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="condicion : ${condiciones}"
 										th:text="${condicion.nombre}" th:value="${condicion.id}"
 										data:comision="${condicion.comision}"></option>
@@ -173,7 +173,7 @@
 							<div class=" mb-3 col-md-2 cont-moneda">
 								<label for="moneda" class="col-form-label">Moneda</label> <select
 									id="moneda" class="form-control js-moneda">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="moneda : ${monedas}"
 										th:text="${moneda.nombre}" th:value="${moneda.id}"
 										data:decimales="${moneda.decimales}"></option>
@@ -191,7 +191,7 @@
 							<div class=" mb-3 col-md-3 cont-cuenta">
 									<label for="cuenta-destino" class="col-form-label">Cuenta Destino</label> 
 									<select id="cuenta-destino" class="form-control js-cuenta-destino" >
-										<option value="">seleccionar</option>
+										<option value="">Seleccionar</option>
 										<option th:each="cuenta : ${cuentas}"
 											th:text="${cuenta.nombre}" th:value="${cuenta.id}"
 											data:moneda-cuenta-destino="${cuenta.moneda}?${cuenta.moneda.id}:''   ">

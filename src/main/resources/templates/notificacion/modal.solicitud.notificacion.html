@@ -21,7 +21,7 @@
 					<div class=" mb-3 col-sm-12 col-md-3 col-lg-12">
 								<label for="vendedor-supervidor" class="col-sm-12 col-form-label">Vendedor</label>
 								<select id="vendedor-supervisor" class="form-control">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="vendedor : ${vendedoresSupervisor}"
 										th:text="${vendedor.nombre}" th:value="${vendedor.id}"></option>
 								</select>

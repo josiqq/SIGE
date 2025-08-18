@@ -16,7 +16,7 @@
 		 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 
 		 	vh-100 top-50 start-50 d-flex align-items-center justify-content-center"> 
              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"> 
-                 <span class="sr-only">Loading...</span> 
+                 <span class="sr-only">Cargando...</span> 
              </div> 
          </div>
 		</div> 
@@ -31,7 +31,7 @@
 	                	<div class="row">
 	                		<h4 class="col-md-3" th:if="!${precio.id}">Precios</h4>
 	                		<h4 class="col-md-3" th:if="${precio.id}">Modificar - [[${precio.id}]]</h4>
-	                		<button type="submit" class="btn btn-square btn-primary m-2" 
+	                		<button type="submit" class="btn btn-square btn-primary m-2" 	
 	                			sec:authorize="hasRole('ROLE_VENTAS_PRECIOS_GUARDAR')"><i class="fa fa-save"></i></button>
 	                		<a th:href="@{/precios/buscar}" class="btn btn-square btn-success m-2"
 	                			><i class="fa fa-search"></i></a>
@@ -106,7 +106,7 @@
 				                 <table class="table">
 				                     <thead>
 				                         <tr>
-				                         <th scope="col" >Foto</th>
+				                         <th scope="col">Foto</th>
 				                         <th scope="col">Código</th>
 				                         <th scope="col">Producto</th>
 				                         <th scope="col">Costo</th>				                         

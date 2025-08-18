@@ -19,7 +19,7 @@
 						th:object="${planilla}">
 						<div class="row">
 							<div class="col-md-4">
-								<h2 th:if="!${planilla.id}">Apertura de planilla</h2>
+								<h2 th:if="!${planilla.id}">Apertura de Planilla</h2>
 								<h2 th:if="${planilla.id}">Modificar Planilla -
 									[[${planilla.id}]]</h2>
 							</div>
@@ -73,7 +73,7 @@
 									<div class=" mb-3 col-md-3 cont-cuenta">
 										<label for="cuenta" class="col-form-label">Cuenta</label> 
 										<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
-											<option value="">seleccionar</option>
+											<option value="">Seleccionar</option>
 											<option th:each="cuenta : ${cuentas}"
 												th:text="${cuenta.nombre}" th:value="${cuenta.id}">
 											</option>
@@ -86,9 +86,9 @@
 
 						<div class="row">
 							<div class=" mb-3 col-md-2 ">
-								<label for="condicion" class="col-form-label">Condicion</label>
+								<label for="condicion" class="col-form-label">Condición</label>
 								<select id="condicion" class="form-control js-condicion">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="condicion : ${condiciones}"
 										th:text="${condicion.nombre}" th:value="${condicion.id}"
 										data:comision="${condicion.comision}"></option>
@@ -97,7 +97,7 @@
 							<div class=" mb-3 col-md-2 cont-moneda">
 								<label for="moneda" class="col-form-label">Moneda</label> <select
 									id="moneda" class="form-control js-moneda">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="moneda : ${monedas}"
 										th:text="${moneda.nombre}" th:value="${moneda.id}"
 										data:decimales="${moneda.decimales}"></option>

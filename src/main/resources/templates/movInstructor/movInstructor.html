@@ -6,13 +6,13 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>buscar</title>
+<title>Buscar</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
          <div class="bg-light rounded h-100 p-4">
         	
-             <h6 class="mb-4">Extracto de instructores</h6>
+             <h6 class="mb-4">Extracto de Instructores</h6>
              <h6 class="mb-4">Total:<span class="js-total-mov-instructor">[[${#numbers.formatInteger(totalMovimiento,3,'POINT')}]]</span></h6>
              <form  th:object="${movInstructorFilter}">
              <div class="row">
@@ -20,14 +20,14 @@
              	<div class=" mb-3 col-md-4">
                     <label for="instructor">Instructor</label>
 					<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
-						<option value="">seleccionar</option>
+						<option value="">Seleccionar</option>
 						<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
 							th:value="${instructor.id}" ></option>
 					</select>
                  </div>
              	
              	<div class="mb-3 col-md-3">
-                		<label for="fechaDesde">Fecha desde</label> 
+                		<label for="fechaDesde">Fecha Desde</label> 
 						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaIni}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" 
 								data-provide="datepicker" data-date-format="dd/mm/yyyy"
@@ -35,7 +35,7 @@
 								  data-date-today-highlight="true" data-date-autoclose="true" >
             	</div>
             	<div class="mb-3 col-md-3">
-	            		<label for="fechaHasta">fecha hasta</label> 
+	            		<label for="fechaHasta">Fecha Hasta</label> 
 						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaFin}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" 
 								data-provide="datepicker" data-date-format="dd/mm/yyyy"
@@ -50,7 +50,7 @@
             			<button type="submit" class="btn btn-primary">Buscar</button>
             		</div>
             		<div class="col-md-6 col-xs-12 mb-3">
-						<button type="button" class="btn  btn-primary js-excel">excel</button>
+						<button type="button" class="btn  btn-primary js-excel">Excel</button>
 					</div>
             	</div>
              </div>
@@ -60,7 +60,7 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
+                         <th scope="col">ID</th>
                          <th scope="col">Instructor</th>
                          <th scope="col">Cliente</th>
                          <th scope="col">Observación</th>
@@ -80,7 +80,7 @@
                          
                      </tr>
                      <tr th:if="${#lists.isEmpty(movInstructores)}">
-						<td colspan="6">Ne se encontro movimiento</td>
+						<td colspan="6">No se encontró movimiento</td>
 					</tr>
                  		
                      </tbody>

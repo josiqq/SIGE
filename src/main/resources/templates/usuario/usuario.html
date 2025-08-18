@@ -60,7 +60,7 @@
 		                                	<div class=" mb-3 col-md-4">
 							                    <label for="instructor" class="col-form-label">Instructor</label>
 												<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
-													<option value="">seleccionar</option>
+													<option value="">Seleccionar</option>
 													<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
 														th:value="${instructor.id}" ></option>
 												</select>
@@ -68,7 +68,7 @@
 						                 	<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
 				                                <label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
 												<select id="vendedor" class="form-control" th:field="*{vendedor}">
-													<option value="">seleccionar</option>
+													<option value="">Seleccionar</option>
 													<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
 														th:value="${vendedor.id}" ></option>
 												</select>
@@ -76,7 +76,7 @@
 				                            <div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
 				                                <label for="cajero" class="col-sm-12 col-form-label">Cajero</label>
 												<select id="cajero" class="form-control" th:field="*{cajero}">
-													<option value="">seleccionar</option>
+													<option value="">Seleccionar</option>
 													<option th:each="cajero : ${cajeros}" th:text="${cajero.nombre}" 
 														th:value="${cajero.id}" ></option>
 												</select>
@@ -84,7 +84,7 @@
 		                                	<div class=" mb-3 col-sm-12 col-md-3 col-xl-3">
 				                                <label for="cuenta" class="col-sm-12 col-form-label">Cuenta</label>
 												<select id="cuenta" class="form-control" th:field="*{cuenta}">
-													<option value="">seleccionar</option>
+													<option value="">Seleccionar</option>
 													<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
 														th:value="${cuenta.id}" ></option>
 												</select>
@@ -123,7 +123,7 @@
                          
 	                        <div class="col-md-12">
 	                         	<div class="d-flex align-items-center justify-content-between mb-4">
-		                                <h6 class="mb-0">Lista de grupos</h6>
+		                                <h6 class="mb-0">Lista de Grupos</h6>
 		                            </div>
 		                           <div class="row">
 			                           <div class="d-flex align-items-center border-bottom  col-md-4" th:each="grupo:${grupos}">

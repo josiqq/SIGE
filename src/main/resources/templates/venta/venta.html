@@ -73,6 +73,7 @@
 						<input type="hidden" id="usuario-id-cajero"
 							th:value="${venta.usuario.cajero}?${venta.usuario.cajero.id}:''">
 						<input type="hidden" id="registro" th:value="${registro}">
+						<!--<h3 th:if="${registro}">🛠 Registro (debug): [[${registro}]]</h3> -->
 						<input type="hidden" id="monedaCuenta" th:value="${venta.usuario.cuenta}?${venta.usuario.cuenta.moneda.id}: ''">
 						<input type="hidden" id="factura-retorno"
 							th:value="${facturaRetorno}"> <input type="hidden"
@@ -113,7 +114,7 @@
 								<label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
 								<select id="deposito" class="form-control solo-lectura"
 									th:field="*{deposito}">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="deposito : ${depositos}"
 										th:text="${deposito.nombre}" th:value="${deposito.id}"></option>
 								</select>
@@ -122,7 +123,7 @@
 								<label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
 								<select id="vendedor" class="form-control "
 									th:field="*{vendedor}">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="vendedor : ${vendedores}"
 										th:text="${vendedor.nombre}"  th:value="${vendedor.id}"
 										data:supervisor=${vendedor.supervisor}></option>
@@ -131,7 +132,7 @@
 							<div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
 								<label for="precio" class="col-sm-12 col-form-label">Precio</label>
 								<select id="precio" class="form-control " th:field="*{precio}"  >
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="precio : ${precios}"
 										th:text="${precio.nombre}" th:value="${precio.id}"
 										data:moneda="${precio.moneda.id}"
@@ -146,13 +147,13 @@
 									<input class="form-check-input" type="checkbox" id="factura"
 										th:field="*{factura}">
 									<label class="form-check-label" for="gridCheck1">
-										Factura </label>
+										Factura</label>
 								</div>
 							</div>
 							<div class=" mb-3 col-md-2 ">
 								<select id="condicion" class="form-control"
 									th:field="*{condicionVenta}">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="condicionVenta : ${condicionVentas}"
 										th:text="${condicionVenta.descripcion}"
 										th:value="${condicionVenta}"></option>
@@ -189,7 +190,7 @@
 								<div class="col-sm-10">
 									<input type="hidden" id="idProducto"  data:lote data:minimo data:toti> <input
 										type="text" class="form-control " id="producto"
-										placeholder="Escribe el nombre o codigo" autocomplete="off">
+										placeholder="Escribe el nombre o código" autocomplete="off">
 
 								</div>
 								<div class="v-list-auto-complete-prod col-sm-10"
@@ -223,7 +224,7 @@
 									<thead>
 										<tr>
 											<th scope="col">Foto</th>
-											<th scope="col">código</th>
+											<th scope="col">Código</th>
 											<th scope="col">Producto</th>
 											<th scope="col">Cantidad</th>
 											<th scope="col">Precio</th>

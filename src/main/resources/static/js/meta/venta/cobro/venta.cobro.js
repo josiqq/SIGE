@@ -4,14 +4,11 @@ import {impresionVentaTermicaVentaSiete } from '/js/meta/impresion/impresion.ven
 import {getParametroVenta} from '/js/meta/parametroVenta/parametro.venta.queries.js';
 import {fecha_actual} from '/js/meta/utilidades/utilidades.js';
 $(function() {
-
-
-
-
+	
 	if ($('#registro').val()) {
 		
 		getParametroVenta().then(function(parametroVenta){
-			if(parametroVenta.cobroVenta === true){
+			if(parametroVenta.cobroVenta == true){
 				buscarParametro();
 			}
 		}).catch(function(error){

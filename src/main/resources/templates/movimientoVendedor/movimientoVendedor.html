@@ -13,20 +13,20 @@
 		 <div id="spinner" class="show bg-white position-fixed translate-middle w-100 
 		 	vh-100 top-50 start-50 d-flex align-items-center justify-content-center"> 
 	         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"> 
-	             <span class="sr-only">Loading...</span> 
+	             <span class="sr-only">Cargando...</span> 
 	         </div> 
 	     </div>
 	</div> 
 <div class="container-fluid pt-4 px-4 contenedor-reporte">
          <div class="bg-light rounded h-100 p-4 ">
         	 
-             <h3 class="mb-4 js-titulo-reporte">Movimiento de vendedores</h3>
+             <h3 class="mb-4 js-titulo-reporte">Movimiento de Vendedores</h3>
             <form   class="js-filtros">
              	<div class="row">
              		<div class=" mb-3 col-md-4">
                                 <label for="vendedor" class="col-form-label">Vendedor</label>
 								<select id="vendedor" class="form-control js-vendedor" >
-										<option value="">seleccionar</option>
+										<option value="">Seleccionar</option>
 										<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
 													th:value="${vendedor.id}" ></option>
 								</select>
@@ -40,7 +40,7 @@
 	                		</div>	
 	            	</div>
 	            	<div class="mb-3 col-md-3">
-		            		<label for="fechaHasta" class="col-form-label">fecha hasta</label>
+		            		<label for="fechaHasta" class="col-form-label">Fecha hasta</label>
 		            		<div class="col-md-12"> 
 								<input type="text" class="form-control date" id="fechaHasta" 
 								placeholder="DD/MM/AAAA" autocomplete="off">
@@ -75,11 +75,11 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">fecha</th>
-                         <th scope="col">vendedor</th>
-                         <th scope="col">Observacion</th>
-                         <th scope="col" class="lado-derecho">Credito</th>
-                         <th scope="col" class="lado-derecho">Debito</th>
+                         <th scope="col">Fecha</th>
+                         <th scope="col">Vendedor</th>
+                         <th scope="col">Observación</th>
+                         <th scope="col" class="lado-derecho">Crédito</th>
+                         <th scope="col" class="lado-derecho">Débito</th>
                          </tr>
                      </thead>
                      <tbody class="js-tabla-cuerpo">

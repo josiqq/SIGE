@@ -24,10 +24,10 @@
                             	</button></a>
                         	</div>
                         	<br>
-                            <h6 class="mb-4 col-md-6" th:if="!${cuenta.id}"
-                            	 sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">Cargar Nueva cuenta</h6>
-                            <h6 class="mb-4 col-md-6" th:if="${cuenta.id}"
-                            	sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">Modificar la cuenta - [[${cuenta.nombre}]]</h6>
+                            <h3 class="mb-4 col-md-6" th:if="!${cuenta.id}"
+                            	 sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">Cargar Nueva cuenta</h3>
+                            <h3 class="mb-4 col-md-6" th:if="${cuenta.id}"
+                            	sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">Modificar la cuenta - [[${cuenta.nombre}]]</h3>
                             <form th:action="@{/cuentas}" th:method="POST" th:object="${cuenta}"
                             	sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">
                             	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}" >

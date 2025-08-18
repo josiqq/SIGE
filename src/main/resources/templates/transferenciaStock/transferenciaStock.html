@@ -56,7 +56,7 @@
 						<input type="text" class="form-control mediano date" autocomplete="off" id="fecha" th:field="*{fecha}">
 					</div>
 					<div class="col-md-3">
-						<label class="control-label mediano">Depósito Origen </label>
+						<label class="control-label mediano">Depósito Origen</label>
 						<select class="form-select form-select-sm mb-3" id="deposito-origen" th:field="*{depositoOrigen}">
 							<option value="">Seleccionar</option>
 							<option th:each="deposito: ${depositos}" th:value="${deposito.id}" th:text="${deposito.nombre}">

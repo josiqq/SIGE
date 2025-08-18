@@ -6,7 +6,7 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-	<title>Pago a instructores</title>
+	<title>Pago a Instructores</title>
 </head>
 <section layout:fragment="contenido" >
 	
@@ -50,7 +50,7 @@
                             			<div class=" mb-3 col-md-4">
 		                                    <label for="instructor">Instructor</label>
 											<select id="instructor" class="form-control js-instructor" th:field="*{instructor}">
-												<option value="">seleccionar</option>
+												<option value="">Seleccionar</option>
 												<option th:each="instructor : ${instructores}" th:text="${instructor.nombre}" 
 													th:value="${instructor.id}" ></option>
 											</select>
@@ -61,7 +61,7 @@
 		                             	<div class=" mb-3 col-md-4">
 		                                    <label for="cuenta">Cuenta</label>
 											<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
-												<option value="">seleccionar</option>
+												<option value="">Seleccionar</option>
 												<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}"   
 													th:value="${cuenta.id}" ></option>
 											</select>

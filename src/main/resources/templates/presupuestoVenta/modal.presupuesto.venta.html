@@ -30,7 +30,7 @@
 						<div class="row col-md-12">
 							<div class="col-md-6 mb-2">
 								<select id="vendedor-presu" class="form-control mediano">
-									<option value="">seleccionar</option>
+									<option value="">Seleccionar</option>
 									<option th:each="vendedor : ${vendedores}"
 										th:text="${vendedor.nombre}"  th:value="${vendedor.id}"
 										data:supervisor=${vendedor.supervisor}></option>

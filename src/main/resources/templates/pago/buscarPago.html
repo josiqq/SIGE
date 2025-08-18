@@ -6,14 +6,14 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-	<title>buscar Pago</title>
+	<title>Buscar Pago</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
          <div class="bg-light rounded h-100 p-4">
         	 <div class="row">  		 
                    <a th:href="@{/pagos}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-nuevo btn-success">nuevo</button>
+	                    <button type="button" class="btn btn-nuevo btn-success">Nuevo</button>
                     </a>
               </div>
               <br>
@@ -28,13 +28,13 @@
                     </div>
              	
 	             	<div class="mb-3 col-md-3">
-	                		<label for="fechaDesde">Fecha desde</label> 
+	                		<label for="fechaDesde">Fecha Desde</label> 
 							<input type="text" class="form-control date" id="fechaDesde" th:field="*{{fechaDesde}}"
 							placeholder="DD/MM/AAAA" autocomplete="off">
 									
 	            	</div>
 	            	<div class="mb-3 col-md-3">
-		            		<label for="fechaHasta">fecha hasta</label> 
+		            		<label for="fechaHasta">Fecha Hasta</label> 
 							<input type="text" class="form-control date" id="fechaHasta" th:field="*{{fechaHasta}}"
 							placeholder="DD/MM/AAAA" autocomplete="off">
 	            	</div>
@@ -56,9 +56,9 @@
                  <table class="table">
                      <thead>
                          <tr>
-                         <th scope="col">id</th>
+                         <th scope="col">Registro</th>
                          <th scope="col">Proveedor</th>
-                         <th scope="col">fecha</th>
+                         <th scope="col">Fecha</th>
                          <th scope="col">Total</th>
                          <th scope="col"></th>
                          <th scope="col"></th>

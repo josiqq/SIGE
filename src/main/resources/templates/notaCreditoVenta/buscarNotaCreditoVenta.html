@@ -12,11 +12,11 @@
 	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
         	 <div class="row" > 
 				<div class="col-md-4">
-					<h6>Listado de notas de creditos venta</h6>		
+					<h6>Listado de notas de crédito venta</h6>		
 				</div> 	
 				<div class="col-md-8">
 					<a th:href="@{/ventas/notaCreditoVentas}" class="col-md-3 mb-6" sec:authorize="hasRole('ROLE_VENTAS_NOTA_CREDITO_MODIFICAR')">
-	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm">nuevo</button>
+	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm">Nuevo</button>
                    </a>
 				</div>	 
               </div>
@@ -32,14 +32,14 @@
                     </div>
              	
 	             	<div class="mb-3  col-md-2">
-	                		<label for="fechaDesde" class="control-label mediano">Fecha desde</label> 
+	                		<label for="fechaDesde" class="control-label mediano">Fecha Desde</label> 
 							<input type="text" class="form-control form-control-sm mediano date " 
 							id="fechaDesde" th:field="*{{fechaDesde}}"
 							placeholder="DD/MM/AAAA" autocomplete="off">
 									
 	            	</div>
 	            	<div class="mb-3 col-md-2">
-	            		<label for="fechaHasta" class="control-label mediano">fecha hasta</label> 
+	            		<label for="fechaHasta" class="control-label mediano">Fecha Hasta</label> 
 						<input type="text" class="form-control form-control-sm mediano date "
 						 id="fechaHasta" th:field="*{{fechaHasta}}" placeholder="DD/MM/AAAA" autocomplete="off">
 	            	</div>
@@ -61,10 +61,10 @@
          <table class="table">
              <thead>
                  <tr>
-                 <th scope="col">id</th>
+                 <th scope="col">ID</th>
                  <th scope="col">Cliente</th>
-                 <th scope="col">Deposito</th>
-                 <th scope="col">fecha</th>
+                 <th scope="col">Depósito</th>
+                 <th scope="col">Fecha</th>
                  <th scope="col">Total</th>
                  <th scope="col"></th>
                  <th scope="col"></th>
@@ -101,7 +101,7 @@
              </tr>
               
              <tr th:if="${#lists.isEmpty(ventas)}">
-				<td colspan="6">Ne se encontraron notas de creditos</td>
+				<td colspan="6">No se encontraron notas de crédito</td>
 			</tr>
          		
              </tbody>

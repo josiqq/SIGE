@@ -6,23 +6,23 @@
 	layout:decorate="~{padron}"
 		xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-<title>buscar cuentas</title>
+<title>Buscar Cuentas</title>
 </head>
 <section layout:fragment="contenido" >
 <div class="container-fluid pt-4 px-4">
          <div class="bg-light rounded h-100 p-4">
          	 <div class="row" sec:authorize="hasRole('ROLE_FINANCIERO_CUENTAS_GUARDAR')">  		 
                    <a th:href="@{/cuentas}" class="col-md-3 mb-6">
-	                    <button type="button" class="btn btn-buscar">nuevo</button>
+	                    <button type="button" class="btn btn-buscar btn-success">Nuevo</button>
                     </a>
               </div>
               <br>
-             <h6 class="mb-4">Listado de cuentas</h6>
+             <h3 class="mb-4">Listado de Cuentas</h3>
              <div class="table-responsive">
                  <table class="table">
                      <thead>
                          <tr>
-                            <th scope="col">id</th>
+                            <th scope="col">Id</th>
                          <th scope="col">Nombre</th>
                          <th scope="col">Estado</th>
                          <th scope="col">Saldo</th>

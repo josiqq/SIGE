@@ -6,7 +6,7 @@
 	layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
 <head>
-	<title>Recalcular movimiento de vendedor</title>
+	<title>Recalcular Movimiento de Vendedor</title>
 	 <link th:href="@{/css/easy-autocomplete.min.css}" rel="stylesheet">
 	 <link th:href="@{/css/easy-autocomplete.themes.min.css}" rel="stylesheet">
 </head>
@@ -18,7 +18,7 @@
                     <form >
                     	<div class="row">
 	                		<div class="col-md-12">
-                				<h2>Recalcular movimiento de vendedor</h2>
+                				<h2>Recalcular Movimiento de Vendedor</h2>
 	                		</div>
                 		 </div>
 				    	<!--=================MENSAJE DE EXITO===================-->
@@ -44,7 +44,7 @@
                         	<div class=" mb-3 col-md-4">
                                 <label for="vendedor" class="col-form-label">Vendedor</label>
 								<select id="vendedor" class="form-control js-vendedor" >
-										<option value="">seleccionar</option>
+										<option value="">Seleccionar</option>
 										<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
 													th:value="${vendedor.id}" ></option>
 								</select>

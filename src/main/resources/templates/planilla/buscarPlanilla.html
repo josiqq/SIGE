@@ -21,20 +21,20 @@
             <form  th:object="${planillaFilter}">
              	<div class="row">
              		<div class="mb-1 m-2 row col-md-2">
-                   		<label for="id" class="col-form-label">Id planilla</label> 
+                   		<label for="id" class="col-form-label">Id Planilla</label> 
                    		<input type="text" id="id" class="form-control m-2"  
                    					autofocus="autofocus" placeholder="Nro de planilla" autocomplete="off"
                    					th:field="*{id}">
                     </div>
              	
 	             	<div class="mb-1 row m-2 col-md-2">
-	                		<label for="fechaDesde" class="col-form-label">Fecha desde</label> 
+	                		<label for="fechaDesde" class="col-form-label">Fecha Desde</label> 
 							<input type="text" class="form-control date m-2" id="fechaDesde" th:field="*{{fechaDesde}}"
 							placeholder="DD/MM/AAAA" autocomplete="off">
 									
 	            	</div>
 	            	<div class=" mb-1 m-2 row col-md-2">
-	            		<label for="fechaHasta" class="col-form-label ">fecha hasta</label> 
+	            		<label for="fechaHasta" class="col-form-label ">Fecha Hasta</label> 
 						<input type="text" class="form-control date m-2 " id="fechaHasta" th:field="*{{fechaHasta}}"
 						placeholder="DD/MM/AAAA" autocomplete="off">
 	            	</div>

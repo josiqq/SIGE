@@ -65,7 +65,7 @@ import com.sige.session.TablaItemVentaLoteSession;
 import com.sige.session.TablaItemVentaSession;
 
 @Controller
-@RequestMapping({"/ventas"})
+@RequestMapping({ "/ventas" })
 public class VentaController {
    @Autowired
    private Depositos depositos;
@@ -136,67 +136,80 @@ public class VentaController {
    }
 
    @PostMapping
-   public ModelAndView guardar(@Valid Venta venta, BindingResult result, RedirectAttributes attribute, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-      ModelAndView mv = new ModelAndView("redirect:/ventas");
-      venta.cargarItem(this.tablaItemVentaSession.getItems(venta.getUuid()));
-      venta.cargarItemsLotes(this.tablaItemVentaLoteSession.getItems(venta.getUuid()));
-      venta.calcularTotal();
-      if (result.hasErrors()) {
-         return this.inicio(venta, usuarioSistema);
-      } else {
-         try {
-            this.ventaService.guardar(venta, usuarioSistema);
-         } catch (NegocioException var9) {
-            result.rejectValue("", "", var9.getMessage());
-            return this.inicio(venta, usuarioSistema);
-         } catch (DataAccessException var10) {
-            Throwable rootCause = var10.getRootCause();
-            String messageError = "Error en la base de datos: " + rootCause.getMessage();
-            result.rejectValue("", "", messageError);
-            return this.inicio(venta, usuarioSistema);
-         }
+   public ModelAndView guardar(
+         @Valid Venta venta,
+         BindingResult result,
+         RedirectAttributes attributes,
+         @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 
-         attribute.addFlashAttribute("mensaje", "Venta guardada con exito! registro: " + venta.getId());
-         attribute.addFlashAttribute("registro", venta.getId());
-         attribute.addFlashAttribute("facturaRetorno", venta.isFactura());
-         attribute.addFlashAttribute("condicionVenta", venta.getCondicionVenta());
-         return mv;
+      ModelAndView mv = new ModelAndView("redirect:/ventas");
+
+      // Cargar ítems de la venta desde las sesiones
+      venta.cargarItem(tablaItemVentaSession.getItems(venta.getUuid()));
+      venta.cargarItemsLotes(tablaItemVentaLoteSession.getItems(venta.getUuid()));
+      venta.calcularTotal();
+
+      // Validaciones de errores
+      if (result.hasErrors()) {
+         return inicio(venta, usuarioSistema);
       }
+
+      try {
+         ventaService.guardar(venta, usuarioSistema);
+      } catch (NegocioException e) {
+         result.rejectValue(null, null, e.getMessage());
+         return inicio(venta, usuarioSistema);
+      } catch (DataAccessException e) {
+         Throwable rootCause = e.getRootCause();
+         String messageError = "Error en la base de datos: " +
+               (rootCause != null ? rootCause.getMessage() : e.getMessage());
+         result.rejectValue(null, null, messageError);
+         return inicio(venta, usuarioSistema);
+      }
+
+      // Atributos flash para la redirección
+      attributes.addFlashAttribute("mensaje", "Venta guardada con éxito! Registro: " + venta.getId());
+      attributes.addFlashAttribute("registro", venta.getId());
+      attributes.addFlashAttribute("facturaRetorno", venta.isFactura());
+      attributes.addFlashAttribute("condicionVenta", venta.getCondicionVenta());
+      System.out.println(venta.getCondicionVenta());
+
+      return mv;
    }
 
-   @GetMapping({"/buscar"})
+   @GetMapping({ "/buscar" })
    public ModelAndView buscarVenta(VentaFilter ventaFilter) {
       ModelAndView mv = new ModelAndView("venta/buscarVenta");
       mv.addObject("ventas", this.ventaService.buscarVenta(ventaFilter));
       return mv;
    }
 
-   @GetMapping({"/{id}"})
+   @GetMapping({ "/{id}" })
    public ModelAndView buscarPorId(@PathVariable Long id, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
       Venta venta = this.ventaService.buscarPorId(id);
       this.agregarUUID(venta);
 
       for (ItemVenta itemVenta : venta.getItems()) {
          this.tablaItemVentaSession
-            .adicionarItem(itemVenta.getProducto(), itemVenta.getPrecio(), itemVenta.getCosto(), itemVenta.getCantidad(), venta.getUuid());
+               .adicionarItem(itemVenta.getProducto(), itemVenta.getPrecio(), itemVenta.getCosto(),
+                     itemVenta.getCantidad(), venta.getUuid());
       }
 
       for (ItemVentaLote itemVentaLote : venta.getItemsLote()) {
          this.tablaItemVentaLoteSession
-            .adicionarItem(
-               itemVentaLote.getProducto(),
-               itemVentaLote.getNroLote(),
-               itemVentaLote.getVencimiento(),
-               itemVentaLote.getCantidad(),
-               itemVentaLote.getCantidadActual(),
-               venta.getUuid()
-            );
+               .adicionarItem(
+                     itemVentaLote.getProducto(),
+                     itemVentaLote.getNroLote(),
+                     itemVentaLote.getVencimiento(),
+                     itemVentaLote.getCantidad(),
+                     itemVentaLote.getCantidadActual(),
+                     venta.getUuid());
       }
 
       return this.inicio(venta, usuarioSistema);
    }
 
-   @DeleteMapping({"/{id}"})
+   @DeleteMapping({ "/{id}" })
    @ResponseBody
    public ResponseEntity<?> eliminar(@PathVariable Long id, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
       try {
@@ -208,17 +221,18 @@ public class VentaController {
       return ResponseEntity.ok().build();
    }
 
-   @PostMapping({"/item/adicionar"})
+   @PostMapping({ "/item/adicionar" })
    @ResponseBody
    public ModelAndView adicionarItem(
-      Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha, Producto producto, BigDecimal precio, BigDecimal cantidad, String uuid
-   ) {
-      BigDecimal costo_cotizado = this.cotizaciones.fCotizar(producto.getMoneda().getId(), monedaDestino, fecha, producto.getCosto(), BigDecimal.ZERO);
+         Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha, Producto producto,
+         BigDecimal precio, BigDecimal cantidad, String uuid) {
+      BigDecimal costo_cotizado = this.cotizaciones.fCotizar(producto.getMoneda().getId(), monedaDestino, fecha,
+            producto.getCosto(), BigDecimal.ZERO);
       this.tablaItemVentaSession.adicionarItem(producto, precio, costo_cotizado, cantidad, uuid);
       return this.mvItemVenta(uuid);
    }
 
-   @PutMapping({"/item/modificar/cantidad"})
+   @PutMapping({ "/item/modificar/cantidad" })
    @ResponseBody
    public ModelAndView modificarCantidad(Producto producto, BigDecimal cantidad, String uuid) {
       if (producto.isPesable()) {
@@ -230,14 +244,14 @@ public class VentaController {
       return this.mvItemVenta(uuid);
    }
 
-   @PutMapping({"/item/modificar/precio"})
+   @PutMapping({ "/item/modificar/precio" })
    @ResponseBody
    public ModelAndView modificarPrecio(Producto producto, BigDecimal precio, String uuid) {
       this.tablaItemVentaSession.modificarPrecio(producto, this.quitarDecima(precio), uuid);
       return this.mvItemVenta(uuid);
    }
 
-   @DeleteMapping({"/item/eliminar"})
+   @DeleteMapping({ "/item/eliminar" })
    @ResponseBody
    public ModelAndView eliminar(Producto producto, String uuid) {
       this.tablaItemVentaSession.eliminarItem(producto, uuid);
@@ -248,22 +262,25 @@ public class VentaController {
       return valor.setScale(0, RoundingMode.HALF_UP);
    }
 
-   @GetMapping({"/js/recuperar"})
+   @GetMapping({ "/js/recuperar" })
    @ResponseBody
    public List<ItemVenta> buscarItemVenta(Venta venta) {
       return this.itemVentas.buscarPorVenta(venta);
    }
 
-   @GetMapping({"/totalesVentas"})
+   @GetMapping({ "/totalesVentas" })
    public ModelAndView totalVentas(ItemVentaFilter itemVentaFilter) {
       ModelAndView mv = new ModelAndView("reporte/venta/totalesVentas");
       BigDecimal totalUtilidad = BigDecimal.ZERO;
       BigDecimal totalCosto = BigDecimal.ZERO;
       BigDecimal totalPrecio = BigDecimal.ZERO;
       List<Object[]> ventas = this.itemVentas.totalesVenta(itemVentaFilter);
-      totalUtilidad = this.quitarDecima(ventas.stream().map(obj -> (BigDecimal)obj[7]).reduce(BigDecimal.ZERO, BigDecimal::add));
-      totalPrecio = this.quitarDecima(ventas.stream().map(obj -> (BigDecimal)obj[6]).reduce(BigDecimal.ZERO, BigDecimal::add));
-      totalCosto = this.quitarDecima(ventas.stream().map(obj -> (BigDecimal)obj[5]).reduce(BigDecimal.ZERO, BigDecimal::add));
+      totalUtilidad = this
+            .quitarDecima(ventas.stream().map(obj -> (BigDecimal) obj[7]).reduce(BigDecimal.ZERO, BigDecimal::add));
+      totalPrecio = this
+            .quitarDecima(ventas.stream().map(obj -> (BigDecimal) obj[6]).reduce(BigDecimal.ZERO, BigDecimal::add));
+      totalCosto = this
+            .quitarDecima(ventas.stream().map(obj -> (BigDecimal) obj[5]).reduce(BigDecimal.ZERO, BigDecimal::add));
       mv.addObject("totalPrecio", totalPrecio);
       mv.addObject("totalCosto", totalCosto);
       mv.addObject("totalUtilidad", totalUtilidad);
@@ -271,13 +288,13 @@ public class VentaController {
       return mv;
    }
 
-   @GetMapping({"/js/getFactura"})
+   @GetMapping({ "/js/getFactura" })
    @ResponseBody
    public List<FacturaDto> getFactura(Long id) {
       return this.ventaService.getFacturas(id);
    }
 
-   @PostMapping({"/js/agregar/timbrado"})
+   @PostMapping({ "/js/agregar/timbrado" })
    @ResponseBody
    public ResponseEntity<?> agregarTimbrado(String uuid, Venta venta) {
       Cuenta cuenta = this.cuentas.getCuentaByExpedicion(uuid);
@@ -292,14 +309,14 @@ public class VentaController {
       return ResponseEntity.ok().build();
    }
 
-   @PutMapping({"/js/update/impreso"})
+   @PutMapping({ "/js/update/impreso" })
    @ResponseBody
    public ResponseEntity<?> updateImpreso(Long id) {
       this.ventaService.updateImpreso(id);
       return ResponseEntity.ok().build();
    }
 
-   @GetMapping({"/js/buscar/item/venta"})
+   @GetMapping({ "/js/buscar/item/venta" })
    @ResponseBody
    public List<ItemVenta> getItemVentaByVenta(Venta venta) {
       return this.ventaService.getItemVentaByVenta(venta);
@@ -351,12 +368,15 @@ public class VentaController {
       return mv;
    }
 
-   @PutMapping({"/cambiar/precio"})
-   public ModelAndView cambiarPrecio(Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha, Precio precio, String uuid) {
+   @PutMapping({ "/cambiar/precio" })
+   public ModelAndView cambiarPrecio(Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha,
+         Precio precio, String uuid) {
       for (ItemVenta item : this.tablaItemVentaSession.getItems(uuid)) {
          BigDecimal costo_cotizado = this.cotizaciones
-            .fCotizar(item.getProducto().getMoneda().getId(), monedaDestino, fecha, item.getProducto().getCosto(), BigDecimal.ZERO);
-         this.tablaItemVentaSession.modificarPrecioCosto(item.getProducto(), this.cambiarPrecioVenta(precio, item.getProducto()), costo_cotizado, uuid);
+               .fCotizar(item.getProducto().getMoneda().getId(), monedaDestino, fecha, item.getProducto().getCosto(),
+                     BigDecimal.ZERO);
+         this.tablaItemVentaSession.modificarPrecioCosto(item.getProducto(),
+               this.cambiarPrecioVenta(precio, item.getProducto()), costo_cotizado, uuid);
       }
 
       ModelAndView mv = this.mvItemVenta(uuid);
@@ -367,17 +387,18 @@ public class VentaController {
       return this.itemPrecios.getPrecioProducto(precio, producto);
    }
 
-   @PostMapping({"/adicionar/con/presu"})
+   @PostMapping({ "/adicionar/con/presu" })
    public ModelAndView adicionarConPresu(PresupuestoVenta presupuestoVenta, String uuid) {
       for (ItemPresupuestoVenta item : this.presupuestos.getItemPresupuesto(presupuestoVenta)) {
-         this.tablaItemVentaSession.adicionarItem(item.getProducto(), item.getPrecio(), item.getCosto(), item.getCantidad(), uuid);
+         this.tablaItemVentaSession.adicionarItem(item.getProducto(), item.getPrecio(), item.getCosto(),
+               item.getCantidad(), uuid);
       }
 
       ModelAndView mv = this.mvItemVenta(uuid);
       return mv;
    }
 
-   @GetMapping({"/notaCreditoVentas"})
+   @GetMapping({ "/notaCreditoVentas" })
    public ModelAndView notaCredito(Venta venta, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
       ModelAndView mv = new ModelAndView("notaCreditoVenta/notaCreditoVenta");
       mv.addObject(venta);
@@ -395,7 +416,7 @@ public class VentaController {
       return mv;
    }
 
-   @GetMapping({"/nc/buscar"})
+   @GetMapping({ "/nc/buscar" })
    public ModelAndView buscarNc(VentaFilter ventaFilter) {
       ModelAndView mv = new ModelAndView("notaCreditoVenta/buscarNotaCreditoVenta");
       mv.addObject(ventaFilter);
@@ -403,38 +424,40 @@ public class VentaController {
       return mv;
    }
 
-   @GetMapping({"/notaCreditoVentas/{id}"})
+   @GetMapping({ "/notaCreditoVentas/{id}" })
    public ModelAndView buscarNcById(@PathVariable Long id, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-      Venta venta = (Venta)this.ventas.findById(id).orElse(null);
+      Venta venta = (Venta) this.ventas.findById(id).orElse(null);
       this.agregarUUID(venta);
 
       for (ItemVenta item : venta.getItems()) {
-         this.tablaItemVentaSession.adicionarItem(item.getProducto(), item.getPrecio(), item.getCosto(), item.getCantidad(), venta.getUuid());
+         this.tablaItemVentaSession.adicionarItem(item.getProducto(), item.getPrecio(), item.getCosto(),
+               item.getCantidad(), venta.getUuid());
       }
 
       return this.notaCredito(venta, usuarioSistema);
    }
 
-   @GetMapping({"/buscarItem/por/id"})
+   @GetMapping({ "/buscarItem/por/id" })
    @ResponseBody
    public List<ItemVenta> getItemVenta(Venta venta) {
       return this.itemVentas.buscarPorVenta(venta);
    }
 
-   @PostMapping({"/js/adicionar/por/venta"})
+   @PostMapping({ "/js/adicionar/por/venta" })
    public ModelAndView adicionarNcByVenta(Venta venta, String uuid) {
       for (ItemVenta item : this.itemVentas.buscarPorVenta(venta)) {
-         this.tablaItemVentaSession.adicionarItem(item.getProducto(), item.getPrecio(), item.getCosto(), item.getCantidad().negate(), uuid);
+         this.tablaItemVentaSession.adicionarItem(item.getProducto(), item.getPrecio(), item.getCosto(),
+               item.getCantidad().negate(), uuid);
       }
 
       ModelAndView mv = this.mvReturnNc(uuid);
       return mv;
    }
 
-   @PostMapping({"/notaCreditoVentas"})
+   @PostMapping({ "/notaCreditoVentas" })
    public ModelAndView guardarNc(
-      @Valid Venta venta, BindingResult result, @AuthenticationPrincipal UsuarioSistema usuarioSistema, RedirectAttributes attributes
-   ) {
+         @Valid Venta venta, BindingResult result, @AuthenticationPrincipal UsuarioSistema usuarioSistema,
+         RedirectAttributes attributes) {
       ModelAndView mv = new ModelAndView("redirect:/ventas/notaCreditoVentas");
       venta.cargarItem(this.tablaItemVentaSession.getItems(venta.getUuid()));
       if (result.hasErrors()) {
@@ -455,34 +478,38 @@ public class VentaController {
       }
    }
 
-   @DeleteMapping({"/nc/elimiarItem"})
+   @DeleteMapping({ "/nc/elimiarItem" })
    public ModelAndView eliminarItemNc(int indice, String uuid) {
       this.tablaItemVentaSession.eliminarItemIndice(indice, uuid);
       return this.mvReturnNc(uuid);
    }
 
-   @PostMapping({"/nc/adicionarItem"})
+   @PostMapping({ "/nc/adicionarItem" })
    public ModelAndView adicionarItemNc(
-      Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha, Producto producto, BigDecimal precio, BigDecimal cantidad, String uuid
-   ) {
-      BigDecimal costo_cotizado = this.cotizaciones.fCotizar(producto.getMoneda().getId(), monedaDestino, fecha, producto.getCosto(), BigDecimal.ZERO);
+         Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha, Producto producto,
+         BigDecimal precio, BigDecimal cantidad, String uuid) {
+      BigDecimal costo_cotizado = this.cotizaciones.fCotizar(producto.getMoneda().getId(), monedaDestino, fecha,
+            producto.getCosto(), BigDecimal.ZERO);
       this.tablaItemVentaSession.adicionarItem(producto, precio, costo_cotizado, cantidad.negate(), uuid);
       return this.mvReturnNc(uuid);
    }
 
-   @PutMapping({"/cambiar/precio/nc"})
-   public ModelAndView cambiarPrecioNc(Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha, Precio precio, String uuid) {
+   @PutMapping({ "/cambiar/precio/nc" })
+   public ModelAndView cambiarPrecioNc(Long monedaDestino, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fecha,
+         Precio precio, String uuid) {
       for (ItemVenta item : this.tablaItemVentaSession.getItems(uuid)) {
          BigDecimal costo_cotizado = this.cotizaciones
-            .fCotizar(item.getProducto().getMoneda().getId(), monedaDestino, fecha, item.getProducto().getCosto(), BigDecimal.ZERO);
-         this.tablaItemVentaSession.modificarPrecioCosto(item.getProducto(), this.cambiarPrecioVenta(precio, item.getProducto()), costo_cotizado, uuid);
+               .fCotizar(item.getProducto().getMoneda().getId(), monedaDestino, fecha, item.getProducto().getCosto(),
+                     BigDecimal.ZERO);
+         this.tablaItemVentaSession.modificarPrecioCosto(item.getProducto(),
+               this.cambiarPrecioVenta(precio, item.getProducto()), costo_cotizado, uuid);
       }
 
       ModelAndView mv = this.mvReturnNc(uuid);
       return mv;
    }
 
-   @PutMapping({"/item/modificar/cantidad/nc"})
+   @PutMapping({ "/item/modificar/cantidad/nc" })
    @ResponseBody
    public ModelAndView modificarCantidadNc(Producto producto, BigDecimal cantidad, String uuid) {
       this.tablaItemVentaSession.modificarCantidad(producto, cantidad.negate(), uuid);
@@ -496,16 +523,15 @@ public class VentaController {
       return mv;
    }
 
-   @PostMapping({"/item-lote-adicionar"})
+   @PostMapping({ "/item-lote-adicionar" })
    @ResponseBody
    public ResponseEntity<?> adicionarItemLote(
-      Producto producto,
-      String nroLote,
-      @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate vencimiento,
-      BigDecimal cantidad,
-      BigDecimal cantidadActual,
-      String uuid
-   ) {
+         Producto producto,
+         String nroLote,
+         @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate vencimiento,
+         BigDecimal cantidad,
+         BigDecimal cantidadActual,
+         String uuid) {
       BigDecimal total = BigDecimal.ZERO;
 
       try {
@@ -518,7 +544,7 @@ public class VentaController {
       return ResponseEntity.ok(total);
    }
 
-   @GetMapping({"/get-items-lotes-by-producto"})
+   @GetMapping({ "/get-items-lotes-by-producto" })
    public ModelAndView getItemsLoteByProducto(Producto producto, String uuid) {
       ModelAndView mv = new ModelAndView("venta/itemVentaLote");
       mv.addObject("itemsLotes", this.tablaItemVentaLoteSession.getItemsByProducto(producto, uuid));
@@ -526,9 +552,10 @@ public class VentaController {
       return mv;
    }
 
-   @PutMapping({"/modificar-cantidad-lote"})
+   @PutMapping({ "/modificar-cantidad-lote" })
    @ResponseBody
-   public ResponseEntity<?> mdodificarCantidadLote(Producto producto, String nroLote, BigDecimal cantidad, BigDecimal cantidadActual, String uuid) {
+   public ResponseEntity<?> mdodificarCantidadLote(Producto producto, String nroLote, BigDecimal cantidad,
+         BigDecimal cantidadActual, String uuid) {
       BigDecimal total = BigDecimal.ZERO;
 
       try {
@@ -541,26 +568,27 @@ public class VentaController {
       return ResponseEntity.ok(total);
    }
 
-   @DeleteMapping({"/eliminar-item-lote"})
+   @DeleteMapping({ "/eliminar-item-lote" })
    public ModelAndView eliinarItemLote(int indice, Producto producto, String uuid) {
       this.tablaItemVentaLoteSession.eliminarItem(indice, uuid);
       return this.getItemsLoteByProducto(producto, uuid);
    }
 
-   @GetMapping({"/get-items-lotes-by-producto-detalle"})
+   @GetMapping({ "/get-items-lotes-by-producto-detalle" })
    @ResponseBody
    public ResponseEntity<?> getLotesExisteDetalle(Producto producto, Deposito deposito, String uuid) {
       List<ItemVentaLote> items = this.tablaItemVentaLoteSession.getItemsByProducto(producto, uuid);
 
       for (ItemVentaLote item : items) {
-         BigDecimal cantidadLote = this.lotes.getByLoteDepositoProducto(item.getNroLote(), item.getProducto().getId(), deposito).getCantidad();
+         BigDecimal cantidadLote = this.lotes
+               .getByLoteDepositoProducto(item.getNroLote(), item.getProducto().getId(), deposito).getCantidad();
          item.setCantidadActual(cantidadLote);
       }
 
       return ResponseEntity.ok(items);
    }
 
-   @GetMapping({"/js/get-items-lotes-by-producto"})
+   @GetMapping({ "/js/get-items-lotes-by-producto" })
    @ResponseBody
    public ResponseEntity<?> getItemsLotesByProductoSolo(Producto producto, String uuid) {
       new ArrayList();

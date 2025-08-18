@@ -59,7 +59,7 @@ public class ParametroVentaController {
       ParametroVenta parametroVenta;
       try {
          parametroVenta = this.parametroVentas.buscarParametroVenta();
-      } catch (Exception var3) {
+      } catch (Exception e) {
          parametroVenta = new ParametroVenta();
       }
 
