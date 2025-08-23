@@ -50,14 +50,14 @@
 			                            <label for="nombre" class="col-sm-12 col-form-label">Nombre</label>
 			                            <div class="col-sm-10">
 			                                <input type="text" class="form-control" id="nombre"  
-			                                		autocomplete="off" placeholder="nombre" th:field="*{nombre}">
+			                                		autocomplete="off" placeholder="Nombre" th:field="*{nombre}">
 			                            </div>
 			                        </div>
 	                                 <div class="mb-3 col-md-2">
 	                                 <label for="condicion" class="col-sm-12 col-form-label">Condición</label>
                                    <select id="condicion" class="form-control"
 										th:field="*{condicionCobro}">
-										<option value="">seleccionar</option>
+										<option value="">Seleccionar</option>
 										<option th:each="condicionCobro : ${condicionesCobros}"
 											th:text="${condicionCobro.descripcion}"
 											th:value="${condicionCobro}"></option>

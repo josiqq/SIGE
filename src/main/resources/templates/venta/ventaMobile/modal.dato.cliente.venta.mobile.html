@@ -48,7 +48,7 @@
                     <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
                         <label for="deposito" class="col-sm-12 col-form-label">Depósito</label>
 						<select id="deposito" class="form-control" th:field="*{deposito}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="deposito : ${depositos}" th:text="${deposito.nombre}" 
 								th:value="${deposito.id}" ></option>
 						</select>
@@ -56,7 +56,7 @@
                     <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
                         <label for="vendedor" class="col-sm-12 col-form-label">Vendedor</label>
 						<select id="vendedor" class="form-control" th:field="*{vendedor}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="vendedor : ${vendedores}" th:text="${vendedor.nombre}" 
 								th:value="${vendedor.id}" ></option>
 						</select>
@@ -64,7 +64,7 @@
                     <div class=" mb-3 col-sm-12 col-md-3 col-lg-2">
                         <label for="precio" class="col-sm-12 col-form-label">Precio</label>
 						<select id="precio" class="form-control" th:field="*{precio}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="precio : ${precios}" th:text="${precio.nombre}" 
 								th:value="${precio.id}" 
 								data:moneda = "${precio.moneda}?${precio.moneda.id}:0" ></option>
@@ -80,7 +80,7 @@
                 	</div>
                     <div class=" mb-3 col-md-3 ">
 						<select id="precio" class="form-control" th:field="*{condicionVenta}">
-							<option value="">seleccionar</option>
+							<option value="">Seleccionar</option>
 							<option th:each="condicionVenta : ${condicionVentas}" th:text="${condicionVenta.descripcion}" 
 								th:value="${condicionVenta}"></option>
 						</select>

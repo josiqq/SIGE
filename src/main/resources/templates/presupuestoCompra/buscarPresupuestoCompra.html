@@ -12,11 +12,11 @@
 	<div class="border-top border-bottom border-secondary border-1  p-4 m-4">
         	 <div class="row" > 
 				<div class="col-md-4">
-					<h6>Listado de presupuestos de compras</h6>		
+					<h3 class="mb-4">Listado de Presupuestos de Compras</h3>		
 				</div> 	
 				<div class="col-md-8">
 					<a th:href="@{/presupuestoCompras}" class="col-md-3 mb-6" sec:authorize="hasRole('ROLE_COMPRAS_PRESUPUESTO_COMPRAS_MODIFICAR')">
-	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm">Nuevo</button>
+	                    <button type="button" class="btn btn-nuevo btn-success 	btn-sm" accesskey="N" title="Presiona Alt+N">Nuevo</button>
                    </a>
 				</div>	 
               </div>

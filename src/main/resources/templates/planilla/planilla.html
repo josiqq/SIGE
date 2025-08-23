@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5"
-	layout:decorate="~{padron}"
+	xmlns:sec=" http://www.thymeleaf.org/extras/spring-security5" layout:decorate="~{padron}"
 	xmlns:data="http://www.thymeleaf.org/extras/data">
+
 <head>
-<title>Apertura de planilla</title>
+	<title>Apertura de Planilla</title>
 </head>
 <section layout:fragment="contenido">
 
@@ -15,48 +14,42 @@
 
 			<div class="col-sm-12 col-xl-12">
 				<div class="bg-light rounded h-100 p-4">
-					<form th:action="@{/planillas}" th:method="POST"
-						th:object="${planilla}">
+					<form th:action="@{/planillas}" th:method="POST" th:object="${planilla}">
 						<div class="row">
 							<div class="col-md-4">
 								<h2 th:if="!${planilla.id}">Apertura de Planilla</h2>
 								<h2 th:if="${planilla.id}">Modificar Planilla -
 									[[${planilla.id}]]</h2>
 							</div>
-							<button type="submit"
-								class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
+							<button type="submit" class="btn btn-square btn-primary m-2 btn-guardar col-md-1"
 								sec:authorize="hasRole('ROLE_FINANCIERO_PLANILLA_GUARDAR')">
 								<i class="fa fa-save"></i>
 							</button>
-							<a th:href="@{/planillas/buscar}"
-								class="btn  btn-square btn-success m-2 col-md-1"> <i
-								class="fa fa-search btn-buscar"></i>
-							</a> <a th:href="@{/planillas}"
-								class="btn btn-square btn-primary m-2 col-md-1"> <i
-								class="fa fa-desktop btn-nuevo"></i>
-							</a>  <span class="negrita col-md-3">Usuario alta:
+							<a th:href="@{/planillas/buscar}" class="btn  btn-square btn-success m-2 col-md-1"> <i
+									class="fa fa-search btn-buscar"></i>
+							</a> <a th:href="@{/planillas}" class="btn btn-square btn-primary m-2 col-md-1"> <i
+									class="fa fa-desktop btn-nuevo"></i>
+							</a> <span class="negrita col-md-3">Usuario alta:
 								[[${planilla.usuario.nombre}]]</span>
 						</div>
-						<div class="alert alert-danger alert-dismissible fade show"
-							role="alert" th:if="${#fields.hasAnyErrors()}">
+						<div class="alert alert-danger alert-dismissible fade show" role="alert"
+							th:if="${#fields.hasAnyErrors()}">
 							<div th:each="erro: ${#fields.detailedErrors()}">
-								<i class="fa fa-exclamation-circle me-2"></i> <span
-									th:text="${erro.message}">Mensaje de error</span>
+								<i class="fa fa-exclamation-circle me-2"></i> <span th:text="${erro.message}">Mensaje de
+									error</span>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="alert"
-								aria-label="Close"></button>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
-						<div class="alert alert-primary alert-dismissible fade show"
-							role="alert" th:if="${!#strings.isEmpty(mensaje)}">
-							<i class="fa fa-exclamation-circle me-2"></i> <span
-								th:text="${mensaje}">Mensaje de exito</span>
-							<button type="button" class="btn-close" data-bs-dismiss="alert"
-								aria-label="Close"></button>
+						<div class="alert alert-primary alert-dismissible fade show" role="alert"
+							th:if="${!#strings.isEmpty(mensaje)}">
+							<i class="fa fa-exclamation-circle me-2"></i> <span th:text="${mensaje}">Mensaje de
+								exito</span>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 
-						<input type="hidden" th:field="*{id}"> 
+						<input type="hidden" th:field="*{id}">
 						<input type="hidden" th:field="*{uuid}">
-						<input type="hidden" id="usuario" th:field="*{usuario}" /> 
+						<input type="hidden" id="usuario" th:field="*{usuario}" />
 						<div class="row">
 							<div class="col-md-12">
 								<div class="row">
@@ -64,18 +57,17 @@
 									<div class="mb-3 col-md-3">
 										<label for="fecha" class="col-md-3 col-form-label">Fecha</label>
 										<div class="col-sm-12">
-											<input type="text" id="fecha"
-												class="form-control date col-sm-6 js-fecha "
-												placeholder="dia/mes/año" th:field="*{fecha}"
-												autocomplete="off" readonly="readonly">
+											<input type="text" id="fecha" class="form-control date col-sm-6 js-fecha "
+												placeholder="dia/mes/año" th:field="*{fecha}" autocomplete="off"
+												readonly="readonly">
 										</div>
 									</div>
 									<div class=" mb-3 col-md-3 cont-cuenta">
-										<label for="cuenta" class="col-form-label">Cuenta</label> 
+										<label for="cuenta" class="col-form-label">Cuenta</label>
 										<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
 											<option value="">Seleccionar</option>
-											<option th:each="cuenta : ${cuentas}"
-												th:text="${cuenta.nombre}" th:value="${cuenta.id}">
+											<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}"
+												th:value="${cuenta.id}">
 											</option>
 										</select>
 									</div>
@@ -89,18 +81,16 @@
 								<label for="condicion" class="col-form-label">Condición</label>
 								<select id="condicion" class="form-control js-condicion">
 									<option value="">Seleccionar</option>
-									<option th:each="condicion : ${condiciones}"
-										th:text="${condicion.nombre}" th:value="${condicion.id}"
-										data:comision="${condicion.comision}"></option>
+									<option th:each="condicion : ${condiciones}" th:text="${condicion.nombre}"
+										th:value="${condicion.id}" data:comision="${condicion.comision}"></option>
 								</select>
 							</div>
 							<div class=" mb-3 col-md-2 cont-moneda">
-								<label for="moneda" class="col-form-label">Moneda</label> <select
-									id="moneda" class="form-control js-moneda">
+								<label for="moneda" class="col-form-label">Moneda</label> <select id="moneda"
+									class="form-control js-moneda">
 									<option value="">Seleccionar</option>
-									<option th:each="moneda : ${monedas}"
-										th:text="${moneda.nombre}" th:value="${moneda.id}"
-										data:decimales="${moneda.decimales}"></option>
+									<option th:each="moneda : ${monedas}" th:text="${moneda.nombre}"
+										th:value="${moneda.id}" data:decimales="${moneda.decimales}"></option>
 								</select>
 							</div>
 
@@ -137,7 +127,8 @@
 	</div>
 </section>
 <th:block layout:fragment="javascript-extra">
-		<script th:src="@{/js/meta/planilla/planilla.js}" type="module"></script>
-		<script th:src="@{/js/meta/planilla/itemPlanilla.js}" type="module"></script>
+	<script th:src="@{/js/meta/planilla/planilla.js}" type="module"></script>
+	<script th:src="@{/js/meta/planilla/itemPlanilla.js}" type="module"></script>
 </th:block>
+
 </html>
