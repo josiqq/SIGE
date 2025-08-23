@@ -17,7 +17,7 @@
                     </a>
               </div>
               <br>
-             <h6 class="mb-4 js-titulo-reporte " >Moviminetos de cuantas</h6>
+             <h3 class="mb-4 js-titulo-reporte " >Moviminetos de Cuentas</h3>
          	<div class="row col-md-12  " >
          		<div class="mb-4 col-md-3">
          			<h6 class="mb-4 col-12  js-titulo-reporte">Crédito anterior: <span class="credito-anterior">[[${creditoAnterior}]]</span></h6>
@@ -32,7 +32,7 @@
              <form  th:object="${movimientoCajaFilter}"  class="js-filtros">
              <div class="row">
              	<div class="mb-3 col-md-3">
-                		<label for="fechaDesde">Fecha desde</label> 
+                		<label for="fechaDesde">Fecha Desde</label> 
 						<input type="text" class="form-control js-fecha" id="fechaDesde" th:field="*{{fechaDesde}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" 
 								data-provide="datepicker" data-date-format="dd/mm/yyyy"
@@ -40,7 +40,7 @@
 								  data-date-today-highlight="true" data-date-autoclose="true" >
             	</div>
             	<div class="mb-3 col-md-3">
-	            		<label for="fechaHasta">fecha hasta</label> 
+	            		<label for="fechaHasta">Fecha Hasta</label> 
 						<input type="text" class="form-control js-fecha" id="fechaHasta" th:field="*{{fechaHasta}}"
 								autocomplete="off" placeholder="dd/mm/aaaa" 
 								data-provide="datepicker" data-date-format="dd/mm/yyyy"
@@ -50,7 +50,7 @@
             	<div class="row mb-3 col-md-3">
                                     <label for="cuenta">Cuenta</label>
 									<select id="cuenta" class="form-control js-cuenta" th:field="*{cuenta}">
-										<option value="">seleccionar</option>
+										<option value="">Seleccionar</option>
 										<option th:each="cuenta : ${cuentas}" th:text="${cuenta.nombre}" 
 											th:value="${cuenta.id}" ></option>
 									</select>
@@ -85,7 +85,7 @@
                  <table class="table">
                      <thead>
                          <tr>
-                            <th scope="col">id</th>
+                            <th scope="col">ID</th>
                          <th scope="col">Cuenta</th>
                          <th scope="col">Fecha</th>
                          <th scope="col">Obseración</th>
